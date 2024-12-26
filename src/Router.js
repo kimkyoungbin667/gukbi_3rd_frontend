@@ -21,8 +21,8 @@ function Router() {
 
 function Home() {
   return (
-    <div style={{ border: '2px blue solid' }}>
-      <h2>테스트 메인페이지</h2>
+    <div>
+      <h2>메인 페이지</h2>
     </div>
   );
 }
