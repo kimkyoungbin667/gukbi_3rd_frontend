@@ -5,6 +5,12 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  cursor: url('./assets/cat_foot.png'), auto; /* 기본 커서 */
+}
+
+/* 버튼 위에도 동일한 커서 적용 */
+button {
+  cursor: url('./assets/cat_foot.png'), auto;
 }
 
 code {
