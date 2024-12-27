@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom"
-import { boardList } from '../../api/board/board';
+import { boardList } from '../../api/board';
 import '../../css/board/boardList.css';
 
 export default function BoardList() {

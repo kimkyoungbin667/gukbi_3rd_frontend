@@ -1,21 +1,31 @@
-// src/components/Navbar.js
 import React, { useState } from 'react';
 import '../../css/general/NavBar.css';
-import { FaFacebookSquare, FaInstagram, FaBars, FaTimes } from 'react-icons/fa';
-import { Link } from 'react-scroll';
+import { FaBars, FaTimes } from 'react-icons/fa';
+import { Link as RouterLink } from 'react-router-dom'; 
 import home_logo from '../../../assets/home_logo.png';
+import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
+    const navigate = useNavigate();
 
     // 토글 버튼 클릭 시 메뉴 열기/닫기
     const handleToggle = () => {
         setIsOpen(!isOpen);
     };
 
-    // 메뉴 항목 클릭 시 메뉴 닫기
+    // 해당 페이지로 이동
+    const moveTo = (path) => {
+        closeMenu();
+        console.log(path);
+        navigate(path);
+    }
+    
+    // 메뉴 닫기
     const closeMenu = () => {
+        console.log('메뉴 닫기');
         setIsOpen(false);
+        console.log(isOpen);
     };
 
     return (
@@ -26,35 +36,33 @@ const Navbar = () => {
 
             <ul className={`navbar__menu ${isOpen ? 'active' : ''}`}>
                 <li className="navbar__item">
-                    <Link to="home" smooth={true} duration={500} onClick={closeMenu}>홈</Link>
+                    <RouterLink to="/" onClick={() => moveTo("/")}>홈</RouterLink>
                 </li>
                 <li className="navbar__item dropdown">
-                    <Link to="hot-deals" smooth={true} duration={500} onClick={closeMenu}>커뮤니케이션</Link>
+                    <RouterLink to="hot-deals" onClick={closeMenu}>커뮤니케이션</RouterLink>
                     <ul className="dropdown__menu">
-                        <li><Link to="deal1" smooth={true} duration={500} onClick={closeMenu}>게시판</Link></li>
-                        <li><Link to="deal2" smooth={true} duration={500} onClick={closeMenu}>채팅</Link></li>
+                        <li><RouterLink to="/boardList" onClick={closeMenu}>게시판</RouterLink></li>
+                        <li><RouterLink to="/chatList" onClick={closeMenu}>채팅</RouterLink></li>
                     </ul>
                 </li>
                 <li className="navbar__item dropdown">
-                    <Link to="forum" smooth={true} duration={500} onClick={closeMenu}>성열안</Link>
+                    <RouterLink to="forum" onClick={closeMenu}>성열안</RouterLink>
                     <ul className="dropdown__menu">
-                        <li><Link to="topic1" smooth={true} duration={500} onClick={closeMenu}>보기 1</Link></li>
-                        <li><Link to="topic2" smooth={true} duration={500} onClick={closeMenu}>보기 2</Link></li>
-                        <li><Link to="topic3" smooth={true} duration={500} onClick={closeMenu}>보기 3</Link></li>
+                    <li><RouterLink  to="/boardList" onClick={() => moveTo('/boardList')}>게시판</RouterLink></li>
+                    <li><RouterLink  to="/chatList" onClick={() => moveTo('/chatList')}>채팅</RouterLink></li>
                     </ul>
                 </li>
                 <li className="navbar__item dropdown">
-                    <Link to="faq" smooth={true} duration={500} onClick={closeMenu}>엄태규</Link>
+                    <RouterLink to="faq" onClick={closeMenu}>엄태규</RouterLink>
                     <ul className="dropdown__menu">
-                        <li><Link to="topic1" smooth={true} duration={500} onClick={closeMenu}>보기 1</Link></li>
-                        <li><Link to="topic2" smooth={true} duration={500} onClick={closeMenu}>보기 2</Link></li>
-                        <li><Link to="topic3" smooth={true} duration={500} onClick={closeMenu}>보기 3</Link></li>
+                    <li><RouterLink  to="/boardList" onClick={() => moveTo('/boardList')}>게시판</RouterLink></li>
+                    <li><RouterLink  to="/chatList" onClick={() => moveTo('/chatList')}>채팅</RouterLink></li>
                     </ul>
                 </li>
             </ul>
 
             <ul  className="navbar__item">
-            <Link to="jobs" smooth={true} duration={500} onClick={closeMenu}>로그인</Link>
+            <RouterLink to="jobs" smooth={true} duration={500} onClick={closeMenu}>로그인</RouterLink>
             </ul>
 
 
