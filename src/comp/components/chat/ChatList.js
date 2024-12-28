@@ -154,7 +154,6 @@ export default function Chat() {
                         <div className="chat-room-header">
                             <div className="chat-room-info">
                                 <span className="chat-room-title">{personName}</span>
-                                <span className="chat-room-status">정보사항</span>
                             </div>
                         </div>
                         <div className="chat-room-messages">
@@ -171,7 +170,7 @@ export default function Chat() {
                                                 <strong>{item.sender}</strong>
                                             </p>
                                             <p>{item.message}</p>
-                                            <p>{item.sentAt}</p>
+                                            <p className="message-time">{item.sentAt.slice(-8)}</p>
                                         </div>
                                     </div>
                                 );

@@ -1,7 +1,7 @@
-
 body {
     margin: 0;
-    font-family: 'Jua', sans-serif;
+    font-family: "studyGood";
+    font-size: 25px;
 }
 
 a {
@@ -9,16 +9,18 @@ a {
     color: black;
 }
 
+/* 네비게이션 바 스타일 */
 .navbar {
     display: flex;
     justify-content: space-between;
     align-items: center;
     background-color: beige;
-    padding: 20px 70px; /* 왼: 세로 사이즈, 오: margin-left */
+    padding: 20px 70px;
     position: relative;
     z-index: 1000;
 }
 
+/* 로고 스타일 */
 .navbar__logo {
     font-size: 35px;
     color: violet;
@@ -26,74 +28,71 @@ a {
     align-items: center;
 }
 
-/* 웹사이트 로고 */
 .navbar__icon {
-    width: 220px; /* 이미지 너비 조정 */
-    height: 140px; /* 이미지 높이 조정 */
-    margin-right: 8px; /* 오른쪽 여백 */
-    object-fit: cover; /* 이미지 비율 유지 */
+    width: 220px;
+    height: 140px;
+    margin-right: 8px;
+    object-fit: cover;
 }
 
+/* 메뉴 스타일 */
 .navbar__menu {
     display: flex;
     list-style: none;
     padding-left: 0;
     margin: 0;
+    gap: 50px;
 }
 
 .navbar__item {
-    position: relative; /* 드롭다운 메뉴 위치를 상대적으로 설정 */
+    position: relative;
     padding: 8px 12px;
+    cursor: pointer;
+    color: #37474f;
+    font-weight: bold;
+    user-select: none; /* 텍스트 선택 방지 */
+    font-size: 50px;
 }
 
 .navbar__item:hover {
-    background-color: grey;
-    border-radius: 4px;
+    background-color:#cfd8dc;
 }
 
-/* 메뉴 항목들 */
-.navbar__item a {
-    color: black;
-    font-weight: bold;
-    display: block;
-    padding: 8px;
-    font-size: 25px; 
-}
-
-/* 드롭다운 메뉴 */
+/* 드롭다운 메뉴 숨기기 */
 .dropdown__menu {
-    display: none; /* 기본적으로 숨김 */
+    display: none;
     position: absolute;
-    top: 100%; /* 부모 메뉴 아래에 위치 */
+    top: 100%;
     left: 0;
     background-color: white;
     list-style: none;
-    padding: 0;
+    padding: 10px 0;
     margin: 0;
-    box-shadow: 0 8px 16px rgba(0,0,0,0.2);
-    min-width: 160px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    min-width: 100%;
     z-index: 1000;
+    border-radius: 4px;
 }
 
+
+/* 부모 요소에 호버 시 드롭다운 메뉴 표시 */
+.navbar__item:hover .dropdown__menu {
+    display: block;
+}
+
+/* 드롭다운 메뉴 항목 스타일 */
 .dropdown__menu li {
-    padding: 8px 12px;
+    padding: 20px 30px;
+    font-size: 35px;
+    text-align: center;
 }
 
 .dropdown__menu li:hover {
     background-color: #f1f1f1;
+    transition: background-color 0.3s ease;
 }
 
-.dropdown__menu li a {
-    color: black;
-    font-weight: normal;
-    font-size: 20px; /* 폰트 사이즈 조정: 18px → 20px */
-}
-
-/* 드롭다운 메뉴 표시 */
-.navbar__item:hover .dropdown__menu {
-    display: block; /* 마우스 호버 시 드롭다운 메뉴 표시 */
-}
-
+/* 로그인 링크 스타일 */
 .navbar__links {
     list-style: none;
     padding-left: 0;
@@ -109,66 +108,5 @@ a {
 .navbar__links li a {
     color: teal;
     font-size: 20px;
-}
-
-.navbar__toggleBtn {
-    display: none;
-    position: absolute;
-    right: 32px;
-    font-size: 24px;
     cursor: pointer;
-    color: black;
-}
-
-/* 활성 메뉴 항목 스타일 */
-.navbar__menu li a.active {
-    color: teal;
-    border-bottom: 2px solid teal;
-}
-
-/* 반응형 디자인 */
-@media screen and (max-width: 600px) {
-    .navbar {
-        flex-direction: column;
-        align-items: flex-start;
-        padding: 8px 24px;
-    }
-    .navbar__menu {
-        display: none;
-        flex-direction: column;
-        align-items: center;
-        width: 100%;
-        opacity: 0;
-        visibility: hidden;
-        transition: all 0.3s ease-in-out;
-    }
-    .navbar__menu.active {
-        display: flex;
-        opacity: 1;
-        visibility: visible;
-    }
-    .navbar__item {
-        width: 100%;
-        text-align: center;
-    }
-    .dropdown__menu {
-        position: static; /* 모바일에서 드롭다운 메뉴를 정적으로 표시 */
-        box-shadow: none;
-    }
-    .navbar__links {
-        display: none;
-        justify-content: center;
-        width: 100%;
-        opacity: 0;
-        visibility: hidden;
-        transition: all 0.3s ease-in-out;
-    }
-    .navbar__links.active {
-        display: flex;
-        opacity: 1;
-        visibility: visible;
-    }
-    .navbar__toggleBtn {
-        display: block;
-    }
 }

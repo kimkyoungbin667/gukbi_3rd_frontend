@@ -1,17 +1,108 @@
+/* 게시판 전체 영역 스타일 */
 .table-container {
-    margin: 20px;
-    border: 1px solid black;
-  }
-  
-  .styled-table {
-    width: 100%;
-    border-collapse: collapse;
-  }
-  
-  .styled-table th,
-  .styled-table td {
-    border: 1px solid black;
-    padding: 8px;
-    text-align: left;
-  }
-  
+  margin: 100px auto;
+  padding: 30px;
+  border: 1px solid #f0e68c;
+  border-radius: 10px;
+  background-color: #fffaf0;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  max-width: 80%;
+}
+
+/* 테이블 스타일 */
+.styled-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: "Arial", sans-serif;
+  background-color: #ffffff;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+/* 테이블 헤더 스타일 */
+.styled-table th {
+  background-color: #f8d7da;
+  color: #333;
+  padding: 16px 12px;
+  font-size: 30px;
+  font-weight: bold;
+  text-align: center;
+  font-family: "studyGood";
+  border: 1px solid #f0e68c;
+}
+
+/* 테이블 본문 스타일 */
+.styled-table td {
+  padding: 24px 14px;
+  text-align: center;
+  font-size: 25px;
+  font-family: "studyGood";
+  border: 1px solid #f0e68c;
+}
+
+/* 행 색상 교차 */
+.styled-table tr:nth-child(even) {
+  background-color: #fffaf0;
+}
+
+.styled-table tr:hover {
+  background-color: #fce5cd;
+  transition: background-color 0.3s ease;
+}
+
+/* 글쓰기 버튼 스타일 */
+input[type="button"] {
+  margin: 20px auto;
+  display: block;
+  background-color: #ff6f61;
+  color: white;
+  border: none;
+  border-radius: 30px;
+  padding: 15px 35px;
+  font-family: "studyGood";
+  font-size: 30px;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+input[type="button"]:hover {
+  background-color: #ff9f80;
+  transform: scale(1.05);
+}
+
+/* 페이지네이션 컨테이너 */
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  gap: 10px;
+}
+
+
+/* 페이지네이션 버튼 */
+.pagination button {
+  background-color: #ff6f61;
+  color: white;
+  border: none;
+  border-radius: 30px;
+  padding: 10px 20px;
+  font-family: "studyGood";
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.pagination button:hover {
+  background-color: #ff9f80;
+  transform: scale(1.1);
+}
+
+.pagination button.active {
+  background-color: #ff4f50;
+  font-weight: bold;
+  transform: scale(1.15);
+}
