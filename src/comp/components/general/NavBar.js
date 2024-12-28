@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import '../../css/general/NavBar.css';
 import { FaBars, FaTimes } from 'react-icons/fa';
 import { Link as RouterLink } from 'react-router-dom'; 
-import home_logo from '../../../assets/home_logo.png';
+import home_logo from '../../../assets/img/home_logo.png';
 import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
@@ -39,7 +39,7 @@ const Navbar = () => {
                     <RouterLink to="/" onClick={() => moveTo("/")}>홈</RouterLink>
                 </li>
                 <li className="navbar__item dropdown">
-                    <RouterLink to="hot-deals" onClick={closeMenu}>커뮤니케이션</RouterLink>
+                    <RouterLink to="hot-deals" onClick={closeMenu}>커뮤니티</RouterLink>
                     <ul className="dropdown__menu">
                         <li><RouterLink to="/boardList" onClick={closeMenu}>게시판</RouterLink></li>
                         <li><RouterLink to="/chatList" onClick={closeMenu}>채팅</RouterLink></li>
@@ -48,15 +48,15 @@ const Navbar = () => {
                 <li className="navbar__item dropdown">
                     <RouterLink to="forum" onClick={closeMenu}>성열안</RouterLink>
                     <ul className="dropdown__menu">
-                    <li><RouterLink  to="/boardList" onClick={() => moveTo('/boardList')}>게시판</RouterLink></li>
-                    <li><RouterLink  to="/chatList" onClick={() => moveTo('/chatList')}>채팅</RouterLink></li>
+                    <li><RouterLink  to="/" onClick={() => moveTo('/')}>A</RouterLink></li>
+                    <li><RouterLink  to="/" onClick={() => moveTo('/')}>B</RouterLink></li>
                     </ul>
                 </li>
                 <li className="navbar__item dropdown">
                     <RouterLink to="faq" onClick={closeMenu}>엄태규</RouterLink>
                     <ul className="dropdown__menu">
-                    <li><RouterLink  to="/boardList" onClick={() => moveTo('/boardList')}>게시판</RouterLink></li>
-                    <li><RouterLink  to="/chatList" onClick={() => moveTo('/chatList')}>채팅</RouterLink></li>
+                    <li><RouterLink  to="/" onClick={() => moveTo('/')}>A</RouterLink></li>
+                    <li><RouterLink  to="/" onClick={() => moveTo('/')}>B</RouterLink></li>
                     </ul>
                 </li>
             </ul>

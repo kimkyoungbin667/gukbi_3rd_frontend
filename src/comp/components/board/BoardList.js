@@ -13,6 +13,7 @@ export default function BoardList() {
 
         boardList()
             .then(res => {
+                console.log(res);
                 if(res.data.code == '200') {
                     console.log(res.data.data);
                     setBoards(res.data.data);
@@ -29,16 +30,16 @@ export default function BoardList() {
 
     return (
         <div>
-            <h1>게시글 목록 페이지</h1>
-
             <div className="table-container">
                 <table className="styled-table">
                     <thead>
                         <tr>
+                            <th>번호</th>
                             <th>제목</th>
-                            <th>추천수</th>
                             <th>작성자</th>
-                            <th>생성일</th>
+                            <th>추천수</th>
+                            <th>조회수</th>
+                            <th>작성일</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -46,10 +47,12 @@ export default function BoardList() {
                             (item, index) => {
                                 return (
                                     <tr key={index}>
+                                        <td>{index+1}</td>
                                         <td>{item.title}</td>
-                                        <td>❤️ {item.good}</td>
-                                        <td>{item.userName}</td>
-                                        <td>{item.created}</td>
+                                        <td>{item.createdByUserNickname}</td>
+                                        <td>{item.likeCount}</td>
+                                        <td>{item.viewCount}</td>
+                                        <td>{item.createdAt}</td>
                                     </tr>
                                 )
 

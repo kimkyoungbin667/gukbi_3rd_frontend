@@ -1,7 +1,8 @@
 
 body {
     margin: 0;
-    font-family: 'Jua', sans-serif;
+    font-family: 'studyGood';
+    font-size: 25px;
 }
 
 a {
@@ -34,11 +35,13 @@ a {
     object-fit: cover; /* 이미지 비율 유지 */
 }
 
+/* 메뉴 항목들 */
 .navbar__menu {
     display: flex;
     list-style: none;
     padding-left: 0;
     margin: 0;
+    gap: 50px; /* 메뉴 항목 간격 추가 */
 }
 
 .navbar__item {
@@ -53,11 +56,11 @@ a {
 
 /* 메뉴 항목들 */
 .navbar__item a {
-    color: black;
+    color: #37474F;
     font-weight: bold;
     display: block;
-    padding: 8px;
-    font-size: 25px; 
+    padding: 20px;
+    font-size: 40px; 
 }
 
 /* 드롭다운 메뉴 */
@@ -71,12 +74,13 @@ a {
     padding: 0;
     margin: 0;
     box-shadow: 0 8px 16px rgba(0,0,0,0.2);
-    min-width: 160px;
+    min-width: 100%; /* 상위 메뉴 항목의 가로 크기와 동일하도록 변경 */
     z-index: 1000;
 }
 
+
 .dropdown__menu li {
-    padding: 8px 12px;
+    padding: 15px 20px;
 }
 
 .dropdown__menu li:hover {
@@ -86,7 +90,7 @@ a {
 .dropdown__menu li a {
     color: black;
     font-weight: normal;
-    font-size: 20px; /* 폰트 사이즈 조정: 18px → 20px */
+    font-size: 35px;
 }
 
 /* 드롭다운 메뉴 표시 */
@@ -160,7 +164,13 @@ a {
         justify-content: center;
         width: 100%;
         opacity: 0;
-        visibility: hidden;
+        visibility: hidden;.navbar__menu {
+            display: flex;
+            list-style: none;
+            padding-left: 0;
+            margin: 0;
+            gap: 40px; /* 메뉴 항목 간격 추가 */
+        }
         transition: all 0.3s ease-in-out;
     }
     .navbar__links.active {
