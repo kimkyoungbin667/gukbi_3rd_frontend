@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import { boardList } from "../../api/board";
 import "../../css/board/boardList.css";
 import '../../css/cursor/cursor.css';
-import { GiNewBorn } from "react-icons/gi";
 
 export default function BoardList() {
     const [boards, setBoards] = useState([]); // 게시글 리스트
@@ -20,11 +19,12 @@ export default function BoardList() {
 
         boardList(obj)
             .then(res => {
-                console.log(res);
+                console.log(res.data);
                 if (res.data.code === "200") {
-                    console.log(res.data.data);
                     setBoards(res.data.data);
                     setTotalPages(res.data.totalPages); // 총 페이지 수 설정
+                    console.log(boards);
+                    console.log(totalPages);
                 }
             })
             .catch(err => {
@@ -37,6 +37,10 @@ export default function BoardList() {
         setCurrentPage(page);
         getBoardListAction(page);
     };
+
+    function moveToDetail(boardIdx) {
+        navigate('/boardDetail', { state: { boardIdx: boardIdx } });
+    }
 
     // 컴포넌트 로드 시 데이터 로드
     useEffect(() => {
@@ -57,10 +61,11 @@ export default function BoardList() {
                             <th>작성일</th>
                         </tr>
                     </thead>
+
                     <tbody>
                         {boards.map((item, index) => (
-                            <tr key={index}>
-                                <td>{index + 1 + (currentPage - 1) * 5}</td> {/* 현재 페이지 반영 */}
+                            <tr key={index} onClick={() => moveToDetail(item.boardIdx)}>
+                                <td>{index + 1 + (currentPage - 1) * 10}</td>
                                 <td>{item.title}</td>
                                 <td>{item.createdByUserNickname}</td>
                                 <td>{item.likeCount}</td>
