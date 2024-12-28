@@ -1,0 +1,13 @@
+button,
+input[type="button"] {
+  cursor: pointer;
+}
+
+button:hover,
+input[type="button"]:hover {
+  cursor: pointer;
+}
+button[disabled] {
+    cursor: pointer !important;
+  }
+  
