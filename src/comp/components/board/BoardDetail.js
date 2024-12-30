@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router";
-import { boardDetail } from "../../api/board";
+import { boardDetail, increaseView } from "../../api/board";
 import '../../css/board/boardDetail.css';
 
 function BoardDetail() {
@@ -8,7 +8,9 @@ function BoardDetail() {
   const { state } = location;
 
   const [boardIdx, setBoardIdx] = useState(null);
+  const [viewCount, setViewCount] = useState('');
 
+  // 게시글 정보
   const [boardContents, setBoardContents] = useState({
     boardIdx: '',
     content: '',
@@ -23,24 +25,45 @@ function BoardDetail() {
 
   useEffect(() => {
 
+    // 유저인덱스 임시 설정
     localStorage.setItem("userIdx", 2);
+
     if (state?.boardIdx) {
       setBoardIdx(state.boardIdx);
     }
+
   }, [state]);
 
   useEffect(() => {
+
+    // 게시글 상세 갖고오기
     if (boardIdx !== null) {
       boardDetail({ boardIdx })
-        .then((res) => {
-          console.log(res);
-          if (res.data) {
+        .then(res => {
+          if (res.data.code == '200') {
             setBoardContents(res.data.data);
           }
         })
-        .catch((err) => {
+        .catch(err => {
           console.error(err);
         });
+    }
+
+    if (boardIdx !== null) {
+
+      // 조회수 올리기 
+      increaseView({ boardIdx })
+        .then(res => {
+          console.log(res);
+          if (res.data.code === "201") {
+          } else {
+            setBoardContents(prev => ({
+              ...prev,
+              viewCount: prev.viewCount + 1,
+            }));
+          }
+
+        })
     }
   }, [boardIdx]);
 
@@ -51,7 +74,7 @@ function BoardDetail() {
 
   // 삭제 버튼 클릭 이벤트
   const handleDelete = () => {
-    
+
   };
 
   return (

@@ -22,3 +22,13 @@ export const boardDetail = (param) => {
         params: param
     });
 };
+
+/**
+ * 게시글 조회수 올리기
+ * @param {Object} obj
+ * @param {number} obj.boardIdx - 게시글 idx
+ * @return {Promise}
+ */
+export const increaseView = (obj) => {
+    return api.post('/board/increaseView', JSON.stringify(obj))
+}
