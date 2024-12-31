@@ -1,0 +1,144 @@
+.board-edit-container {
+  width: 90%;
+  max-width: 1200px;
+  margin: 80px auto;
+  padding: 20px 40px;
+  background-color: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  font-family: "studyGood";
+}
+
+.board-edit-title {
+  font-size: 35px;
+  font-weight: bold;
+  color: #2C3E50;
+  border-bottom: 2px solid #f1f1f1;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+}
+
+.board-edit-content {
+  font-size: 22px;
+  line-height: 1.6;
+  color: #555;
+  margin-bottom: 40px;
+  word-break: break-word;
+}
+
+.board-edit-info {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px 20px;
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px solid #ddd;
+}
+
+.board-edit-info div {
+  font-size: 20px;
+  color: #888;
+  display: flex;
+  justify-content: space-between;
+}
+
+.board-edit-info span {
+  font-weight: bold;
+  color: #37474f;
+}
+
+.board-edit-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.board-edit-button {
+  padding: 10px 20px;
+  font-size: 18px;
+  font-weight: bold;
+  color: #fff;
+  background-color: #007bff;
+  /* 기본 버튼 배경색 */
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+/* 내용 입력 필드 */
+.board-edit-content textarea {
+  width: 100%;
+  height: 200px;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 25px;
+  color: #333;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  font-family: "studyGood";
+}
+
+.board-edit-content textarea:focus {
+  outline: none;
+  border-color: #007bff; /* 포커스 시 테두리 색상 */
+  box-shadow: 0px 4px 8px rgba(0, 123, 255, 0.2); /* 포커스 시 그림자 강조 */
+}
+
+/* 수정 버튼 */
+.board-edit-actions .edit-button {
+  background-color: #5CA0E6;
+}
+
+.board-edit-actions .edit-button:hover {
+  background-color: #47CEE6;
+  transform: scale(1.05);
+}
+
+/* 취소 버튼 */
+.board-edit-actions .cancle-button {
+  background-color:  #E67770;
+}
+
+/* 수정 버튼 */
+.board-edit-actions .cancle-button:hover {
+  background-color: #E66064;
+  transform: scale(1.05);
+}
+
+.board-edit-actions button {
+  color: white;
+  border: none;
+  border-radius: 30px;
+  padding: 15px 35px;
+  font-family: "studyGood";
+  font-size: 25px;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.board-edit-actions {
+  display: flex;
+  justify-content: center; /* 중앙 정렬 */
+  gap: 20px; /* 버튼 간격 */
+  margin-top: 20px; /* 간격 추가 */
+  padding: 10px 0;
+}
+
+/* 수정/삭제 버튼 스타일 */
+.goToboardList-btn {
+  margin-top: 50px;
+  background-color: #FF8F3E;
+  color: ghostwhite;
+  border: none;
+  border-radius: 20px;
+  padding: 15px 35px;
+  font-family: "studyGood";
+  font-size: 25px;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}

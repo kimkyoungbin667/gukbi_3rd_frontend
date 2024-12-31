@@ -37,7 +37,7 @@ const Navbar = () => {
                 <li className="navbar__item dropdown">
                     <div className="navbar__link">엄태규</div>
                     <ul className="dropdown__menu">
-                        <li onClick={() => moveTo('/')}>A</li>
+                        <li onClick={() => moveTo('/map')}>Map</li>
                         <li onClick={() => moveTo('/')}>B</li>
                     </ul>
                 </li>

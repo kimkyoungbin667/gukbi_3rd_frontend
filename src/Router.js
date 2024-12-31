@@ -9,6 +9,7 @@ import BoardDetail from './comp/components/board/BoardDetail';
 
 // Chat
 import ChatList from './comp/components/chat/ChatList';
+import KakaoMap from './comp/components/map/KakaoMap';
 
 // User
 import RegisterEmail from './comp/components/user/register_email'
@@ -36,6 +37,9 @@ function Router() {
       <Route path="/registerkakao" element={<RegisterKakao />} />
       <Route path="/registerbutton" element={<Buttoncontroller />} />
       <Route path="/login" element={<Login />} />
+      {/* map */}
+      <Route path="/map" element={<KakaoMap />}></Route>
+
 
     </Routes>
   );

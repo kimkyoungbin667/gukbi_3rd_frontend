@@ -54,26 +54,45 @@
   margin-top: 20px;
 }
 
-.board-detail-button {
-  padding: 10px 20px;
-  font-size: 18px;
-  font-weight: bold;
-  color: #fff;
-  background-color: #007bff; /* 기본 버튼 배경색 */
+/* 수정/삭제 버튼 영역 */
+.board-detail-actions {
+  display: flex;
+  justify-content: center; /* 중앙 정렬 */
+  gap: 20px; /* 버튼 간격 */
+  margin-top: 20px; /* 간격 추가 */
+  padding: 10px 0;
+}
+
+/* 수정/삭제 버튼 스타일 */
+.board-detail-actions button {
+  color: white;
   border: none;
-  border-radius: 8px;
+  border-radius: 30px;
+  padding: 15px 35px;
+  font-family: "studyGood";
+  font-size: 25px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
 }
 
-.board-detail-button:hover {
-  background-color: #0056b3; /* 호버 시 색상 변경 */
+/* 수정 버튼 */
+.board-detail-actions .edit-button {
+  background-color: #5CA0E6;
 }
 
-.board-detail-button.delete {
-  background-color: #f44; /* 삭제 버튼 색상 */
+.board-detail-actions .edit-button:hover {
+  background-color: #47CEE6;
+  transform: scale(1.05);
 }
 
-.board-detail-button.delete:hover {
-  background-color: #c22; /* 삭제 버튼 호버 색상 */
+/* 삭제 버튼 */
+.board-detail-actions .delete-button {
+  background-color: #6EE684;
 }
+
+.board-detail-actions .delete-button:hover {
+  background-color: #02E503;
+  transform: scale(1.05);
+}
+
