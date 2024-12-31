@@ -9,6 +9,7 @@ import BoardDetail from './comp/components/board/BoardDetail';
 
 // Chat
 import ChatList from './comp/components/chat/ChatList';
+import KakaoMap from './comp/components/map/KakaoMap';
 
 function Router() {
   return (
@@ -23,6 +24,10 @@ function Router() {
 
       {/* chat */}
       <Route path="/chatList" element={<ChatList />} />
+
+      {/* map */}
+      <Route path="/map" element={<KakaoMap />}></Route>
+
 
     </Routes>
   );
