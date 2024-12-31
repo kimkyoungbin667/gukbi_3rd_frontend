@@ -15,7 +15,7 @@ const Navbar = () => {
     return (
         <nav className="navbar">
             <div className="navbar__logo">
-                <img src={home_logo} alt="Pet Logo" className="navbar__icon" onClick={() => moveTo('/')}/>
+                <img src={home_logo} alt="Pet Logo" className="navbar__icon" onClick={() => moveTo('/')} />
             </div>
 
             {/* 네비게이션 메뉴 */}
@@ -37,7 +37,7 @@ const Navbar = () => {
                 <li className="navbar__item dropdown">
                     <div className="navbar__link">엄태규</div>
                     <ul className="dropdown__menu">
-                        <li onClick={() => moveTo('/')}>A</li>
+                        <li onClick={() => moveTo('/map')}>Map</li>
                         <li onClick={() => moveTo('/')}>B</li>
                     </ul>
                 </li>
