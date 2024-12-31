@@ -8,7 +8,5 @@ export default function KakaoMap() {
             level={3}
         />
 
-
-
     )
 }
