@@ -5,7 +5,7 @@ import api from '../ax/axiosSetting'
  * @param {} param
  * @returns {Promise}
  */
-export const boardList = (param) => {
+export const getBoardList = (param) => {
     return api.get('/board/getBoardList', {
         params: param
     });
@@ -17,7 +17,7 @@ export const boardList = (param) => {
  * @param {number} obj.boardIdx - 게시글 idx
  * @return {Promise<Object>}
  */
-export const boardDetail = (param) => {
+export const getBoardDetail = (param) => {
     return api.get('/board/getBoardDetail', {
         params: param
     });
@@ -31,4 +31,15 @@ export const boardDetail = (param) => {
  */
 export const increaseView = (obj) => {
     return api.post('/board/increaseView', JSON.stringify(obj))
+}
+
+/**
+ * 게시글 수정하기
+ * @param {Object} obj
+ * @param {number} obj.boardIdx 
+ * @param {string} obj.content 
+ * @return {Promise}
+ */
+export const saveEditBoard = (obj) => {
+    return api.post('/board/saveEditBoard', JSON.stringify(obj))
 }

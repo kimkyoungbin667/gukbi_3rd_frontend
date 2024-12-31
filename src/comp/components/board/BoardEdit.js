@@ -1,10 +1,111 @@
-import React from 'react';
+import React, { useEffect, useState } from "react";
+import { useLocation } from "react-router";
+import { useNavigate } from "react-router-dom";
+import { getBoardDetail, saveEditBoard } from "../../api/board";
+import '../../css/board/boardEdit.css';
 
 function BoardEdit() {
+  const location = useLocation();
+  const { state } = location;
+
+  const [boardIdx, setBoardIdx] = useState(null);
+  const navigate = useNavigate();
+  const userIdx = localStorage.getItem("userIdx");
+
+  // 게시글 정보
+  const [boardContents, setBoardContents] = useState({
+    boardIdx: '',
+    content: '',
+    createdByUserIdx: '',
+    createdByUserNickname: '',
+    likeCount: 0,
+    title: '',
+    viewCount: 0,
+  });
+
+
+  useEffect(() => {
+
+    // 유저인덱스 임시 설정
+    localStorage.setItem("userIdx", 2);
+
+    if (state?.boardIdx) {
+      setBoardIdx(state.boardIdx);
+    }
+
+  }, [state]);
+
+  useEffect(() => {
+
+    // 게시글 상세 갖고오기
+    if (boardIdx !== null) {
+      getBoardDetail({ boardIdx })
+        .then(res => {
+          if (res.data.code == '200') {
+            setBoardContents(res.data.data);
+          }
+        })
+        .catch(err => {
+          console.error(err);
+        });
+    }
+
+  }, [boardIdx]);
+
+  // 수정 버튼 클릭 이벤트
+  const finishEdit = () => {
+
+    let obj = new Object();
+    obj.boardIdx = boardIdx;
+    obj.userIdx = userIdx;
+    obj.content = boardContents.content;
+
+    saveEditBoard(obj)
+    .then(res => {
+      if(res.data.code === '200') {
+        navigate("/boardList")
+      }
+    })
+    
+  };
+
   return (
-    <div>
-      <h1>게시판 수정 페이지</h1>
+    <div className="board-edit-container">
+      <h1 className="board-edit-title">{boardContents.title}</h1>
+      <div className="board-edit-content">
+        <textarea
+          value={boardContents.content}
+          onChange={(e) =>
+            setBoardContents({
+              ...boardContents,
+              content: e.target.value,
+            })
+          }
+        />
+      </div>
+      <div className="board-edit-info">
+        <div>
+          <span>작성자:</span> <span>{boardContents.createdByUserNickname}</span>
+        </div>
+        <div>
+          <span>작성일:</span>
+          <span>{new Date(boardContents.createdAt).toLocaleString()}</span>
+        </div>
+        <div>
+          <span>조회수:</span> <span>{boardContents.viewCount}</span>
+        </div>
+        <div>
+          <span>추천수:</span> <span>{boardContents.likeCount}</span>
+        </div>
+      </div>
+
+      <div className="board-finishedit-actions">
+        <button className="edit-button" onClick={finishEdit}>
+          수정완료
+        </button>
+      </div>
     </div>
+
   );
 }
 
