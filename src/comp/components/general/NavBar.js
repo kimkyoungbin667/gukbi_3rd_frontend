@@ -15,7 +15,7 @@ const Navbar = () => {
     return (
         <nav className="navbar">
             <div className="navbar__logo">
-                <img src={home_logo} alt="Pet Logo" className="navbar__icon" onClick={() => moveTo('/')}/>
+                <img src={home_logo} alt="Pet Logo" className="navbar__icon" onClick={() => moveTo('/')} />
             </div>
 
             {/* 네비게이션 메뉴 */}
@@ -52,7 +52,7 @@ const Navbar = () => {
 
             {/* 로그인 */}
             <ul className="navbar__item">
-                <li>로그인</li>
+                <li onClick={() => moveTo('/login')}>로그인</li>
             </ul>
         </nav>
     );

@@ -10,6 +10,13 @@ import BoardDetail from './comp/components/board/BoardDetail';
 // Chat
 import ChatList from './comp/components/chat/ChatList';
 
+// User
+import RegisterEmail from './comp/components/user/register_email'
+import RegisterKakao from './comp/components/user/register_kakao'
+import Buttoncontroller from './comp/components/user/buttoncontroller'
+import Login from './comp/components/user/login'
+
+
 function Router() {
   return (
     <Routes>
@@ -23,6 +30,12 @@ function Router() {
 
       {/* chat */}
       <Route path="/chatList" element={<ChatList />} />
+
+      {/* user */}
+      <Route path="/registeremail" element={<RegisterEmail />} />
+      <Route path="/registerkakao" element={<RegisterKakao />} />
+      <Route path="/registerbutton" element={<Buttoncontroller />} />
+      <Route path="/login" element={<Login />} />
 
     </Routes>
   );
