@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router";
 import { useNavigate } from "react-router-dom";
-import { getBoardDetail, increaseView } from "../../api/board";
+import { getBoardDetail, increaseView, boardDelete } from "../../api/board";
 import '../../css/board/boardDetail.css';
 
 function BoardDetail() {
@@ -73,6 +73,14 @@ function BoardDetail() {
 
   // 삭제 버튼 클릭 이벤트
   const handleDelete = () => {
+
+    boardDelete({ boardIdx })
+    .then(res=> {
+      console.log(res);
+    })
+    .catch(err => {
+      console.log(err);
+    })
 
   };
 
