@@ -43,3 +43,13 @@ export const increaseView = (obj) => {
 export const saveEditBoard = (obj) => {
     return api.post('/board/saveEditBoard', JSON.stringify(obj))
 }
+
+/**
+ * 게시글 삭제하기
+ * @param {Object} obj
+ * @param {number} obj.boardIdx
+ * @return {Promise}
+ */
+export const boardDelete = (obj) => {
+    return api.post('/board/boardDelete', JSON.stringify(obj))
+}
