@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router";
-import { boardDetail, increaseView } from "../../api/board";
+import { useNavigate } from "react-router-dom";
+import { getBoardDetail, increaseView } from "../../api/board";
 import '../../css/board/boardDetail.css';
 
 function BoardDetail() {
   const location = useLocation();
   const { state } = location;
-
+  const navigate = useNavigate();
   const [boardIdx, setBoardIdx] = useState(null);
-  const [viewCount, setViewCount] = useState('');
 
   // 게시글 정보
   const [boardContents, setBoardContents] = useState({
@@ -38,7 +38,7 @@ function BoardDetail() {
 
     // 게시글 상세 갖고오기
     if (boardIdx !== null) {
-      boardDetail({ boardIdx })
+      getBoardDetail({ boardIdx })
         .then(res => {
           if (res.data.code == '200') {
             setBoardContents(res.data.data);
@@ -62,14 +62,13 @@ function BoardDetail() {
               viewCount: prev.viewCount + 1,
             }));
           }
-
         })
     }
   }, [boardIdx]);
 
   // 수정 버튼 클릭 이벤트
   const handleEdit = () => {
-
+    navigate("/boardEdit", { state: { boardIdx: boardIdx }})
   };
 
   // 삭제 버튼 클릭 이벤트
