@@ -4,7 +4,7 @@ import { getBoardList } from "../../api/board";
 import "../../css/board/boardList.css";
 import '../../css/cursor/cursor.css';
 
-export default function BoardList() {
+function BoardList() {
     const [boards, setBoards] = useState([]); // 게시글 리스트
     const [currentPage, setCurrentPage] = useState(1); // 현재 페이지
     const [totalPages, setTotalPages] = useState(1); // 총 페이지 수
@@ -97,3 +97,5 @@ export default function BoardList() {
         </div>
     );
 }
+
+export default BoardList;
