@@ -41,7 +41,7 @@ export const increaseView = (obj) => {
  * @return {Promise}
  */
 export const saveEditBoard = (obj) => {
-    return api.post('/board/saveEditBoard', JSON.stringify(obj))
+    return api.post('/board/saveBoardEdit', JSON.stringify(obj))
 }
 
 /**

@@ -61,51 +61,58 @@ function BoardEdit() {
     obj.content = boardContents.content;
 
     saveEditBoard(obj)
-    .then(res => {
-      if(res.data.code === '200') {
-        navigate("/boardList")
-      }
-    })
-    
+      .then(res => {
+        if (res.data.code === '200') {
+          navigate("/boardList")
+        }
+      })
   };
 
+  const cancleEdit = () => {
+    navigate("/boardList");
+  }
+
   return (
-    <div className="board-edit-container">
-      <h1 className="board-edit-title">{boardContents.title}</h1>
-      <div className="board-edit-content">
-        <textarea
-          value={boardContents.content}
-          onChange={(e) =>
-            setBoardContents({
-              ...boardContents,
-              content: e.target.value,
-            })
-          }
-        />
-      </div>
-      <div className="board-edit-info">
-        <div>
-          <span>작성자:</span> <span>{boardContents.createdByUserNickname}</span>
+    <>
+      <div className="board-edit-container">
+        <h1 className="board-edit-title">{boardContents.title}</h1>
+        <div className="board-edit-content">
+          <textarea
+            value={boardContents.content}
+            onChange={(e) =>
+              setBoardContents({
+                ...boardContents,
+                content: e.target.value,
+              })
+            }
+          />
         </div>
-        <div>
-          <span>작성일:</span>
-          <span>{new Date(boardContents.createdAt).toLocaleString()}</span>
-        </div>
-        <div>
-          <span>조회수:</span> <span>{boardContents.viewCount}</span>
-        </div>
-        <div>
-          <span>추천수:</span> <span>{boardContents.likeCount}</span>
+        <div className="board-edit-info">
+          <div>
+            <span>작성자:</span> <span>{boardContents.createdByUserNickname}</span>
+          </div>
+          <div>
+            <span>작성일:</span>
+            <span>{new Date(boardContents.createdAt).toLocaleString()}</span>
+          </div>
+          <div>
+            <span>조회수:</span> <span>{boardContents.viewCount}</span>
+          </div>
+          <div>
+            <span>추천수:</span> <span>{boardContents.likeCount}</span>
+          </div>
         </div>
       </div>
 
-      <div className="board-finishedit-actions">
+      <div className="board-edit-actions">
         <button className="edit-button" onClick={finishEdit}>
-          수정완료
+          수정 완료
+        </button>
+        <button className="cancle-button" onClick={cancleEdit}>
+          취소
         </button>
       </div>
-    </div>
-
+    </>
   );
 }
 
