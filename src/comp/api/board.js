@@ -41,7 +41,7 @@ export const increaseView = (obj) => {
  * @return {Promise}
  */
 export const saveEditBoard = (obj) => {
-    return api.post('/board/saveEditBoard', JSON.stringify(obj))
+    return api.post('/board/saveBoardEdit', JSON.stringify(obj))
 }
 
 /**
@@ -52,4 +52,15 @@ export const saveEditBoard = (obj) => {
  */
 export const boardDelete = (obj) => {
     return api.post('/board/boardDelete', JSON.stringify(obj))
+}
+
+/**
+ * 게시글 작성하기
+ * @param {Object} obj
+ * @param {title} obj.title
+ * @param {content} obj.content
+ * @return {Promise}
+ */
+export const BoardWriteAction = (obj) => {
+    return api.post('/board/boardWrite', JSON.stringify(obj))
 }
