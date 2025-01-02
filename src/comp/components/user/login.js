@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import "../../css/user/login.css";
+import '../../css/cursor/cursor.css';
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -48,7 +50,11 @@ export default function Login() {
         <button type="submit" className="login-button">
           로그인
         </button>
-        <button type="submit" className="register-button" onClick={() => navigate("/registerbutton")}>
+        <button
+          type="button"
+          className="register-button"
+          onClick={() => navigate("/registerbutton")}
+        >
           회원가입
         </button>
       </form>
