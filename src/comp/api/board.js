@@ -77,3 +77,24 @@ export const getBoardComment = (param) => {
     });
 };
 
+/**
+ * 댓글 달기
+ * @param {Object} obj
+ * @param {number} obj.boardIdx - 게시글 인덱스
+ * @return {Promise}
+ */
+export const writeBoardComment = (obj) => {
+    return api.post('/board/writeBoardComment', JSON.stringify(obj))
+}
+
+
+
+/**
+ * 대댓글 달기
+ * @param {Object} obj
+ * @param {number} obj.boardIdx - 게시글 인덱스
+ * @return {Promise}
+ */
+export const writeBoardReply = (obj) => {
+    return api.post('/board/writeBoardReply', JSON.stringify(obj))
+}

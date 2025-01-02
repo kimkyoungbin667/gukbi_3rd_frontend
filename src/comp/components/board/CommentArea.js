@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { getBoardComment } from "../../api/board";
+import { getBoardComment, writeBoardComment, writeBoardReply } from "../../api/board";
 import '../../css/board/boardCommentArea.css';
 
 function CommentArea({ boardIdx }) {
@@ -7,36 +7,54 @@ function CommentArea({ boardIdx }) {
     // 서버쪽에서 받은 댓글,대댓글 목록
     const [comments, setComments] = useState([]);
     const [finalComments, setFinalComments] = useState([]);
+    const [nowUserIdx, setNowUserIdx] = useState('');
+
+    // 작성 중인 댓글
     const [nowComment, setNowComment] = useState('');
+
+    // 작성 중인 대댓글
+    const [nowReply, setNowReply] = useState('');
+
 
     // 댓글 불러오기
     useEffect(() => {
+
+        setNowUserIdx(localStorage.getItem("userIdx"));
+
+        // 댓글, 대댓글 불러오기 
+        getBoardCommentAction();
+
+    }, [boardIdx]);
+
+    // 댓글, 대댓글 불러오기 메서드
+    const getBoardCommentAction = () => {
 
         if (boardIdx) {
 
             let obj = new Object();
             obj.boardIdx = boardIdx;
 
-
             getBoardComment(obj)
                 .then(res => {
                     console.log(res);
                     if (res.data.code === '200') {
                         setComments(res.data.data);
+                        console.log(res.data.data);
                     }
                 })
                 .catch(err => {
                     console.log(err);
                 })
         }
+    }
 
-    }, [boardIdx]);
 
     useEffect(() => {
-
         processArr(comments);
+        console.log(comments);
     }, [comments])
 
+    // 서버에서 받아온 댓글, 대댓글 목록 처리
     const processArr = (comments) => {
         const commentMap = new Map();
         const addedComment = new Set();
@@ -63,6 +81,39 @@ function CommentArea({ boardIdx }) {
         setFinalComments(finalArray);
     };
 
+
+    // 댓글 쓰기
+    const wirteCommentAction = () => {
+
+        if(nowComment.length <= 0) {
+            alert("댓글을 입력해주세요!");
+            return;
+        }
+
+        let obj = new Object();
+        obj.authorIdx = nowUserIdx;
+        obj.boardIdx = boardIdx;
+        obj.comment = nowComment;
+
+        writeBoardComment(obj)
+            .then(res => {
+                if (res.data.data >= 1) {
+                    // 다시 댓글, 대댓글 갖고옴
+                    getBoardCommentAction();
+                    setNowComment("");
+                }
+
+            })
+            .catch(err => {
+                console.log(err);
+            })
+    }
+
+    const wirteReplyAction = () => {
+
+    }
+
+
     return (
         <div className="comments-container">
 
@@ -75,12 +126,12 @@ function CommentArea({ boardIdx }) {
                     onChange={(e) => setNowComment(e.target.value)}
                 />
 
-                <input type="button" className="comment-write-btn" value="작성"></input>
+                <input type="button" className="comment-write-btn" value="작성" onClick={wirteCommentAction}></input>
             </div>
 
             {/* 댓글 목록 */}
             {finalComments.length > 0 &&
-                finalComments.map((comment, commentIndex) => (
+                 [...finalComments].reverse().map((comment, commentIndex) => (
                     <div key={commentIndex} className="comment">
                         {/* 프로필과 작성자 이름 */}
                         <div className="user-info">
@@ -114,6 +165,8 @@ function CommentArea({ boardIdx }) {
                                     type="text"
                                     className="reply-write-area"
                                     placeholder="대댓글 작성"
+                                    value={nowReply}
+                                    onChange={e => setNowReply(e.target.value)}
                                 />
                                 <input type="button" className="write-reply-btn" value="작성"></input>
                             </div>

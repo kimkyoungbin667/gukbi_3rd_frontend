@@ -27,7 +27,7 @@ function BoardDetail() {
   useEffect(() => {
 
     // 유저인덱스 임시 설정
-    localStorage.setItem("userIdx", 2);
+    localStorage.setItem("userIdx", 3);
 
     if (state?.boardIdx) {
       setBoardIdx(state.boardIdx);
