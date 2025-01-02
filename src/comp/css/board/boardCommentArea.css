@@ -1,0 +1,79 @@
+.comments-container {
+  margin: 20px;
+  padding: 20px;
+  background-color: #f9f9f9; /* 배경색 */
+  border-radius: 10px; /* 둥근 테두리 */
+}
+
+.comment {
+  display: flex;
+  flex-direction: column;
+  padding: 15px;
+  margin-bottom: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #fff;
+  position: relative;
+}
+
+.comment-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.comment-user {
+  font-weight: bold;
+  font-size: 14px;
+  color: #333;
+}
+
+.comment-time {
+  font-size: 12px;
+  color: #999;
+}
+
+.comment-content {
+  font-size: 16px;
+  color: #444;
+  margin-bottom: 10px;
+}
+
+.comment-actions {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-top: 10px;
+}
+
+.comment-actions button {
+  background: none;
+  border: none;
+  font-size: 14px;
+  cursor: pointer;
+  color: #007bff;
+}
+
+.comment-actions button:hover {
+  text-decoration: underline;
+}
+
+.like-dislike {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.like-dislike span {
+  font-size: 14px;
+  color: #666;
+}
+
+.reply {
+  margin-left: 40px;
+  padding: 10px;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  background-color: #f5f5f5;
+  margin-top: 10px;
+}

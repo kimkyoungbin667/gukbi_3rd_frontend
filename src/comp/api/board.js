@@ -76,3 +76,4 @@ export const getBoardComment = (param) => {
         params: param
     });
 };
+

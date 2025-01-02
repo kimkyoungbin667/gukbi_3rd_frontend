@@ -123,6 +123,7 @@ function BoardDetail() {
           </button>
         </div>
       )}
+      <hr />
 
       {boardIdx && <CommentArea boardIdx={boardIdx} />}
 
