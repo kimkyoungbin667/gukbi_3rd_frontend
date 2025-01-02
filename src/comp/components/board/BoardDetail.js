@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router";
 import { useNavigate } from "react-router-dom";
+import CommentArea from "../board/CommentArea.js";
 import { getBoardDetail, increaseView, boardDelete } from "../../api/board";
 import '../../css/board/boardDetail.css';
 
@@ -26,7 +27,7 @@ function BoardDetail() {
   useEffect(() => {
 
     // 유저인덱스 임시 설정
-    localStorage.setItem("userIdx", 2);
+    localStorage.setItem("userIdx", 3);
 
     if (state?.boardIdx) {
       setBoardIdx(state.boardIdx);
@@ -54,7 +55,6 @@ function BoardDetail() {
       // 조회수 올리기 
       increaseView({ boardIdx })
         .then(res => {
-          console.log(res);
           if (res.data.code === "201") {
           } else {
             setBoardContents(prev => ({
@@ -112,7 +112,7 @@ function BoardDetail() {
           </div>
         </div>
       </div>
-  
+
       {loggedInUserIdx === String(boardContents.createdByUserIdx) && (
         <div className="board-detail-actions">
           <button className="edit-button" onClick={handleEdit}>
@@ -123,11 +123,14 @@ function BoardDetail() {
           </button>
         </div>
       )}
+      <hr />
 
-      <hr/>
+      {boardIdx && <CommentArea boardIdx={boardIdx} />}
+
+      <hr />
       <div>
-      <button className="goToboardList-btn" onClick={handleGoToList}>
-        목록으로
+        <button className="goToboardList-btn" onClick={handleGoToList}>
+          목록으로
         </button>
       </div>
     </>

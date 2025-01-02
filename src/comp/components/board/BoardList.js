@@ -19,12 +19,9 @@ function BoardList() {
 
         getBoardList(obj)
             .then(res => {
-                console.log(res.data);
                 if (res.data.code === "200") {
                     setBoards(res.data.data);
                     setTotalPages(res.data.totalPages); // 총 페이지 수 설정
-                    console.log(boards);
-                    console.log(totalPages);
                 }
             })
             .catch(err => {
