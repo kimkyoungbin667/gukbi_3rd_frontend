@@ -126,9 +126,8 @@ function KakaoMap() {
                     position={mapCenter}
                 />
             </Map>
-
-
-        </div >
-    );
+        </div>
+    )
 }
 export default KakaoMap;
+

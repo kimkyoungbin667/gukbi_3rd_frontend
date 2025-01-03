@@ -52,7 +52,7 @@ const Navbar = () => {
 
             {/* 로그인 */}
             <ul className="navbar__item">
-                <li>로그인</li>
+                <li onClick={() => moveTo('/login')}>로그인</li>
             </ul>
         </nav>
     );

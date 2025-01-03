@@ -36,10 +36,65 @@ export const increaseView = (obj) => {
 /**
  * 게시글 수정하기
  * @param {Object} obj
- * @param {number} obj.boardIdx 
- * @param {string} obj.content 
+ * @param {number} obj.boardIdx - 게시글 idx
+ * @param {string} obj.content - 게시글 내용
  * @return {Promise}
  */
 export const saveEditBoard = (obj) => {
-    return api.post('/board/saveEditBoard', JSON.stringify(obj))
+    return api.post('/board/saveBoardEdit', JSON.stringify(obj))
+}
+
+/**
+ * 게시글 삭제하기
+ * @param {Object} obj
+ * @param {number} obj.boardIdx - 게시글 idx
+ * @return {Promise}
+ */
+export const boardDelete = (obj) => {
+    return api.post('/board/boardDelete', JSON.stringify(obj))
+}
+
+/**
+ * 게시글 작성하기
+ * @param {Object} obj
+ * @param {title} obj.title - 게시글 제목
+ * @param {content} obj.content - 게시글 내용
+ * @return {Promise}
+ */
+export const BoardWriteAction = (obj) => {
+    return api.post('/board/boardWrite', JSON.stringify(obj))
+}
+
+/**
+ * 게시글 댓글/대댓글 조회
+ * @param {Object} obj
+ * @param {number} obj.boardIdx - 게시글 인덱스
+ * @return {Promise<Object>} - 댓글/대댓글
+ */
+export const getBoardComment = (param) => {
+    return api.get('/board/getBoardComment', {
+        params: param
+    });
+};
+
+/**
+ * 댓글 달기
+ * @param {Object} obj
+ * @param {number} obj.boardIdx - 게시글 인덱스
+ * @return {Promise}
+ */
+export const writeBoardComment = (obj) => {
+    return api.post('/board/writeBoardComment', JSON.stringify(obj))
+}
+
+
+
+/**
+ * 대댓글 달기
+ * @param {Object} obj
+ * @param {number} obj.boardIdx - 게시글 인덱스
+ * @return {Promise}
+ */
+export const writeBoardReply = (obj) => {
+    return api.post('/board/writeBoardReply', JSON.stringify(obj))
 }

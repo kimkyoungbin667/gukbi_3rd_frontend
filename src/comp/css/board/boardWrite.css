@@ -1,0 +1,83 @@
+.board-edit-container {
+    width: 90%;
+    max-width: 900px;
+    height: 500px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    font-family: "Arial", sans-serif;
+  }
+  
+  .board-edit-title {
+    font-size: 35px;
+    font-weight: bold;
+    color: #2c3e50;
+    text-align: center;
+    font-family: 'studyGood';
+    margin-bottom: 20px;
+  }
+  
+  .board-edit-input {
+    margin-bottom: 20px;
+    font-family: 'studyGood';
+  }
+  
+  .board-edit-input label {
+    display: block;
+    font-size: 30px;
+    font-weight: bold;
+    margin-bottom: 8px;
+    color: #37474f;
+  }
+  
+  .board-edit-input input,
+  .board-edit-input textarea {
+    width: 100%;
+    padding: 12px;
+    font-size: 25px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-sizing: border-box;
+    font-family: 'studyGood';
+    resize: none;
+  }
+  
+  .board-edit-input input {
+    height: 40px;
+  }
+  
+  .board-edit-input textarea {
+    height: 250px;
+  }
+  
+  .board-edit-input input:focus,
+  .board-edit-input textarea:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 4px rgba(0, 123, 255, 0.2);
+  }
+  
+  /* 작성 완료 버튼 */
+  .board-edit-actions {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .board-edit-actions .edit-button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 30px;
+    padding: 10px 30px;
+    font-size: 25px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .board-edit-actions .edit-button:hover {
+    background-color: #0056b3;
+  }
+  

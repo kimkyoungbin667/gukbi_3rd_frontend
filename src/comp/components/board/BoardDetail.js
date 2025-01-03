@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router";
 import { useNavigate } from "react-router-dom";
-import { getBoardDetail, increaseView } from "../../api/board";
+import CommentArea from "../board/CommentArea.js";
+import { getBoardDetail, increaseView, boardDelete } from "../../api/board";
 import '../../css/board/boardDetail.css';
 
 function BoardDetail() {
@@ -26,7 +27,7 @@ function BoardDetail() {
   useEffect(() => {
 
     // 유저인덱스 임시 설정
-    localStorage.setItem("userIdx", 2);
+    localStorage.setItem("userIdx", 3);
 
     if (state?.boardIdx) {
       setBoardIdx(state.boardIdx);
@@ -54,7 +55,6 @@ function BoardDetail() {
       // 조회수 올리기 
       increaseView({ boardIdx })
         .then(res => {
-          console.log(res);
           if (res.data.code === "201") {
           } else {
             setBoardContents(prev => ({
@@ -68,31 +68,48 @@ function BoardDetail() {
 
   // 수정 버튼 클릭 이벤트
   const handleEdit = () => {
-    navigate("/boardEdit", { state: { boardIdx: boardIdx }})
+    navigate("/boardEdit", { state: { boardIdx: boardIdx } })
   };
 
   // 삭제 버튼 클릭 이벤트
   const handleDelete = () => {
 
+    if (window.confirm("삭제하시겠습니까?")) {
+      let obj = new Object();
+      obj.boardIdx = boardIdx;
+      boardDelete(obj)
+        .then(res => {
+          navigate("/boardList");
+        })
+        .catch(err => {
+          console.log(err);
+        })
+    }
   };
 
+  const handleGoToList = () => {
+    navigate("/boardList");
+  }
+
   return (
-    <div className="board-detail-container">
-      <h1 className="board-detail-title">{boardContents.title}</h1>
-      <div className="board-detail-content">{boardContents.content}</div>
-      <div className="board-detail-info">
-        <div>
-          <span>작성자:</span> <span>{boardContents.createdByUserNickname}</span>
-        </div>
-        <div>
-          <span>작성일:</span>{" "}
-          <span>{new Date(boardContents.createdAt).toLocaleString()}</span>
-        </div>
-        <div>
-          <span>조회수:</span> <span>{boardContents.viewCount}</span>
-        </div>
-        <div>
-          <span>추천수:</span> <span>{boardContents.likeCount}</span>
+    <>
+      <div className="board-detail-container">
+        <h1 className="board-detail-title">{boardContents.title}</h1>
+        <div className="board-detail-content">{boardContents.content}</div>
+        <div className="board-detail-info">
+          <div>
+            <span>작성자:</span> <span>{boardContents.createdByUserNickname}</span>
+          </div>
+          <div>
+            <span>작성일:</span>
+            <span>{new Date(boardContents.createdAt).toLocaleString()}</span>
+          </div>
+          <div>
+            <span>조회수:</span> <span>{boardContents.viewCount}</span>
+          </div>
+          <div>
+            <span>추천수:</span> <span>{boardContents.likeCount}</span>
+          </div>
         </div>
       </div>
 
@@ -106,7 +123,17 @@ function BoardDetail() {
           </button>
         </div>
       )}
-    </div>
+      <hr />
+
+      {boardIdx && <CommentArea boardIdx={boardIdx} />}
+
+      <hr />
+      <div>
+        <button className="goToboardList-btn" onClick={handleGoToList}>
+          목록으로
+        </button>
+      </div>
+    </>
   );
 }
 
