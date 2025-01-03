@@ -1,0 +1,152 @@
+.map-body {
+    display: flex;
+    width: 100vw;
+    height: 80vh;
+}
+
+
+.map-display {
+    flex: 1;
+    height: 1150px;
+}
+
+.map-left-bar {
+    width: 440px;
+    /* 패널 너비 설정 */
+    height: 110%;
+    /* 화면 높이에 맞춤 */
+    background-color: #f8f9fa;
+    /* 패널 배경색 */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    /* 그림자 효과 */
+    border-right: 1px solid #ddd;
+    /* 오른쪽 테두리 */
+    display: flex;
+    flex-direction: column;
+
+    overflow: hidden;
+    /* 스크롤 가능 */
+}
+
+.map-left-bar-top {
+    height: 100px;
+    /* `left-bar`의 전체 높이를 차지 */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    /* 상단 정렬 */
+    margin-bottom: 6px;
+    /* 하단 여백 */
+    padding: 16px;
+    background-color: #FFDAB9;
+    border-end-end-radius: 8px;
+    border-end-start-radius: 8px;
+}
+
+
+.search-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 16px;
+    background-color: #f9f9f9;
+    /* 연한 배경색 */
+    padding: 8px;
+    border: 1px solid #ddd;
+    /* 테두리 */
+    border-radius: 4px;
+    /* 각진 모서리 */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    /* 부드러운 그림자 효과 */
+    width: 96%;
+    /* 검색창이 상단 전체를 채우게 */
+    position: sticky;
+    /* 상단에 고정 */
+    top: 0;
+    /* 화면 상단에 고정 */
+    z-index: 10;
+    /* 다른 요소보다 위에 표시되도록 */
+
+}
+
+.search-bar {
+    flex: 1;
+    padding: 8px;
+    border: none;
+    border-radius: 4px;
+    font-size: 14px;
+    background-color: #fff;
+    /* 검색창 내부 색상 */
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.search-bar:focus {
+    outline: none;
+    box-shadow: 0 0 5px #007bff;
+    /* 포커스 시 테두리 효과 */
+}
+
+.search-button {
+    padding: 8px 12px;
+    border: none;
+    background-color: #007bff;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+}
+
+.search-button:hover {
+    background-color: #0056b3;
+}
+
+.map-left-bar-menu {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 16px;
+}
+
+.menu-item {
+    cursor: pointer;
+    padding: 8px 12px;
+    border-radius: 4px;
+    font-size: 20px;
+    transition: background-color 0.3s ease;
+    text-align: center;
+}
+
+.menu-item:hover {
+    background-color: #FFCC99;
+    color: beige;
+}
+
+.menu-item.active {
+    background-color: #FFCC99;
+    font-weight: bold;
+}
+
+.menu-item-detail {
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 16px;
+    margin-top: 0px;
+    transition: background-color 0.3s ease;
+    color: black;
+    text-align: center;
+    height: 90%;
+}
+
+
+
+
+
+
+
+
+.map-right-bar {
+    width: 16%;
+    height: 1100px;
+    background-color: blue;
+    border-left: 1px solid #ccc;
+}

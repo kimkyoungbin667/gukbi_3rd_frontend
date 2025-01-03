@@ -18,6 +18,7 @@ a {
     padding: 20px 70px;
     position: relative;
     z-index: 1000;
+    height: 80px;
 }
 
 /* 로고 스타일 */
@@ -32,7 +33,7 @@ a {
     width: 220px;
     height: 140px;
     margin-right: 8px;
-    object-fit: cover;
+    object-fit: fill;
 }
 
 /* 메뉴 스타일 */
@@ -50,12 +51,13 @@ a {
     cursor: pointer;
     color: #37474f;
     font-weight: bold;
-    user-select: none; /* 텍스트 선택 방지 */
+    user-select: none;
+    /* 텍스트 선택 방지 */
     font-size: 50px;
 }
 
 .navbar__item:hover {
-    background-color:#cfd8dc;
+    background-color: #cfd8dc;
 }
 
 /* 드롭다운 메뉴 숨기기 */
