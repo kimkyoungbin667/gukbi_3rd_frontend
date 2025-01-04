@@ -16,6 +16,7 @@ import RegisterEmail from './comp/components/user/register_email'
 import RegisterKakao from './comp/components/user/register_kakao'
 import Buttoncontroller from './comp/components/user/buttoncontroller'
 import Login from './comp/components/user/login'
+import Profile from './comp/components/user/user_profile'
 
 
 function Router() {
@@ -37,6 +38,7 @@ function Router() {
       <Route path="/registerkakao" element={<RegisterKakao />} />
       <Route path="/registerbutton" element={<Buttoncontroller />} />
       <Route path="/login" element={<Login />} />
+      <Route path="/profile" element={<Profile />} />
       {/* map */}
       <Route path="/map" element={<KakaoMap />}></Route>
 
