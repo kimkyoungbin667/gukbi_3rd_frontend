@@ -1,23 +1,31 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { loginUser } from "../../api/user"; // 로그인 API 호출 함수 import
 import "../../css/user/login.css";
-import '../../css/cursor/cursor.css';
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const navigate = useNavigate(); // 페이지 이동을 위한 React Router 훅
+  const navigate = useNavigate();
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
 
-    // 간단한 로그인 로직
-    if (email === "test@example.com" && password === "password") {
-      console.log("로그인 성공:", { email });
+    try {
+      const response = await loginUser(email, password); // 로그인 API 호출
+      console.log("로그인 성공:", response.data);
+
+      const { token } = response.data;
+
       alert("로그인 성공!");
-      navigate("/dashboard"); // 로그인 후 대시보드로 이동
-    } else {
-      alert("이메일 또는 비밀번호가 올바르지 않습니다.");
+      
+      // 로그인 성공 시 토큰 저장
+      localStorage.setItem("token", token); // JWT 토큰만 저장
+      
+      navigate("/"); // 대시보드 등 다음 페이지로 이동
+    } catch (error) {
+      console.error("로그인 실패:", error.response?.data || error.message);
+      alert(error.response?.data?.message || "로그인에 실패했습니다.");
     }
   };
 
