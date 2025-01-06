@@ -20,6 +20,12 @@ export const loginUser = (email, password) => {
   return api.post("/user/login", { email, password }); 
 };
 
+// 카카오 로그인 API 호출
+export const kakaoLogin = (accessToken) => {
+    return api.post("/user/kakao-login", { access_token: accessToken }); 
+  };
+  
+
 // 사용자 정보 가져오기 (JWT 인증 필요)
 export const getUserProfile = () => {
   const token = localStorage.getItem("token"); // 저장된 JWT 토큰 가져오기
