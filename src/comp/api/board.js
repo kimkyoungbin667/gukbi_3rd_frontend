@@ -17,11 +17,9 @@ export const getBoardList = (param) => {
  * @param {number} obj.boardIdx - 게시글 idx
  * @return {Promise<Object>}
  */
-export const getBoardDetail = (param) => {
-    return api.get('/board/readBoardPost', {
-        params: param
-    });
-};
+export const getBoardDetail = (obj) => {
+    return api.post('/board/readBoardPost', JSON.stringify(obj))
+}
 
 /**
  * 게시글 작성하기
@@ -91,7 +89,6 @@ export const writeBoardComment = (obj) => {
     return api.post('/board/createBoardComment', JSON.stringify(obj))
 }
 
-
 /**
  * 대댓글 달기
  * @param {Object} obj
@@ -100,4 +97,14 @@ export const writeBoardComment = (obj) => {
  */
 export const writeBoardReply = (obj) => {
     return api.post('/board/createBoardReply', JSON.stringify(obj))
+}
+
+/**
+ * 좋아요 +1 하기
+ * @param {Object} obj
+ * @param {number} obj.boardIdx - 게시글 인덱스
+ * @return {Promise}
+ */
+export const upBoardPostLike = (obj) => {
+    return api.post('/board/upBoardPostLike', JSON.stringify(obj))
 }

@@ -96,3 +96,49 @@
   transform: scale(1.05);
 }
 
+/* Like 버튼 영역 */
+.board-like-area {
+  display: flex;
+  justify-content: center; /* 중앙 정렬 */
+  gap: 20px; /* 버튼 간격 */
+  margin-top: 20px; /* 간격 추가 */
+  padding: 10px 0;
+}
+
+/* Like 버튼 기본 스타일 */
+.board-like-area .default-like-button {
+  background-color: gray;
+  color: white;
+  border: none;
+  border-radius: 30px;
+  padding: 15px 35px;
+  font-family: "studyGood";
+  font-size: 25px;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.board-like-area .default-like-button:hover {
+  background-color: #7a7a7a;
+  transform: scale(1.05);
+}
+
+/* Like 버튼 Liked 스타일 */
+.board-like-area .liked-button {
+  background-color: red;
+  color: white;
+  border: none;
+  border-radius: 30px;
+  padding: 15px 35px;
+  font-family: "studyGood";
+  font-size: 25px;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.board-like-area .liked-button:hover {
+  background-color: #ff4d4d;
+  transform: scale(1.05);
+}

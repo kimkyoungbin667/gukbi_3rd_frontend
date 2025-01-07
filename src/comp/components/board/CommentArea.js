@@ -32,10 +32,7 @@ function CommentArea({ boardIdx }) {
     const getBoardCommentAction = () => {
 
         if (boardIdx) {
-
-            let obj = new Object();
-            obj.boardIdx = boardIdx;
-            getBoardComment(obj)
+            getBoardComment({ boardIdx })
                 .then(res => {
                     console.log(res);
                     if (res.data.code === '200') {
@@ -178,6 +175,7 @@ function CommentArea({ boardIdx }) {
             {finalComments.length > 0 &&
                 [...finalComments].reverse().map((comment, commentIndex) => (
                     <div key={commentIndex} className="comment">
+
                         {/* 프로필과 작성자 이름 */}
                         <div className="user-info">
                             <img
