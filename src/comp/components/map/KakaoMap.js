@@ -1,14 +1,36 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Map, MapMarker, MapTypeControl, useKakaoLoader, ZoomControl } from "react-kakao-maps-sdk";
+
 import '../../css/map/map.css'
+import MapLeftBar from './MapLeftBar';
 
 function KakaoMap() {
-    useKakaoLoader();
+    const { kakao } = window;
+    const [mapData, setMapData] = useState({
+        level: 0,
+        position: {
+            lat: 0,
+            lng: 0,
+        }
+    })
 
-    const [mapCenter, setMapCenter] = useState({
+    const [state, setState] = useState({
+        // 지도의 초기 위치
+        center: { lat: 33.450701, lng: 126.570667 },
+        // 지도 위치 변경시 panto를 이용할지에 대해서 정의
+        isPanto: false,
+    })
+
+
+    const [regionName, setRegionName] = useState("");
+    const [searchKeyword, setSearchKeyword] = useState("동물병원");
+    const [searchResult, setSearchResult] = useState([]);
+    const [activeCategory, setActiveCategory] = useState("검색");
+    const [userPosition, setUserPosition] = useState({
         lat: 36.7472206,
         lng: 126.7038631,
     });
+
     const categoryColors = {
         "검색": "#ffeb3b",
         "카테고리2": "#8bc34a",
@@ -16,8 +38,31 @@ function KakaoMap() {
         "카테고리4": "#03a9f4",
     };
 
+    function search2Km(latlng) {
+        const ps = new kakao.maps.services.Places();
+        ps.keywordSearch(searchKeyword, function (data, status, pagination) {
+            console.log(searchKeyword);
+            if (status === kakao.maps.services.Status.OK) {
+                console.log(pagination.totalCount);
+                console.log(data);
+                setSearchResult(data);
+                //console.log(searchResult);
+            } else if (status === kakao.maps.services.Status.ZERO_RESULT) {
+                setSearchResult();
+            }
+        }, { location: latlng, radius: 2000 })
 
-    const [activeCategory, setActiveCategory] = useState("Food");
+    }
+
+    function updateRegionName(latlng) {
+        const geocoder = new kakao.maps.services.Geocoder();
+        geocoder.coord2RegionCode(latlng.getLng(), latlng.getLat(), function (result, status) {
+            if (status === kakao.maps.services.Status.OK) {
+                console.log(result);
+            }
+        })
+    }
+
 
     useEffect(() => {
         if (navigator.geolocation) {
@@ -26,9 +71,14 @@ function KakaoMap() {
                 function (position) {
                     const latitude = position.coords.latitude; // 위도
                     const longitude = position.coords.longitude; // 경도
-
                     console.log("현재 위치: " + latitude + ", " + longitude);
-                    setMapCenter({ lat: latitude, lng: longitude }); // 지도 중심 업데이트
+                    setUserPosition({ lat: latitude, lng: longitude }); // 지도 중심 업데이트
+                    setMapData({
+                        level: 3,
+                        position: {
+                            lat: latitude, lng: longitude,
+                        }
+                    })
                 },
                 function (error) {
                     // 에러 처리
@@ -38,48 +88,13 @@ function KakaoMap() {
         } else {
             alert("이 브라우저는 Geolocation을 지원하지 않습니다.");
         }
+
+
     }, []);
 
-    const renderMenuDetails = () => {
-        switch (activeCategory) {
-            case "검색":
-                return (
-                    <div className="search-detail">
 
-                    </div>
-                );
-            case "카테고리2":
-                return (
-                    <div className="shopping-detail">
-                        <h3>Shopping Category</h3>
-                        <p>Here are the best shopping malls and stores!</p>
-                        <button>View Stores</button>
-                    </div>
-                );
-            case "카테고리3":
-                return (
-                    <div className="entertainment-detail">
-                        <h3>Entertainment Category</h3>
-                        <p>Explore cinemas, parks, and other entertainment venues!</p>
-                        <button>View Venues</button>
-                    </div>
-                );
-            case "카테고리4":
-                return (
-                    <div className="health-detail">
-                        <h3>Health Category</h3>
-                        <p>Here are health-related services like clinics and gyms.</p>
-                        <button>View Clinics</button>
-                    </div>
-                );
-            default:
-                return (
-                    <div className="default-detail">
-                        <p>Please select a category.</p>
-                    </div>
-                );
-        };
-    }
+
+
 
     return (
         <div className="map-body"
@@ -91,9 +106,9 @@ function KakaoMap() {
                         <input
                             type="text"
                             className="search-bar"
-                            placeholder="Search location..."
+                            placeholder="검색"
                         />
-                        <button className="search-button">🔍</button>
+                        <button className="search-button" onClick={search2Km}>🔍</button>
                     </div>
 
                     <div className="map-left-bar-menu">
@@ -106,27 +121,50 @@ function KakaoMap() {
                                 {category}
                             </div>
                         ))}
+
                     </div>
                 </div>
                 {/* 선택한 카테고리에 따른 메뉴 아이템 영역 */}
+
                 <div className="menu-item-detail">
-                    {renderMenuDetails()}
+
+                    <MapLeftBar category={activeCategory} data={searchResult}></MapLeftBar>
+                    <div className='menu-item-none'></div>
                 </div>
+
             </div>
 
             {/* 지도 */}
             <Map
                 className="map-display"
-                center={mapCenter}
+                center={mapData.position}
                 level={3}
+
+                onDragEnd={(map) => {
+                    const level = map.getLevel();
+                    const latlng = map.getCenter();
+                    setMapData({
+                        level: level,
+                        position: {
+                            lat: latlng.getLat(),
+                            lng: latlng.getLng(),
+                        },
+                    })
+                    updateRegionName(latlng);
+                    search2Km(latlng);
+                    console.log(mapData);
+                }}
             >
+
+
                 <MapTypeControl position={"TOPRIGHT"} />
                 <ZoomControl position={"RIGHT"} />
                 <MapMarker // 마커를 생성합니다
-                    position={mapCenter}
+                    position={userPosition}
                 />
             </Map>
-        </div>
+
+        </div >
     )
 }
 export default KakaoMap;
