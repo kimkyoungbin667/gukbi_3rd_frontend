@@ -11,13 +11,11 @@ function BoardList() {
 
     const navigate = useNavigate();
 
+
     // 게시글 목록 가져오기
     function getBoardListAction(page) {
 
-        let obj = new Object();
-        obj.page = page;
-
-        getBoardList(obj)
+        getBoardList({ page })
             .then(res => {
                 if (res.data.code === "200") {
                     setBoards(res.data.data);

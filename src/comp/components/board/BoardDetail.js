@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router";
 import { useNavigate } from "react-router-dom";
 import CommentArea from "../board/CommentArea.js";
-import { getBoardDetail, increaseView, boardDelete } from "../../api/board";
+import { jwtDecode } from "jwt-decode";
+import { getBoardDetail, increaseView, boardDelete, upBoardPostLike } from "../../api/board";
 import '../../css/board/boardDetail.css';
 
 function BoardDetail() {
@@ -10,6 +11,12 @@ function BoardDetail() {
   const { state } = location;
   const navigate = useNavigate();
   const [boardIdx, setBoardIdx] = useState(null);
+  const [isLiked, setIsLiked] = useState(false);
+
+  // 토큰에서 userIdx 추출
+  const token = localStorage.getItem("token");
+  const decodedToken = jwtDecode(token);
+  const userIdx = decodedToken.sub;
 
   // 게시글 정보
   const [boardContents, setBoardContents] = useState({
@@ -18,23 +25,21 @@ function BoardDetail() {
     createdByUserIdx: '',
     createdByUserNickname: '',
     likeCount: 0,
+    isLiked: '',
     title: '',
     viewCount: 0,
   });
 
-  const loggedInUserIdx = localStorage.getItem("userIdx");
-
   useEffect(() => {
-
-    // 유저인덱스 임시 설정
-    localStorage.setItem("userIdx", 3);
 
     if (state?.boardIdx) {
       setBoardIdx(state.boardIdx);
     }
-
   }, [state]);
 
+  useEffect(() => {
+    setIsLiked(boardContents.isLiked);
+  }, [boardContents.isLiked]);
   useEffect(() => {
 
     // 게시글 상세 갖고오기
@@ -42,6 +47,8 @@ function BoardDetail() {
       getBoardDetail({ boardIdx })
         .then(res => {
           if (res.data.code == '200') {
+
+            console.log(res.data);
             setBoardContents(res.data.data);
           }
         })
@@ -51,7 +58,6 @@ function BoardDetail() {
     }
 
     if (boardIdx !== null) {
-
       // 조회수 올리기 
       increaseView({ boardIdx })
         .then(res => {
@@ -75,9 +81,8 @@ function BoardDetail() {
   const handleDelete = () => {
 
     if (window.confirm("삭제하시겠습니까?")) {
-      let obj = new Object();
-      obj.boardIdx = boardIdx;
-      boardDelete(obj)
+
+      boardDelete({ boardIdx })
         .then(res => {
           navigate("/boardList");
         })
@@ -87,9 +92,44 @@ function BoardDetail() {
     }
   };
 
+  // 목록으로 버튼 클릭 이벤트
   const handleGoToList = () => {
     navigate("/boardList");
   }
+
+  // 좋아요 상태 값 변경
+  const toggleLike = () => {
+
+    if (!isLiked) {
+      setBoardContents(prev => ({
+        ...prev,
+        likeCount: prev.likeCount + 1,
+      }));
+      setIsLiked(!isLiked);
+
+      // 좋아요 눌렀을 때
+    } else {
+      setBoardContents(prev => ({
+        ...prev,
+        likeCount: prev.likeCount - 1,
+      }));
+      setIsLiked(!isLiked);
+    }
+
+
+    const upData = {
+      boardIdx: boardContents.boardIdx
+    }
+
+    // 좋아요 +1 하기
+    upBoardPostLike(upData)
+      .then(res => {
+        console.log(res);
+      })
+      .catch(err => {
+        console.log(err);
+      })
+  };
 
   return (
     <>
@@ -113,7 +153,7 @@ function BoardDetail() {
         </div>
       </div>
 
-      {loggedInUserIdx === String(boardContents.createdByUserIdx) && (
+      {Number(userIdx) === Number(boardContents.createdByUserIdx) && (
         <div className="board-detail-actions">
           <button className="edit-button" onClick={handleEdit}>
             수정
@@ -123,16 +163,27 @@ function BoardDetail() {
           </button>
         </div>
       )}
-      <hr />
 
-      {boardIdx && <CommentArea boardIdx={boardIdx} />}
+      <div className="board-like-area">
+        <button
+          className={isLiked ? "liked-button" : "default-like-button"}
+          onClick={toggleLike}
+        > 👍
+          {isLiked ? "Liked" : "Like"}
+        </button>
+      </div>
 
-      <hr />
+
       <div>
         <button className="goToboardList-btn" onClick={handleGoToList}>
           목록으로
         </button>
       </div>
+      <hr />
+
+      {boardIdx && <CommentArea boardIdx={boardIdx} />}
+
+      <hr />
     </>
   );
 }
