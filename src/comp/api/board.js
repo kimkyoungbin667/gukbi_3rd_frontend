@@ -76,7 +76,7 @@ export const increaseView = (obj) => {
  * @return {Promise<Object>} - 댓글/대댓글
  */
 export const getBoardComment = (param) => {
-    return api.get('/board/getBoardComment', {
+    return api.get('/board/readBoardComments', {
         params: param
     });
 };
@@ -88,9 +88,8 @@ export const getBoardComment = (param) => {
  * @return {Promise}
  */
 export const writeBoardComment = (obj) => {
-    return api.post('/board/writeBoardComment', JSON.stringify(obj))
+    return api.post('/board/createBoardComment', JSON.stringify(obj))
 }
-
 
 
 /**
@@ -100,5 +99,5 @@ export const writeBoardComment = (obj) => {
  * @return {Promise}
  */
 export const writeBoardReply = (obj) => {
-    return api.post('/board/writeBoardReply', JSON.stringify(obj))
+    return api.post('/board/createBoardReply', JSON.stringify(obj))
 }

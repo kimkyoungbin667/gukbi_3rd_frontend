@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { getBoardComment, writeBoardComment, writeBoardReply } from "../../api/board";
+import { jwtDecode } from "jwt-decode";
 import '../../css/board/boardCommentArea.css';
 
 function CommentArea({ boardIdx }) {
@@ -16,6 +17,8 @@ function CommentArea({ boardIdx }) {
     const [nowReply, setNowReply] = useState({});
 
     const token = localStorage.getItem("token");
+    const decodedToken = jwtDecode(token);
+    const userIdx = decodedToken.sub;
 
     // 댓글 불러오기
     useEffect(() => {
@@ -84,12 +87,13 @@ function CommentArea({ boardIdx }) {
             return;
         }
 
-        let obj = new Object();
-        obj.authorToken = token;
-        obj.boardIdx = boardIdx;
-        obj.comment = nowComment;
+        const commentData = {
+            authorIdx: userIdx,
+            boardIdx: boardIdx,
+            comment: nowComment
+        }
 
-        writeBoardComment(obj)
+        writeBoardComment(commentData)
             .then(res => {
                 if (res.data.data >= 1) {
                     // 다시 댓글, 대댓글 갖고옴
@@ -123,14 +127,14 @@ function CommentArea({ boardIdx }) {
             return;
         }
 
-        let obj = new Object();
-        obj.authorToken = token;
-        obj.boardIdx = boardIdx;
-        obj.comment = nowReply[commentIndex];
-        obj.parentIdx = commentIndex;
+        const replyData = {
+            boardIdx: boardIdx,
+            authorIdx: userIdx,
+            comment: nowReply[commentIndex],
+            parentIdx: commentIndex
+        }
 
-        console.log(obj);
-        writeBoardReply(obj)
+        writeBoardReply(replyData)
             .then(res => {
                 if (res.data.data >= 1) {
 
@@ -150,7 +154,7 @@ function CommentArea({ boardIdx }) {
 
         // 대댓글 삭제
         const deleteReplyAction = () => {
-            
+
         }
     }
 

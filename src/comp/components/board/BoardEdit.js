@@ -57,6 +57,7 @@ function BoardEdit() {
   const finishEdit = () => {
 
     const editData = {
+      authorIdx: userIdx,
       boardIdx: boardIdx,
       content: boardContents.content
     };
