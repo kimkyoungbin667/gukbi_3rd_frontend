@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { jwtDecode } from "jwt-decode";
 import { useNavigate } from "react-router-dom";
 import { BoardWriteAction } from "../../api/board";
 import "../../css/board/boardWrite.css";
@@ -9,22 +10,14 @@ function BoardWrite() {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
 
-  const userIdx = localStorage.getItem("userIdx");
-
-  useEffect(() => {
-    // 유저인덱스 임시 설정
-    localStorage.setItem("userIdx", 2);
-  }, []);
-
   const handleSubmit = () => {
-    // 데이터 검증
+
     if (!title.trim() || !content.trim()) {
       alert("제목과 내용을 모두 입력해주세요.");
       return;
     }
 
     const boardData = {
-      userIdx: userIdx,
       title: title,
       content: content,
     };

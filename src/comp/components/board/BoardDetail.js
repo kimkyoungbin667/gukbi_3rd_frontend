@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router";
 import { useNavigate } from "react-router-dom";
 import CommentArea from "../board/CommentArea.js";
+import { jwtDecode } from "jwt-decode";
 import { getBoardDetail, increaseView, boardDelete } from "../../api/board";
 import '../../css/board/boardDetail.css';
 
@@ -10,6 +11,11 @@ function BoardDetail() {
   const { state } = location;
   const navigate = useNavigate();
   const [boardIdx, setBoardIdx] = useState(null);
+
+  // 토큰에서 userIdx 추출
+  const token = localStorage.getItem("token");
+  const decodedToken = jwtDecode(token);
+  const userIdx = decodedToken.sub; 
 
   // 게시글 정보
   const [boardContents, setBoardContents] = useState({
@@ -22,12 +28,7 @@ function BoardDetail() {
     viewCount: 0,
   });
 
-  const loggedInUserIdx = localStorage.getItem("userIdx");
-
   useEffect(() => {
-
-    // 유저인덱스 임시 설정
-    localStorage.setItem("userIdx", 3);
 
     if (state?.boardIdx) {
       setBoardIdx(state.boardIdx);
@@ -39,6 +40,7 @@ function BoardDetail() {
 
     // 게시글 상세 갖고오기
     if (boardIdx !== null) {
+      console.log(boardIdx);
       getBoardDetail({ boardIdx })
         .then(res => {
           if (res.data.code == '200') {
@@ -75,9 +77,8 @@ function BoardDetail() {
   const handleDelete = () => {
 
     if (window.confirm("삭제하시겠습니까?")) {
-      let obj = new Object();
-      obj.boardIdx = boardIdx;
-      boardDelete(obj)
+
+      boardDelete({ boardIdx })
         .then(res => {
           navigate("/boardList");
         })
@@ -113,7 +114,7 @@ function BoardDetail() {
         </div>
       </div>
 
-      {loggedInUserIdx === String(boardContents.createdByUserIdx) && (
+      {Number(userIdx) === Number(boardContents.createdByUserIdx) && (
         <div className="board-detail-actions">
           <button className="edit-button" onClick={handleEdit}>
             수정

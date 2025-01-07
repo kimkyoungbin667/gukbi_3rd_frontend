@@ -183,7 +183,7 @@ function CommentArea({ boardIdx }) {
                             />
                             <span className="author-nickname">{comment.authorNickname}</span>
 
-                            {comment.authorIdx === Number(nowUserIdx) && <button type="button" className="delete-comment-btn" onClick={deleteCommentAction}>삭제</button>}
+                            {comment.authorToken === token && <button type="button" className="delete-comment-btn" onClick={deleteCommentAction}>삭제</button>}
                         </div>
 
                         {/* 댓글 내용 */}

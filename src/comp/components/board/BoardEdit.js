@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router";
 import { useNavigate } from "react-router-dom";
+import { jwtDecode } from "jwt-decode";
 import { getBoardDetail, saveEditBoard } from "../../api/board";
 import '../../css/board/boardEdit.css';
 
@@ -10,7 +11,10 @@ function BoardEdit() {
 
   const [boardIdx, setBoardIdx] = useState(null);
   const navigate = useNavigate();
-  const userIdx = localStorage.getItem("userIdx");
+
+  const token = localStorage.getItem("token");
+  const decodedToken = jwtDecode(token);
+  const userIdx = decodedToken.sub;
 
   // 게시글 정보
   const [boardContents, setBoardContents] = useState({
@@ -25,9 +29,6 @@ function BoardEdit() {
 
 
   useEffect(() => {
-
-    // 유저인덱스 임시 설정
-    localStorage.setItem("userIdx", 2);
 
     if (state?.boardIdx) {
       setBoardIdx(state.boardIdx);
@@ -55,12 +56,12 @@ function BoardEdit() {
   // 수정 버튼 클릭 이벤트
   const finishEdit = () => {
 
-    let obj = new Object();
-    obj.boardIdx = boardIdx;
-    obj.userIdx = userIdx;
-    obj.content = boardContents.content;
+    const editData = {
+      boardIdx: boardIdx,
+      content: boardContents.content
+    };
 
-    saveEditBoard(obj)
+    saveEditBoard(editData)
       .then(res => {
         if (res.data.code === '200') {
           navigate("/boardList")
