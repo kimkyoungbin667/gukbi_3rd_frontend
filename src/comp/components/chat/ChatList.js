@@ -13,15 +13,17 @@ export default function Chat() {
     const [message, setMessage] = useState(""); // 입력 메시지
     const [currentSubscription, setCurrentSubscription] = useState(null); // 현재 구독
     const messagesEndRef = useRef(null); // 메시지 영역 끝 참조
-
-    // userIdx 임시 설정
-    const [userIdx, setUserIdx] = useState('5');
     const [personName, setPersonName] = useState(''); // 클릭한 채팅에 있는 사람 이름
+
+    const token = localStorage.getItem("token");
 
     // WebSocket 연결
     useEffect(() => {
+        // 로컬 스토리지에서 토큰 가져오기
 
-        const socket = new SockJS("http://localhost:8080/ws");
+        console.log("토큰 : ", token);
+        // SockJS에 URL에 토큰 추가 (옵션 1)
+        const socket = new SockJS(`http://localhost:8080/ws?token=${token}`);
         const client = new Client({
             webSocketFactory: () => socket,
             debug: (str) => console.log(str),
@@ -31,17 +33,24 @@ export default function Chat() {
             onDisconnect: () => {
                 console.log("WebSocket 연결 종료!");
             },
+            beforeConnect: () => {
+                console.log("WebSocket 연결 준비 중...");
+            },
+            connectHeaders: {
+                Authorization: `Bearer ${token}`, // 헤더에 토큰 포함
+            },
         });
 
         client.activate();
         setStompClient(client);
 
         // 채팅방 목록 가져오기
-        let obj = new Object();
-        obj.userIdx = userIdx;
+        let obj = {};
+        obj.token = token;
 
         getChatRoomList(obj)
             .then((res) => {
+                console.log(res);
                 console.log(res.data.data);
                 if (res.data.code === "200") {
                     setChatRoomList(res.data.data);
@@ -52,8 +61,8 @@ export default function Chat() {
         return () => {
             if (client) client.deactivate(); // 컴포넌트 언마운트 시 연결 해제
         };
-
     }, []);
+
 
 
     // 채팅방 클릭 핸들러
@@ -103,7 +112,7 @@ export default function Chat() {
             stompClient.publish({
                 destination: `/app/room/${selectedRoomIdx}/send`,
                 body: JSON.stringify({
-                    senderIdx: userIdx,
+                    senderToken: token,
                     roomIdx: selectedRoomIdx,
                     message: message,
                     sentAt: new Date().toISOString(), // 현재 시간 추가
@@ -159,7 +168,7 @@ export default function Chat() {
                         <div className="chat-room-messages">
                             {chatRoomMsg.map((item, index) => {
 
-                                const isMine = userIdx === item.senderIdx.toString();
+                                const isMine = token === item.senderToken;
                                 return (
                                     <div
                                         key={index}
