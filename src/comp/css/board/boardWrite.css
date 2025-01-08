@@ -81,3 +81,117 @@
     background-color: #0056b3;
   }
   
+  .board-image-input {
+    margin-top: 20px;
+  }
+
+
+/* 전체 미리보기 영역 스타일 */
+.images-preview {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+  padding: 20px;
+  border: 1px dashed #ccc;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+}
+
+/* 개별 미리보기 이미지 컨테이너 */
+.preview-image {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 200px; /* 이미지 최대 크기 */
+  height: 250px; /* 이미지 최대 크기 */
+  background-color: #ffffff;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.preview-image:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* 미리보기 이미지 스타일 */
+.preview-image img {
+  width: 100%; /* 부모 컨테이너에 맞춤 */
+  height: auto;
+  object-fit: contain; /* 이미지 비율 유지 */
+  border-bottom: 1px solid #eee;
+  padding: 10px;
+}
+
+/* 제거 버튼 스타일 */
+.preview-image button {
+  position: absolute;
+  bottom: 10px;
+  background-color: #ff4d4f;
+  color: white;
+  border: none;
+  font-weight: initial;
+  border-radius: 20px;
+  padding: 5px 15px;
+  font-size: 20px;
+  font-family: 'studyGood';
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.preview-image button:hover {
+  background-color: #d9363e;
+}
+
+.file-upload {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px 0;
+  margin-bottom: 30px;
+}
+
+/* 파일 업로드 컨테이너 */
+.file-upload {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px 0;
+}
+
+/* 숨겨진 기본 파일 업로드 입력 필드 */
+.file-upload input[type="file"] {
+  display: none; /* 기본 파일 선택 버튼 숨김 */
+}
+
+/* 커스텀 업로드 버튼 */
+.file-upload label {
+  display: inline-block;
+  background-color: #CDC1FF;
+  color: white;
+  font-size: 30px;
+  font-weight: initial;
+  padding: 14px 24px;
+  border-radius: 30px;
+  cursor: pointer;
+  font-family: 'studyGood','Arial', sans-serif;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.file-upload label:hover {
+  background-color: #A294F9;
+  transform: scale(1.05);
+}
+
+/* 파일 업로드 버튼 클릭 효과 */
+.file-upload label:active {
+  background-color: #A294F9;
+  transform: scale(1);
+}

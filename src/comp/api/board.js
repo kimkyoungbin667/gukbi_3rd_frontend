@@ -53,7 +53,6 @@ export const boardDelete = (obj) => {
     return api.post('/board/deleteBoardPost', JSON.stringify(obj))
 }
 
-
 /**
  * 게시글 조회수 올리기
  * @param {Object} obj
@@ -63,8 +62,6 @@ export const boardDelete = (obj) => {
 export const increaseView = (obj) => {
     return api.post('/board/increaseView', JSON.stringify(obj))
 }
-
-
 
 
 /**
