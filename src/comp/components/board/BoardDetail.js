@@ -28,6 +28,7 @@ function BoardDetail() {
     isLiked: '',
     title: '',
     viewCount: 0,
+    imageFiles: []
   });
 
   useEffect(() => {
@@ -39,7 +40,9 @@ function BoardDetail() {
 
   useEffect(() => {
     setIsLiked(boardContents.isLiked);
+    console.log('dwdwdw', boardContents);
   }, [boardContents.isLiked]);
+
   useEffect(() => {
 
     // 게시글 상세 갖고오기
@@ -116,7 +119,6 @@ function BoardDetail() {
       setIsLiked(!isLiked);
     }
 
-
     const upData = {
       boardIdx: boardContents.boardIdx
     }
@@ -150,6 +152,16 @@ function BoardDetail() {
           <div>
             <span>추천수:</span> <span>{boardContents.likeCount}</span>
           </div>
+
+          <div className="upload-images">
+            {boardContents.imageFiles && boardContents.imageFiles.map((image, index) => (
+              <div key={index} className="upload-image">
+                <img src={`http://localhost:8080/${boardContents.imageFiles[index]}`}
+                 alt={`이미지 ${image}`} style={{ width: "200px" }} />
+              </div>
+            ))}
+          </div>
+
         </div>
       </div>
 
