@@ -153,7 +153,9 @@ function BoardDetail() {
             <span>추천수:</span> <span>{boardContents.likeCount}</span>
           </div>
 
-          <div className="upload-images">
+        </div>
+        
+        <div className="upload-images">
             {boardContents.imageFiles && boardContents.imageFiles.map((image, index) => (
               <div key={index} className="upload-image">
                 <img src={`http://localhost:8080/${boardContents.imageFiles[index]}`}
@@ -161,8 +163,6 @@ function BoardDetail() {
               </div>
             ))}
           </div>
-
-        </div>
       </div>
 
       {Number(userIdx) === Number(boardContents.createdByUserIdx) && (
