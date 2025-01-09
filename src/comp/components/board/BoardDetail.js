@@ -152,19 +152,22 @@ function BoardDetail() {
           <div>
             <span>추천수:</span> <span>{boardContents.likeCount}</span>
           </div>
-
         </div>
-        
-        <div className="upload-images">
-            {boardContents.imageFiles && boardContents.imageFiles.map((image, index) => (
+  
+        {boardContents.imageFiles !== null && (
+          <div className="upload-images">
+            {boardContents.imageFiles.map((image, index) => (
               <div key={index} className="upload-image">
-                <img src={`http://localhost:8080/${boardContents.imageFiles[index]}`}
-                 alt={`이미지 ${image}`} style={{ width: "200px" }} />
+                <img
+                  src={`http://localhost:8080/${image}`}
+                  alt={`이미지 ${index + 1}`}
+                />
               </div>
             ))}
           </div>
+        )}
       </div>
-
+  
       {Number(userIdx) === Number(boardContents.createdByUserIdx) && (
         <div className="board-detail-actions">
           <button className="edit-button" onClick={handleEdit}>
@@ -175,29 +178,29 @@ function BoardDetail() {
           </button>
         </div>
       )}
-
+  
       <div className="board-like-area">
         <button
           className={isLiked ? "liked-button" : "default-like-button"}
           onClick={toggleLike}
-        > 👍
-          {isLiked ? "Liked" : "Like"}
+        >
+          👍 {isLiked ? "Liked" : "Like"}
         </button>
       </div>
-
-
+  
       <div>
         <button className="goToboardList-btn" onClick={handleGoToList}>
           목록으로
         </button>
       </div>
       <hr />
-
+  
       {boardIdx && <CommentArea boardIdx={boardIdx} />}
-
+  
       <hr />
     </>
   );
+  
 }
 
 export default BoardDetail;
