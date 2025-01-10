@@ -1,20 +1,10 @@
 import { useState } from "react";
 
 export default function MapLeftBar(props) {
-    const [selectedPlace, setSelectedPlace] = useState(null); // 클릭된 동물병원의 정보를 저장할 상태
-    const [isPopupOpen, setIsPopupOpen] = useState(false); // 팝업창 열림/닫힘 상태
     const [hoveredIndex, setHoveredIndex] = useState(null);
-    const asd = props.data;
-
-    const handleClick = (place) => {
-        setSelectedPlace(place);  // 클릭한 동물병원의 정보를 상태에 저장
-        setIsPopupOpen(true); // 팝업창 열기
-    };
-
-    const closePopup = () => {
-        setIsPopupOpen(false); // 팝업창 닫기
-        setSelectedPlace(null); // 선택된 병원 정보 초기화
-    };
+    const asd = props.searchResults;
+    const pagination = props.pagination;
+    const walks = props.walks;
 
     const getBackgroundColor = (index) => {
         const colors = ['#FFC1C1', '#FFD8B1', '#FFFACD', '#DFFFD6', '#B3E5FC', '#BDB3FF', '#E1BEE7']
@@ -26,12 +16,12 @@ export default function MapLeftBar(props) {
         return colors[index % colors.length];
     };
 
-    if (props.category == '검색') {
+    if (props.category === '검색') {
         return (
             <div className="search-result">
                 {props.category === '검색' && (
                     <div className="search-result-margin">
-                        <div className="search-result-count">검색 결과 {asd && asd.length > 0 ? asd.length : 0} 건</div>
+                        <div className="search-result-count">검색 결과 {pagination.totalCount} 건</div>
                         {/* asd 배열을 순회하면서 동물병원 정보를 표시 */}
                         {asd && asd.length > 0 ? (
                             asd.map((item, index) => (
@@ -43,7 +33,18 @@ export default function MapLeftBar(props) {
                                             ? getHoverBackgroundColor(index)  // 마우스가 올라갔을 때 배경색
                                             : getBackgroundColor(index)
                                     }}
-                                    onClick={() => handleClick(item)}
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        props.setMapData(
+                                            {
+                                                level: 3,
+                                                position: {
+                                                    lat: item.y,
+                                                    lng: item.x
+                                                }
+                                            }
+                                        )
+                                    }}
                                     onMouseEnter={() => setHoveredIndex(index)}  // 마우스 올리기
                                     onMouseLeave={() => setHoveredIndex(null)}
                                 >
@@ -54,42 +55,89 @@ export default function MapLeftBar(props) {
                         ) : (
                             <p>검색 결과가 없습니다.</p>
                         )}
+                        {Array.from({ length: pagination.last }, (_, index) => {
+                            const page = index + 1;
+                            return (
+                                <a
+                                    key={page}
+                                    href="#"
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        props.handlePageChange(page);
+                                    }}
+                                    style={{
+                                        fontWeight: page === pagination.current ? 'bold' : 'normal',
+                                        marginRight: '5px',
+                                    }}
+                                >
+                                    {page}
+                                </a>
+                            );
+                        })}
                     </div>
-                )}
+                )
+                }
 
-                {/* 팝업창이 열려있을 때만 표시 */}
-                {isPopupOpen && selectedPlace && (
-                    <div className="popup-overlay">
-                        <div className="popup-content">
-                            <button className="close-button" onClick={closePopup}>닫기</button>
-                            <h3>{selectedPlace.place_name}</h3>
-                            <p><strong>주소:</strong> {selectedPlace.address_name}</p>
-                            <p><strong>도로명 주소:</strong> {selectedPlace.road_address_name}</p>
-                            <p><strong>전화번호:</strong> {selectedPlace.phone || "정보 없음"}</p>
-                            <p><strong>카테고리:</strong> {selectedPlace.category_name}</p>
-                            <p><strong>상세 링크:</strong> <a href={selectedPlace.place_url} target="_blank" rel="noopener noreferrer">상세보기</a></p>
-                        </div>
-                    </div>
-                )}
-            </div>
+
+            </div >
         );
-    } else if (props.category == '카테고리2') {
+    } else if (props.category === '카테고리2') {
         return (<div>
-            카테고리 2
+
         </div>
         )
 
-    } else if (props.category == '카테고리3') {
+    } else if (props.category === '카테고리3') {
         return (<div>
             카테고리 3
         </div>
         )
 
     }
-    else if (props.category == '카테고리4') {
-        return (<div>
-            카테고리 4
-        </div>
+    else if (props.category === 'ㅎㅇ') {
+        return (
+            <div className="search-result">
+                {props.category === 'ㅎㅇ' && (
+                    <div className="search-result-margin">
+                        <div className="search-result-count">검색 결과 {walks ? walks.length : 0} 건</div>
+                        {/* asd 배열을 순회하면서 동물병원 정보를 표시 */}
+                        {walks && walks.length > 0 ? (
+                            walks.map((item, index) => (
+                                <div
+                                    key={index}
+                                    className="search-result-list"
+                                    style={{
+                                        backgroundColor: hoveredIndex === index
+                                            ? getHoverBackgroundColor(index)  // 마우스가 올라갔을 때 배경색
+                                            : getBackgroundColor(index)
+                                    }}
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        props.setMapData(
+                                            {
+                                                level: 3,
+                                                position: {
+                                                    lat: item.paths[0].latitude,
+                                                    lng: item.paths[0].longitude
+                                                }
+                                            });
+                                    }}
+                                    onMouseEnter={() => setHoveredIndex(index)}  // 마우스 올리기
+                                    onMouseLeave={() => setHoveredIndex(null)}
+                                >
+                                    <div className="search-result-title">{item.walkName}</div>
+                                    <div className="search-result-content">{item.walkDate}</div>
+                                </div>
+                            ))
+                        ) : (
+                            <p>검색 결과가 없습니다.</p>
+                        )}
+
+                    </div>
+                )}
+
+
+            </div>
         )
 
     }

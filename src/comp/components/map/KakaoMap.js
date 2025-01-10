@@ -1,8 +1,11 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { Map, MapMarker, MapTypeControl, useKakaoLoader, ZoomControl } from "react-kakao-maps-sdk";
+import React, { useEffect, useState } from 'react';
+import { Map, MapInfoWindow, MapMarker, MapTypeControl, Polyline, useKakaoLoader, ZoomControl } from "react-kakao-maps-sdk";
 
 import '../../css/map/map.css'
 import MapLeftBar from './MapLeftBar';
+import { getWalks } from '../../api/map';
+import MapSearchMarker from './MapSearchMarker';
+import MapWalkPolyline from './MapWalkPolyline';
 
 function KakaoMap() {
     const { kakao } = window;
@@ -13,7 +16,6 @@ function KakaoMap() {
             lng: 0,
         }
     })
-
     const [state, setState] = useState({
         // 지도의 초기 위치
         center: { lat: 33.450701, lng: 126.570667 },
@@ -21,10 +23,19 @@ function KakaoMap() {
         isPanto: false,
     })
 
+    const [myWalks, setMyWalks] = useState([]);
 
     const [regionName, setRegionName] = useState("");
     const [searchKeyword, setSearchKeyword] = useState("동물병원");
+
+
     const [searchResult, setSearchResult] = useState([]);
+    const [pagination, setPagination] = useState({
+        totalCount: 0,
+        current: 1,
+        last: 0,
+    });
+
     const [activeCategory, setActiveCategory] = useState("검색");
     const [userPosition, setUserPosition] = useState({
         lat: 36.7472206,
@@ -35,34 +46,61 @@ function KakaoMap() {
         "검색": "#ffeb3b",
         "카테고리2": "#8bc34a",
         "카테고리3": "#03a9f4",
-        "카테고리4": "#03a9f4",
+        "ㅎㅇ": "#03a9f4",
     };
 
-    function search2Km(latlng) {
+    const searchPlace = (page = 1) => {
         const ps = new kakao.maps.services.Places();
         ps.keywordSearch(searchKeyword, function (data, status, pagination) {
             console.log(searchKeyword);
             if (status === kakao.maps.services.Status.OK) {
                 console.log(pagination.totalCount);
+                console.log(pagination);
                 console.log(data);
                 setSearchResult(data);
-                //console.log(searchResult);
+                setPagination({
+                    totalCount: pagination.totalCount,
+                    current: pagination.current,
+                    last: pagination.last,
+                });
             } else if (status === kakao.maps.services.Status.ZERO_RESULT) {
-                setSearchResult();
+
+                setSearchResult([]);
+                setPagination({
+                    totalCount: 0,
+                    current: 1,
+                    last: 0,
+                });
             }
-        }, { location: latlng, radius: 2000 })
+        }, { x: mapData.position.lng, y: mapData.position.lat, radius: 2000, size: 7, page: page })
 
     }
 
-    function updateRegionName(latlng) {
+    const handlePageChange = (page) => {
+        searchPlace(page); // 새로운 페이지 검색
+    };
+
+    function updateRegionName() {
         const geocoder = new kakao.maps.services.Geocoder();
-        geocoder.coord2RegionCode(latlng.getLng(), latlng.getLat(), function (result, status) {
+        geocoder.coord2RegionCode(mapData.position.lng, mapData.position.lat, function (result, status) {
             if (status === kakao.maps.services.Status.OK) {
                 console.log(result);
             }
         })
     }
 
+    function getWalkss() {
+        const obj = {
+            userIdx: "1",
+        }
+        getWalks(obj).then(res => {
+
+            setMyWalks(res.data.data);
+        }).catch(err => {
+
+        })
+
+    }
 
     useEffect(() => {
         if (navigator.geolocation) {
@@ -88,17 +126,21 @@ function KakaoMap() {
         } else {
             alert("이 브라우저는 Geolocation을 지원하지 않습니다.");
         }
-
+        getWalkss();
 
     }, []);
 
 
+    useEffect(() => {
+        updateRegionName();
+        searchPlace();
+        console.log(myWalks);
+    }, [mapData])
 
 
 
     return (
-        <div className="map-body"
-        >
+        <div className="map-body">
             <div className="map-left-bar">
                 {/* 검색창 */}
                 <div className='map-left-bar-top'>
@@ -108,7 +150,7 @@ function KakaoMap() {
                             className="search-bar"
                             placeholder="검색"
                         />
-                        <button className="search-button" onClick={search2Km}>🔍</button>
+                        <button className="search-button" onClick={searchPlace}>🔍</button>
                     </div>
 
                     <div className="map-left-bar-menu">
@@ -128,7 +170,10 @@ function KakaoMap() {
 
                 <div className="menu-item-detail">
 
-                    <MapLeftBar category={activeCategory} data={searchResult}></MapLeftBar>
+                    <MapLeftBar category={activeCategory} searchResults={searchResult}
+                        pagination={pagination} handlePageChange={handlePageChange}
+                        walks={myWalks} setMapData={setMapData}
+                    />
                     <div className='menu-item-none'></div>
                 </div>
 
@@ -138,9 +183,25 @@ function KakaoMap() {
             <Map
                 className="map-display"
                 center={mapData.position}
-                level={3}
+                style={{
+                    position: "relative"
+                }}
+                level={mapData.level}
+                zoomable={true}
+                // onDragEnd={(map) => {
+                //     const level = map.getLevel();
+                //     const latlng = map.getCenter();
+                //     setMapData({
+                //         level: level,
+                //         position: {
+                //             lat: latlng.getLat(),
+                //             lng: latlng.getLng(),
+                //         },
+                //     });
 
-                onDragEnd={(map) => {
+
+                // }}
+                onIdle={(map) => {
                     const level = map.getLevel();
                     const latlng = map.getCenter();
                     setMapData({
@@ -149,20 +210,23 @@ function KakaoMap() {
                             lat: latlng.getLat(),
                             lng: latlng.getLng(),
                         },
-                    })
-                    updateRegionName(latlng);
-                    search2Km(latlng);
-                    console.log(mapData);
+                    });
                 }}
             >
-
 
                 <MapTypeControl position={"TOPRIGHT"} />
                 <ZoomControl position={"RIGHT"} />
                 <MapMarker // 마커를 생성합니다
                     position={userPosition}
-                />
+
+                >
+                    <div style={{ padding: "5px", color: "#000" }}>Hello World!</div>
+                </MapMarker>
+                <MapSearchMarker result={searchResult} category={activeCategory} />
+                <MapWalkPolyline walks={myWalks} category={activeCategory} />
+
             </Map>
+
 
         </div >
     )
