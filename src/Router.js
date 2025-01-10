@@ -16,7 +16,15 @@ import RegisterEmail from './comp/components/user/register_email'
 import RegisterKakao from './comp/components/user/register_kakao'
 import Buttoncontroller from './comp/components/user/buttoncontroller'
 import Login from './comp/components/user/login'
+import ProfileSetup from './comp/components/user/profile_setup'
+import ProfileNavigation from './comp/components/user/ProfileNavigation';
 import Profile from './comp/components/user/user_profile'
+import PasswordChange from './comp/components/user/passwordchange';
+import AccountDeactivation from './comp/components/user/accountdeactivation';
+
+// Pet
+import PetRegistration from './comp/components/pet/pet_registration'
+import MyPetsPage from './comp/components/pet/mypetspage'
 
 
 function Router() {
@@ -39,8 +47,18 @@ function Router() {
       <Route path="/registerbutton" element={<Buttoncontroller />} />
       <Route path="/login" element={<Login />} />
       <Route path="/profile" element={<Profile />} />
+      <Route path="/profilesetup" element={<ProfileSetup />} />
+      <Route path="profilenavigation/*" element={<ProfileNavigation />}>
+                    <Route path="profile" element={<Profile />} />
+                    <Route path="change-password" element={<PasswordChange />} />
+                    <Route path="delete-account" element={<AccountDeactivation />} />
+      </Route>
       {/* map */}
       <Route path="/map" element={<KakaoMap />}></Route>
+      
+      {/* pet */}
+      <Route path="/petregistration" element={<PetRegistration />} />
+      <Route path="/mypetspage" element={<MyPetsPage />} />
 
 
     </Routes>
