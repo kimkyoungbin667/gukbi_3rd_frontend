@@ -45,12 +45,12 @@ function BoardDetail() {
 
   useEffect(() => {
 
+    console.log(boardIdx);
     // 게시글 상세 갖고오기
     if (boardIdx !== null) {
       getBoardDetail({ boardIdx })
         .then(res => {
           if (res.data.code == '200') {
-
             console.log(res.data);
             setBoardContents(res.data.data);
           }
