@@ -1,6 +1,9 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 
+// Main
+import Main from './comp/components/general/Main';
+
 // Board
 import BoardList from './comp/components/board/BoardList';
 import BoardWrite from './comp/components/board/BoardWrite';
@@ -49,13 +52,14 @@ function Router() {
       <Route path="/profile" element={<Profile />} />
       <Route path="/profilesetup" element={<ProfileSetup />} />
       <Route path="profilenavigation/*" element={<ProfileNavigation />}>
-                    <Route path="profile" element={<Profile />} />
-                    <Route path="change-password" element={<PasswordChange />} />
-                    <Route path="delete-account" element={<AccountDeactivation />} />
+        <Route path="profile" element={<Profile />} />
+        <Route path="change-password" element={<PasswordChange />} />
+        <Route path="delete-account" element={<AccountDeactivation />} />
       </Route>
+
       {/* map */}
       <Route path="/map" element={<KakaoMap />}></Route>
-      
+
       {/* pet */}
       <Route path="/petregistration" element={<PetRegistration />} />
       <Route path="/mypetspage" element={<MyPetsPage />} />

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { getBoardComment, writeBoardComment, writeBoardReply } from "../../api/board";
+import { getBoardComment, writeBoardComment, writeBoardReply, commentDelete } from "../../api/board";
 import { jwtDecode } from "jwt-decode";
 import '../../css/board/boardCommentArea.css';
 
@@ -47,6 +47,7 @@ function CommentArea({ boardIdx }) {
 
     useEffect(() => {
         processArr(comments);
+        
     }, [comments])
 
     // 서버에서 받아온 댓글, 대댓글 목록 처리
@@ -103,10 +104,6 @@ function CommentArea({ boardIdx }) {
             })
     }
 
-    // 댓글 삭제
-    const deleteCommentAction = () => {
-
-    }
 
     // 각 위치별 대댓글 관리
     const handleNowReply = (commentIndex, reply) => {
@@ -148,12 +145,21 @@ function CommentArea({ boardIdx }) {
             .catch(err => {
                 console.log(err);
             })
-
-        // 대댓글 삭제
-        const deleteReplyAction = () => {
-
-        }
     }
+
+    
+        // 댓글,대댓글 삭제
+        const deleteComment = (commentIdx) => {
+            
+            commentDelete({commentIdx})
+            .then(res => {
+                alert('댓글이 삭제되었습니다');
+                getBoardCommentAction();
+            })
+            .catch(err => {
+                console.log(err);
+            })
+        }
 
 
     return (
@@ -185,7 +191,7 @@ function CommentArea({ boardIdx }) {
                             />
                             <span className="author-nickname">{comment.authorNickname}</span>
 
-                            {comment.authorToken === token && <button type="button" className="delete-comment-btn" onClick={deleteCommentAction}>삭제</button>}
+                            {userIdx == comment.authorIdx && <button type="button" className="delete-comment-btn" onClick={()=>deleteComment(comment.commentIdx)}>삭제</button>}
                         </div>
 
                         {/* 댓글 내용 */}
@@ -201,7 +207,7 @@ function CommentArea({ boardIdx }) {
                                     <div key={replyIndex} className="reply">
                                         <span>{reply.content}</span>
                                         <span className="authorNickname"> - {reply.authorNickname} 🧑🏻</span>
-                                        {reply.authorIdx === Number(nowUserIdx) && <button type="button" className="delete-reply-btn" onClick={deleteCommentAction}>삭제</button>}
+                                        {userIdx == reply.authorIdx && <button type="button" className="delete-reply-btn" onClick={()=>deleteComment(reply.commentIdx)}>삭제</button>}
                                     </div>
                                 ))}
 

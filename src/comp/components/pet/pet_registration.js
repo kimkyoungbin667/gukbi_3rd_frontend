@@ -17,15 +17,17 @@ function PetRegistration() {
     const fetchUserId = async () => {
       try {
         const response = await getUserProfile();
-        setUserIdx(response.data.userIdx); // API로부터 사용자 ID 설정
+        console.log("User Profile Response:", response.data);
+        setUserIdx(response.data.userIdx); // 사용자 ID 설정
       } catch (error) {
         console.error("사용자 정보 가져오기 실패:", error.message);
-        alert("사용자 정보를 가져오는 데 실패했습니다. 다시 로그인하세요.");
+        alert("사용자 정보를 가져오는 데 실패했습니다.");
       }
     };
-
+  
     fetchUserId();
   }, []);
+  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -59,14 +61,15 @@ function PetRegistration() {
       alert("저장할 데이터가 없습니다.");
       return;
     }
-
+  
     setSaving(true);
-
+  
     try {
       const petData = {
         ...results.response.body.item,
         user_idx: userIdx, // 저장 시 사용자 ID 추가
       };
+      console.log("Saving Pet Data:", petData); // 데이터 확인
       await savePetInfo(petData);
       alert("데이터가 성공적으로 저장되었습니다.");
     } catch (error) {
@@ -76,7 +79,7 @@ function PetRegistration() {
       setSaving(false);
     }
   };
-
+  
   return (
     <div>
       <h1>반려동물 정보 조회</h1>
