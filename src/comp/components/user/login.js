@@ -1,21 +1,37 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { loginUser } from "../../api/user"; // 로그인 API 호출 함수 import
+import { loginUser, kakaoLogin, getUserNickname } from "../../api/user";
+import { useAuth } from "../../../AuthContext"; // AuthContext 사용
 import "../../css/user/login.css";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+  const { setIsLoggedIn } = useAuth(); // 상태 업데이트 함수 가져오기
+
+  useEffect(() => {
+    if (!window.Kakao.isInitialized()) {
+      window.Kakao.init("5eb58fa73fc5691112750151fa475971");
+      console.log("Kakao SDK Initialized");
+    }
+  }, []);
 
   const handleLogin = async (e) => {
     e.preventDefault();
 
     try {
-      const response = await loginUser(email, password); // 로그인 API 호출
-      console.log("로그인 성공:", response.data);
+      const response = await loginUser(email, password);
+      const { accessToken, refreshToken } = response.data;
 
-      const { accessToken } = response.data;
+      localStorage.setItem("token", accessToken);
+      localStorage.setItem("refreshToken", refreshToken);
+      setIsLoggedIn(true); // 로그인 상태 업데이트
+
+      const nicknameResponse = await getUserNickname(accessToken);
+      const nickname = nicknameResponse.data;
+
+      navigate(nickname ? "/" : "/profilesetup");
 
       alert("로그인 성공!");
 
@@ -25,8 +41,35 @@ export default function Login() {
       navigate("/"); // 대시보드 등 다음 페이지로 이동
     } catch (error) {
       console.error("로그인 실패:", error.response?.data || error.message);
-      alert(error.response?.data?.message || "로그인에 실패했습니다.");
+      alert("로그인에 실패했습니다.");
     }
+  };
+
+  const handleKakaoLogin = async () => {
+    window.Kakao.Auth.login({
+      success: async (authObj) => {
+        try {
+          const response = await kakaoLogin(authObj.access_token);
+          const { accessToken, refreshToken } = response.data;
+
+          localStorage.setItem("token", accessToken);
+          localStorage.setItem("refreshToken", refreshToken);
+          setIsLoggedIn(true); // 로그인 상태 업데이트
+
+          const nicknameResponse = await getUserNickname(accessToken);
+          const nickname = nicknameResponse.data;
+
+          navigate(nickname ? "/" : "/profilesetup");
+        } catch (error) {
+          console.error("카카오 로그인 실패:", error.response?.data || error.message);
+          alert("카카오 로그인에 실패했습니다.");
+        }
+      },
+      fail: (err) => {
+        console.error("카카오 로그인 실패:", err);
+        alert("카카오 로그인에 실패했습니다.");
+      },
+    });
   };
 
   return (
@@ -55,9 +98,7 @@ export default function Login() {
             required
           />
         </div>
-        <button type="submit" className="login-button">
-          로그인
-        </button>
+        <button type="submit" className="login-button">로그인</button>
         <button
           type="button"
           className="register-button"
@@ -66,6 +107,11 @@ export default function Login() {
           회원가입
         </button>
       </form>
+      <div className="kakao-login-container">
+        <button className="kakao-login-button" onClick={handleKakaoLogin}>
+          카카오 로그인
+        </button>
+      </div>
     </div>
   );
 }
