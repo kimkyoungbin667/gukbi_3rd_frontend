@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { getBoardComment, writeBoardComment, writeBoardReply } from "../../api/board";
+import { jwtDecode } from "jwt-decode";
 import '../../css/board/boardCommentArea.css';
 
 function CommentArea({ boardIdx }) {
@@ -13,13 +14,14 @@ function CommentArea({ boardIdx }) {
     const [nowComment, setNowComment] = useState('');
 
     // 작성 중인 대댓글
-    const [nowReply, setNowReply] = useState('');
+    const [nowReply, setNowReply] = useState({});
 
+    const token = localStorage.getItem("token");
+    const decodedToken = jwtDecode(token);
+    const userIdx = decodedToken.sub;
 
     // 댓글 불러오기
     useEffect(() => {
-
-        setNowUserIdx(localStorage.getItem("userIdx"));
 
         // 댓글, 대댓글 불러오기 
         getBoardCommentAction();
@@ -30,16 +32,11 @@ function CommentArea({ boardIdx }) {
     const getBoardCommentAction = () => {
 
         if (boardIdx) {
-
-            let obj = new Object();
-            obj.boardIdx = boardIdx;
-
-            getBoardComment(obj)
+            getBoardComment({ boardIdx })
                 .then(res => {
                     console.log(res);
                     if (res.data.code === '200') {
                         setComments(res.data.data);
-                        console.log(res.data.data);
                     }
                 })
                 .catch(err => {
@@ -48,10 +45,8 @@ function CommentArea({ boardIdx }) {
         }
     }
 
-
     useEffect(() => {
         processArr(comments);
-        console.log(comments);
     }, [comments])
 
     // 서버에서 받아온 댓글, 대댓글 목록 처리
@@ -81,36 +76,83 @@ function CommentArea({ boardIdx }) {
         setFinalComments(finalArray);
     };
 
-
     // 댓글 쓰기
     const wirteCommentAction = () => {
 
-        if(nowComment.length <= 0) {
+        if (nowComment.length <= 0) {
             alert("댓글을 입력해주세요!");
             return;
         }
 
-        let obj = new Object();
-        obj.authorIdx = nowUserIdx;
-        obj.boardIdx = boardIdx;
-        obj.comment = nowComment;
+        const commentData = {
+            authorIdx: userIdx,
+            boardIdx: boardIdx,
+            comment: nowComment
+        }
 
-        writeBoardComment(obj)
+        writeBoardComment(commentData)
             .then(res => {
                 if (res.data.data >= 1) {
                     // 다시 댓글, 대댓글 갖고옴
                     getBoardCommentAction();
                     setNowComment("");
                 }
-
             })
             .catch(err => {
                 console.log(err);
             })
     }
 
-    const wirteReplyAction = () => {
+    // 댓글 삭제
+    const deleteCommentAction = () => {
 
+    }
+
+    // 각 위치별 대댓글 관리
+    const handleNowReply = (commentIndex, reply) => {
+
+        setNowReply({
+            ...nowReply,
+            [commentIndex]: reply,
+        });
+    }
+
+    // 대댓글 쓰기
+    const wirteReplyAction = (commentIndex) => {
+        if (nowReply.length <= 0) {
+            alert("대댓글을 입력해주세요!");
+            return;
+        }
+
+        const replyData = {
+            boardIdx: boardIdx,
+            authorIdx: userIdx,
+            comment: nowReply[commentIndex],
+            parentIdx: commentIndex
+        }
+
+        writeBoardReply(replyData)
+            .then(res => {
+                if (res.data.data >= 1) {
+
+                    // 다시 댓글, 대댓글 갖고옴
+                    getBoardCommentAction();
+
+                    setNowReply({
+                        ...nowReply,
+                        [commentIndex]: "",
+                    });
+                }
+
+            })
+            .catch(err => {
+                console.log(err);
+            })
+
+        // 대댓글 삭제
+        const deleteReplyAction = () => {
+
+        }
     }
 
 
@@ -131,8 +173,9 @@ function CommentArea({ boardIdx }) {
 
             {/* 댓글 목록 */}
             {finalComments.length > 0 &&
-                 [...finalComments].reverse().map((comment, commentIndex) => (
+                [...finalComments].reverse().map((comment, commentIndex) => (
                     <div key={commentIndex} className="comment">
+
                         {/* 프로필과 작성자 이름 */}
                         <div className="user-info">
                             <img
@@ -141,6 +184,8 @@ function CommentArea({ boardIdx }) {
                                 className="profile-image"
                             />
                             <span className="author-nickname">{comment.authorNickname}</span>
+
+                            {comment.authorToken === token && <button type="button" className="delete-comment-btn" onClick={deleteCommentAction}>삭제</button>}
                         </div>
 
                         {/* 댓글 내용 */}
@@ -156,6 +201,7 @@ function CommentArea({ boardIdx }) {
                                     <div key={replyIndex} className="reply">
                                         <span>{reply.content}</span>
                                         <span className="authorNickname"> - {reply.authorNickname} 🧑🏻</span>
+                                        {reply.authorIdx === Number(nowUserIdx) && <button type="button" className="delete-reply-btn" onClick={deleteCommentAction}>삭제</button>}
                                     </div>
                                 ))}
 
@@ -165,12 +211,11 @@ function CommentArea({ boardIdx }) {
                                     type="text"
                                     className="reply-write-area"
                                     placeholder="대댓글 작성"
-                                    value={nowReply}
-                                    onChange={e => setNowReply(e.target.value)}
+                                    value={nowReply[comment.commentIdx]}
+                                    onChange={(e) => handleNowReply(comment.commentIdx, e.target.value)}
                                 />
-                                <input type="button" className="write-reply-btn" value="작성"></input>
+                                <input type="button" className="write-reply-btn" value="작성" onClick={() => wirteReplyAction(comment.commentIdx)}></input>
                             </div>
-
                         </div>
                     </div>
                 ))}

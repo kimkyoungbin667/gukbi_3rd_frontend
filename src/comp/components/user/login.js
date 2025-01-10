@@ -32,6 +32,13 @@ export default function Login() {
       const nickname = nicknameResponse.data;
 
       navigate(nickname ? "/" : "/profilesetup");
+
+      alert("로그인 성공!");
+
+      // 로그인 성공 시 토큰 저장
+      localStorage.setItem("token", accessToken); // JWT 토큰만 저장
+
+      navigate("/"); // 대시보드 등 다음 페이지로 이동
     } catch (error) {
       console.error("로그인 실패:", error.response?.data || error.message);
       alert("로그인에 실패했습니다.");
