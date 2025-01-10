@@ -36,3 +36,15 @@
     transform: rotate(360deg);
   }
 }
+
+.middle-area {
+  background-image: url('./assets/img/background.png');
+  background-size: auto;                          
+  background-position: center;                    
+  background-repeat: repeat;                      
+  width: 100%;                                    
+  min-height: 100vh;                              
+  font-family: 'Noto Sans KR', sans-serif;
+  padding-top: 180px;
+}
+

@@ -1,0 +1,145 @@
+/* 모든 요소의 box-sizing 설정 */
+* {
+    box-sizing: border-box;
+}
+
+/* 전체 배경 및 기본 글꼴 설정 */
+body {
+    font-family: "Indie Flower";
+    line-height: 1.618em;
+    background-color: #e4d4bb;
+    background-image: repeating-radial-gradient(circle,
+            #E4D4BB, #E7DAC6 50%, #E7DAC6 100%);
+    background-size: 10px 10px;
+}
+
+/* 이미지 기본 설정 */
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* 전체 레이아웃 설정 */
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;   
+    width: 100%;
+    padding: 0 2rem;
+    text-align: center;
+}
+
+.polaroid {
+    background: #fff;
+    padding: 1.5rem; /* 기존보다 여백을 더 추가 */
+    box-shadow: 0 0.25rem 1rem rgba(0, 0, 0, 0.2);
+    position: relative;
+    overflow: hidden;
+}
+
+/* 캡션 스타일 (기본적으로 숨김) */
+.caption {
+    font-size: 3.5rem;
+    text-align: center;
+    line-height: 2em;
+    margin-top:10px;
+    font-family: 'catFont';
+    opacity: 0;               /* 기본적으로 숨김 */
+    transition: opacity 0.35s ease-in-out;
+}
+
+/* 개별 아이템 박스 설정 */
+.item {
+    display: inline-block;
+    margin-top: 2rem;
+    filter: grayscale(100%);  /* 흑백 이미지 */
+    position: relative;
+    overflow: hidden;
+    transition: all 0.35s ease-in-out;
+    z-index: 1;
+}
+
+/* 폴라로이드 크기 설정 */
+.item .polaroid {
+    width: 550px;
+    position: relative;
+    overflow: hidden;
+}
+
+/* 이미지 스타일 */
+.item img {
+    width: 100%;
+    height: auto;
+    display: block;
+    transition: all 0.35s ease-in-out;
+    padding: 0.5rem; /* 이미지와 프레임 사이에 여백 추가 */
+}
+
+/* 호버 효과: 컬러 전환 + 캡션 표시 */
+.item:hover {
+    filter: none;  /* 흑백 해제 → 컬러 전환 */
+    transform: scale(1, 1) rotate(0deg) !important;
+    transition: all 0.35s ease-in-out;
+}
+
+/* 호버 시 이미지 확대 */
+.item:hover img {
+    transform: scale(1.03);  /* 살짝 확대 */
+}
+
+/* 호버 시 캡션 나타나기 */
+.item:hover .caption {
+    opacity: 1;  /* 캡션 표시 */
+}
+
+/* 폴라로이드 그림자 효과 */
+.item .polaroid:before {
+    content: '';
+    position: absolute;
+    z-index: -1;
+    transition: all 0.35s;
+}
+
+/* 다양한 회전 효과 */
+.item:nth-of-type(4n+1) {
+    transform: scale(0.8, 0.8) rotate(5deg);
+}
+
+.item:nth-of-type(4n+2) {
+    transform: scale(0.8, 0.8) rotate(-5deg);
+}
+
+.item:nth-of-type(4n+3) {
+    transform: scale(0.8, 0.8) rotate(-3deg);
+}
+
+.item:nth-of-type(4n+4) {
+    transform: scale(0.8, 0.8) rotate(3deg);
+}
+
+/* 호버 시 그림자 효과 */
+.item:hover .polaroid:before {
+    content: '';
+    position: absolute;
+    z-index: -1;
+    transform: rotate(0deg);
+    height: 90%;
+    width: 90%;
+    bottom: 0%;
+    right: 5%;
+    box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.2);
+    transition: all 0.35s;
+}
+
+/* 포스트잇 기본 스타일 */
+.postit {
+    position: absolute;
+    width: 450px;
+    height: 550px;
+    transform: translateY(-50%);
+    transition: all 0.5s ease-in-out;
+    z-index: 2;
+    margin-left: 250px;
+    pointer-events: none;
+}
+

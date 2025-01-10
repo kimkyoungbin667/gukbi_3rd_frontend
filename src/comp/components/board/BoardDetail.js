@@ -135,39 +135,41 @@ function BoardDetail() {
 
   return (
     <>
-      <div className="board-detail-container">
-        <h1 className="board-detail-title">{boardContents.title}</h1>
-        <div className="board-detail-content">{boardContents.content}</div>
-        <div className="board-detail-info">
-          <div>
-            <span>작성자:</span> <span>{boardContents.createdByUserNickname}</span>
+      <div className="board-detail-out">
+        <div className="board-detail-container">
+          <h1 className="board-detail-title">{boardContents.title}</h1>
+          <div className="board-detail-content">{boardContents.content}</div>
+          <div className="board-detail-info">
+            <div>
+              <span>작성자:</span> <span>{boardContents.createdByUserNickname}</span>
+            </div>
+            <div>
+              <span>작성일:</span>
+              <span>{new Date(boardContents.createdAt).toLocaleString()}</span>
+            </div>
+            <div>
+              <span>조회수:</span> <span>{boardContents.viewCount}</span>
+            </div>
+            <div>
+              <span>추천수:</span> <span>{boardContents.likeCount}</span>
+            </div>
           </div>
-          <div>
-            <span>작성일:</span>
-            <span>{new Date(boardContents.createdAt).toLocaleString()}</span>
-          </div>
-          <div>
-            <span>조회수:</span> <span>{boardContents.viewCount}</span>
-          </div>
-          <div>
-            <span>추천수:</span> <span>{boardContents.likeCount}</span>
-          </div>
+
+          {boardContents.imageFiles !== null && (
+            <div className="upload-images">
+              {boardContents.imageFiles.map((image, index) => (
+                <div key={index} className="upload-image">
+                  <img
+                    src={`http://localhost:8080/${image}`}
+                    alt={`이미지 ${index + 1}`}
+                  />
+                </div>
+              ))}
+            </div>
+          )}
         </div>
-  
-        {boardContents.imageFiles !== null && (
-          <div className="upload-images">
-            {boardContents.imageFiles.map((image, index) => (
-              <div key={index} className="upload-image">
-                <img
-                  src={`http://localhost:8080/${image}`}
-                  alt={`이미지 ${index + 1}`}
-                />
-              </div>
-            ))}
-          </div>
-        )}
       </div>
-  
+
       {Number(userIdx) === Number(boardContents.createdByUserIdx) && (
         <div className="board-detail-actions">
           <button className="edit-button" onClick={handleEdit}>
@@ -178,7 +180,7 @@ function BoardDetail() {
           </button>
         </div>
       )}
-  
+
       <div className="board-like-area">
         <button
           className={isLiked ? "liked-button" : "default-like-button"}
@@ -187,20 +189,19 @@ function BoardDetail() {
           👍 {isLiked ? "Liked" : "Like"}
         </button>
       </div>
-  
+
       <div>
         <button className="goToboardList-btn" onClick={handleGoToList}>
           목록으로
         </button>
       </div>
-      <hr />
-  
+
       {boardIdx && <CommentArea boardIdx={boardIdx} />}
-  
+
       <hr />
     </>
   );
-  
+
 }
 
 export default BoardDetail;

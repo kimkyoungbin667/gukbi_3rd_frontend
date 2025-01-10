@@ -33,7 +33,7 @@ import MyPetsPage from './comp/components/pet/mypetspage'
 function Router() {
   return (
     <Routes>
-      <Route path="/" element={<Home />} />
+      <Route path="/" element={<Main />} />
 
       {/* board */}
       <Route path="/boardList" element={<BoardList />} />
@@ -69,12 +69,5 @@ function Router() {
   );
 }
 
-function Home() {
-  return (
-    <div>
-      <h2>메인 페이지</h2>
-    </div>
-  );
-}
 
 export default Router;
