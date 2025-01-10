@@ -244,3 +244,58 @@
     height: 16px;
 
 }
+
+
+.bubble {
+    position: relative;
+    width: 300px;
+    height: 200px;
+    padding: 8px;
+
+    bottom: 180px;
+    right: 38px;
+
+    background: #FFFFFF;
+    -webkit-border-radius: 23px;
+    -moz-border-radius: 23px;
+    border-radius: 23px;
+    border: #7F7F7F solid 2px;
+}
+
+.bubble:after {
+    content: '';
+    position: absolute;
+    border-style: solid;
+    border-width: 26px 34px 0;
+    border-color: #FFFFFF transparent;
+    display: block;
+    width: 0;
+    z-index: 1;
+    bottom: -26px;
+    left: 163px;
+}
+
+.bubble:before {
+    content: '';
+    position: absolute;
+    border-style: solid;
+    border-width: 27px 35px 0;
+    border-color: #7F7F7F transparent;
+    display: block;
+    width: 0;
+    z-index: 0;
+    bottom: -29px;
+    left: 162px;
+}
+
+.xbox {
+    background: url(../../../assets/img/xbox.png);
+    height: 26px;
+    width: 26px;
+    background-size: cover;
+    background-position: center;
+    border: none;
+    right: px;
+    position: relative;
+    float: right;
+}
