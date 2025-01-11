@@ -6,6 +6,11 @@
   height: 40vmin;
   pointer-events: none;
 }
+html {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden; /* ✅ 가로 스크롤 방지 */
+}
 
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
@@ -42,9 +47,8 @@
   background-size: auto;                          
   background-position: center;                    
   background-repeat: repeat;                      
-  width: 100%;                                    
+
   min-height: 100vh;                              
   font-family: 'Noto Sans KR', sans-serif;
-  padding-top: 180px;
 }
 

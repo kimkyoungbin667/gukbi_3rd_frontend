@@ -1,0 +1,87 @@
+.ai-container .ai-title {
+    font-family: "studyGood";
+    font-size: 30px;
+}
+
+.ai-cat {
+    position: fixed;  /* ✅ absolute 사용 */
+    width: auto;
+    height: 700px;
+    right:40px;
+    margin-top: 100px;
+}
+
+.ai-resultarea {
+    position: absolute;
+    top: 35%; /* 칠판 중앙 위치 */
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 950px;
+    max-height: 400px; /* 🔥 최대 높이 제한 */
+    overflow-y: auto;  /* 🔥 스크롤 추가 */
+    font-size: 35px;  /* 폰트 크기 조정 */
+    color: white;
+    font-family: "studyGood";
+    word-break: keep-all;
+    white-space: pre-wrap;
+    line-height: 1.8;  /* 🔥 줄 간격 추가 */
+    margin-top: 120px;
+    text-align: center;
+    background-color: transparent;
+    padding: 20px; /* 🔥 안쪽 여백 추가 */
+    box-sizing: border-box;
+    border-radius: 10px;
+    scrollbar-width: thin;  /* 🔥 스크롤바 얇게 */
+    scrollbar-color: #ccc transparent;  /* 🔥 스크롤바 색상 */
+}
+
+/* 🔥 웹킷 기반 브라우저 스크롤 스타일 */
+.ai-resultarea::-webkit-scrollbar {
+    width: 8px;
+}
+
+.ai-resultarea::-webkit-scrollbar-thumb {
+    background-color: #ccc;
+    border-radius: 10px;
+}
+
+.ai-resultarea .what-question {
+    font-family: "studyGood";
+    font-size: 35px;
+}
+
+
+
+.ai-input-text-area {
+    position: fixed;
+    left: 50%;
+    top: 65%;
+    transform: translateX(-50%);
+    display: flex;              /* Flexbox로 수평 정렬 */
+    align-items: center;        /* 세로 중앙 정렬 */
+    gap: 10px;                  /* 입력창과 버튼 사이 간격 */
+}
+
+.ai-input-text-area textarea {
+    width: 70vh;               /* textarea의 너비 조정 */
+    height: 100px;
+    font-size: 35px;
+    resize: none;              /* 크기 조정 비활성화 */
+}
+
+.ai-input-text-area button {
+    height: 100px;             /* 버튼 높이를 textarea와 맞춤 */
+    padding: 0 20px;           /* 좌우 여백 */
+    font-size: 30px;
+    font-family: 'studyGood';
+    cursor: pointer;
+    border: none;
+    background-color: #FFB6C1; /* 버튼 배경색 (원하는 색상으로 변경 가능) */
+    color: white;              /* 버튼 글자 색 */
+    border-radius: 5px;        /* 버튼 모서리 둥글게 */
+    transition: background-color 0.3s;
+}
+
+.ai-input-text-area button:hover {
+    background-color: #FF69B4; /* 마우스 호버 시 색상 변경 */
+}

@@ -1,6 +1,6 @@
 /* 게시판 전체 영역 스타일 */
 .table-container {
-  margin: 100px auto;
+  margin: 30px auto;
   padding: 30px;
   border: 1px solid #f0e68c;
   border-radius: 10px;
@@ -17,6 +17,7 @@
   background-color: #ffffff;
   border-radius: 8px;
   overflow: hidden;
+  table-layout: fixed;  /* ✅ 열 너비 고정 */
 }
 
 /* 테이블 헤더 스타일 */
@@ -24,9 +25,11 @@
   background-color: #f8d7da;
   color: #333;
   padding: 16px 12px;
-  font-size: 30px;
-  font-weight: bold;
+  font-size: 40px;
   text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   font-family: "studyGood";
   border: 1px solid #f0e68c;
 }
@@ -35,9 +38,43 @@
 .styled-table td {
   padding: 24px 14px;
   text-align: center;
-  font-size: 25px;
+  font-size: 40px;
   font-family: "studyGood";
   border: 1px solid #f0e68c;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ✅ 각 열의 너비 조정 */
+.styled-table th:nth-child(1),
+.styled-table td:nth-child(1) {
+  width: 5%;   /* 번호 */
+}
+
+.styled-table th:nth-child(2),
+.styled-table td:nth-child(2) {
+  width: 40%;  /* 제목 */
+}
+
+.styled-table th:nth-child(3),
+.styled-table td:nth-child(3) {
+  width: 15%;  /* 작성자 */
+}
+
+.styled-table th:nth-child(4),
+.styled-table td:nth-child(4) {
+  width: 10%;  /* 추천수 */
+}
+
+.styled-table th:nth-child(5),
+.styled-table td:nth-child(5) {
+  width: 10%;  /* 조회수 */
+}
+
+.styled-table th:nth-child(6),
+.styled-table td:nth-child(6) {
+  width: 20%;  /* 작성일 */
 }
 
 /* 행 색상 교차 */
@@ -52,19 +89,35 @@
 
 /* 글쓰기 버튼 스타일 */
 input[type="button"] {
-  margin: 20px auto;
   display: block;
   background-color: #ff6f61;
   color: white;
   border: none;
-  border-radius: 30px;
-  padding: 15px 35px;
+  border-radius: 20px;
+  padding: 12px 30px;
   font-family: "studyGood";
   font-size: 30px;
-  font-weight: bold;
+  float: right;
   cursor: pointer;
+  margin-bottom: 20px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease;
+}
+
+/* 버튼과 제목을 한 줄에 정렬 */
+.button-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+/* 게시글 목록 제목 */
+.boardlist-title-area {
+  font-size: 60px;
+  font-family: 'studyGood';
+  color: #333;
+  margin: 0;
 }
 
 input[type="button"]:hover {
@@ -80,7 +133,6 @@ input[type="button"]:hover {
   gap: 10px;
 }
 
-
 /* 페이지네이션 버튼 */
 .pagination button {
   background-color: #ff6f61;
@@ -93,6 +145,7 @@ input[type="button"]:hover {
   font-weight: bold;
   cursor: pointer;
   transition: all 0.3s ease;
+  margin-bottom: 80px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
