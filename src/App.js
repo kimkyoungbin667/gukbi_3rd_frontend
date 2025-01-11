@@ -10,12 +10,13 @@ function App() {
       {/* AuthProvider로 애플리케이션 감싸기 */}
       <AuthProvider>
         <BrowserRouter>
-          <Navbar />
-
           <div className='middle-area'>
-          <Router />
+            <Navbar />
+
+            <Router />
           </div>
         </BrowserRouter>
+
       </AuthProvider>
     </div>
   );

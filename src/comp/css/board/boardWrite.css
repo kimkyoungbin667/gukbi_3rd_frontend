@@ -7,7 +7,7 @@
     background-color: #fff;
     border-radius: 12px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    font-family: "Arial", sans-serif;
+    font-family: "studyGood";
   }
   
   .board-edit-title {
@@ -35,8 +35,8 @@
   .board-edit-input input,
   .board-edit-input textarea {
     width: 100%;
-    padding: 12px;
-    font-size: 25px;
+    padding: 30px;
+    font-size: 30px;
     border: 1px solid #ddd;
     border-radius: 8px;
     box-sizing: border-box;
@@ -71,7 +71,7 @@
     color: white;
     border: none;
     border-radius: 30px;
-    padding: 10px 30px;
+    padding: 10px 20px;
     font-size: 25px;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -81,10 +81,6 @@
     background-color: #0056b3;
   }
   
-  .board-image-input {
-    margin-top: 20px;
-  }
-
 
 /* 전체 미리보기 영역 스타일 */
 .images-preview {
@@ -153,8 +149,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 20px 0;
-  margin-bottom: 30px;
+  
 }
 
 /* 파일 업로드 컨테이너 */
@@ -162,7 +157,6 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 20px 0;
 }
 
 /* 숨겨진 기본 파일 업로드 입력 필드 */
@@ -175,12 +169,12 @@
   display: inline-block;
   background-color: #CDC1FF;
   color: white;
-  font-size: 30px;
+  font-size: 25px;
   font-weight: initial;
-  padding: 14px 24px;
-  border-radius: 30px;
+  padding: 5px 15px;
+  border-radius: 25px;
   cursor: pointer;
-  font-family: 'studyGood','Arial', sans-serif;
+  font-family: 'studyGood';
   transition: background-color 0.3s ease, transform 0.3s ease;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }

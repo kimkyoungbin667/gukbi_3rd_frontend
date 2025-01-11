@@ -13,12 +13,13 @@ a {
 .navbar {
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    background-color: beige;
-    padding: 20px 70px;
+    align-items: left;
+    background-color: rgba(0, 0, 0, 0.5);
+    font-family: 'catFont';
+    padding: 20px 50px;
     position: relative;
     z-index: 1000;
-    height: 100px;
+    height: 180px;
 }
 
 /* 로고 스타일 */
@@ -30,8 +31,11 @@ a {
 }
 
 .navbar__icon {
-    width: 200px;
-    height: 120px;
+    position: absolute;
+    top: 10px;
+    left:40px;
+    width: auto;
+    height:auto;
     margin-right: 8px;
     object-fit: fill;
 }
@@ -47,18 +51,16 @@ a {
 
 .navbar__item {
     position: relative;
-    padding: 8px 12px;
+    padding: 10px 15px;
+    margin-top:10px;
     cursor: pointer;
-    color: #37474f;
+    color: white;
     font-weight: bold;
     user-select: none;
     /* 텍스트 선택 방지 */
     font-size: 50px;
 }
 
-.navbar__item:hover {
-    background-color: #cfd8dc;
-}
 
 /* 드롭다운 메뉴 숨기기 */
 .dropdown__menu {
@@ -76,6 +78,9 @@ a {
     border-radius: 4px;
 }
 
+.navbar-text {
+    margin-top: 20px;
+}
 
 /* 부모 요소에 호버 시 드롭다운 메뉴 표시 */
 .navbar__item:hover .dropdown__menu {
@@ -90,7 +95,6 @@ a {
 }
 
 .dropdown__menu li:hover {
-    background-color: #f1f1f1;
     transition: background-color 0.3s ease;
 }
 
@@ -112,3 +116,4 @@ a {
     font-size: 20px;
     cursor: pointer;
 }
+

@@ -45,6 +45,17 @@ function BoardList() {
     return (
         <div>
             <div className="table-container">
+
+                <div className="button-container">
+
+                    <p className="boardlist-title-area">게시글 목록</p>
+                    <input
+                        type="button"
+                        value="글쓰기"
+                        onClick={() => navigate("/boardWrite")}
+                    />
+                </div>
+
                 <table className="styled-table">
                     <thead>
                         <tr>
@@ -84,11 +95,6 @@ function BoardList() {
                 ))}
             </div>
 
-            <input
-                type="button"
-                value="글쓰기"
-                onClick={() => navigate("/boardWrite")}
-            />
         </div>
     );
 }

@@ -23,14 +23,14 @@ function BoardWrite() {
     imageFiles.forEach((item) => {
       formData.append("images", item.file); // 파일 객체만 추가
     });
-    
+
     // 디버깅: FormData의 내용을 출력
     for (const [key, value] of formData.entries()) {
       console.log(`${key}:`, value);
     }
 
     try {
-      const res = await fetch("http://localhost:8080/api/board/createBoardPost", {
+      const res = await fetch("http://58.74.46.219:33334/api/board/createBoardPost", {
         method: "POST",
         body: formData,
         headers: {
@@ -39,7 +39,6 @@ function BoardWrite() {
       });
 
       const result = await res.json();
-
 
       if (res.ok) {
         alert("게시글이 성공적으로 작성되었습니다.");
@@ -108,7 +107,7 @@ function BoardWrite() {
       {/* 이미지 업로드 */}
       <div className="board-image-input">
         <div className="file-upload">
-          <label htmlFor="file-upload">🖼️ 이미지 업로드</label>
+          <label htmlFor="file-upload">업로드 🖼️</label>
           <input
             type="file"
             multiple
@@ -117,12 +116,14 @@ function BoardWrite() {
             onChange={handleImageFile}
           />
         </div>
+
         {/* 이미지 업로드 제한 표시 */}
-        <p className="image-limit">
+        {imageFiles.length >0 && <p p className="image-limit">
           업로드된 이미지: {imageFiles.length}/{MAX_IMAGES}
-        </p>
+        </p>}
+
         {/* 업로드한 이미지 미리보기 */}
-        <div className="board-edit-upload-images">
+        {imageFiles.length > 0 && <div className="board-edit-upload-images">
           {imageFiles.map((image, index) => (
             <div key={index} className="board-edit-upload-image">
               <img src={image.previewUrl} alt={`미리보기 ${index}`} />
@@ -131,7 +132,7 @@ function BoardWrite() {
               </button>
             </div>
           ))}
-        </div>
+        </div>}
       </div>
 
       {/* 작성 완료 버튼 */}
@@ -146,7 +147,7 @@ function BoardWrite() {
           취소
         </button>
       </div>
-    </div>
+    </div >
   );
 }
 

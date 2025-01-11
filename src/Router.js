@@ -10,6 +10,9 @@ import BoardWrite from './comp/components/board/BoardWrite';
 import BoardEdit from './comp/components/board/BoardEdit';
 import BoardDetail from './comp/components/board/BoardDetail';
 
+// Test
+import Test from './comp/components/board/Test';
+
 // Chat
 import ChatList from './comp/components/chat/ChatList';
 import KakaoMap from './comp/components/map/KakaoMap';
@@ -29,6 +32,10 @@ import AccountDeactivation from './comp/components/user/accountdeactivation';
 import PetRegistration from './comp/components/pet/pet_registration'
 import MyPetsPage from './comp/components/pet/mypetspage'
 
+// AI
+import AiChat from './comp/components/ai/AiChat'
+
+
 function Router() {
   return (
     <Routes>
@@ -39,6 +46,9 @@ function Router() {
       <Route path="/boardWrite" element={<BoardWrite />} />
       <Route path="/boardEdit" element={<BoardEdit />} />
       <Route path="/boardDetail" element={<BoardDetail />} />
+
+      {/* test */}
+      <Route path="/test" element={<Test />} />
 
       {/* chat */}
       <Route path="/chatList" element={<ChatList />} />
@@ -63,6 +73,8 @@ function Router() {
       <Route path="/petregistration" element={<PetRegistration />} />
       <Route path="/mypetspage" element={<MyPetsPage />} />
 
+      {/* ai */}
+      <Route path="/aiChat" element={<AiChat />} />
 
     </Routes>
   );
