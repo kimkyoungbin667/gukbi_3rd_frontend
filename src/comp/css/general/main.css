@@ -135,11 +135,37 @@ img {
 .postit {
     position: absolute;
     width: 450px;
-    height: 550px;
-    transform: translateY(-50%);
-    transition: all 0.5s ease-in-out;
+    height: 750px;
+    transition: opacity 0.05s ease-in-out, transform 0.05s ease-in-out;
     z-index: 2;
     margin-left: 250px;
+    margin-top: 70px;
     pointer-events: none;
+    
 }
 
+/* 호버 시 나타나는 효과 */
+.item:hover .postit {
+    opacity: 1; 
+}
+
+/* 포스트잇 내용 부분 */
+.postit-text {
+    position: relative;
+    bottom: 500px;
+    left: 26px;
+    z-index: 2; 
+    font-family: "catFont", cursive;
+    font-size: 1.8rem;
+    color: #333;
+    text-align: center;
+    padding: 20px;
+    line-height: 1.5;
+}
+
+/* 포스트잇 텍스트의 제목 부분 */
+.highlight-text {
+    font-size: 2.1rem; 
+    font-weight: bold; 
+    color: #000;        
+}
