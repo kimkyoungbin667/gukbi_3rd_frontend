@@ -1,6 +1,9 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 
+// Main
+import Main from './comp/components/general/Main';
+
 // Board
 import BoardList from './comp/components/board/BoardList';
 import BoardWrite from './comp/components/board/BoardWrite';
@@ -26,11 +29,10 @@ import AccountDeactivation from './comp/components/user/accountdeactivation';
 import PetRegistration from './comp/components/pet/pet_registration'
 import MyPetsPage from './comp/components/pet/mypetspage'
 
-
 function Router() {
   return (
     <Routes>
-      <Route path="/" element={<Home />} />
+      <Route path="/" element={<Main />} />
 
       {/* board */}
       <Route path="/boardList" element={<BoardList />} />
@@ -49,13 +51,14 @@ function Router() {
       <Route path="/profile" element={<Profile />} />
       <Route path="/profilesetup" element={<ProfileSetup />} />
       <Route path="profilenavigation/*" element={<ProfileNavigation />}>
-                    <Route path="profile" element={<Profile />} />
-                    <Route path="change-password" element={<PasswordChange />} />
-                    <Route path="delete-account" element={<AccountDeactivation />} />
+        <Route path="profile" element={<Profile />} />
+        <Route path="change-password" element={<PasswordChange />} />
+        <Route path="delete-account" element={<AccountDeactivation />} />
       </Route>
+
       {/* map */}
       <Route path="/map" element={<KakaoMap />}></Route>
-      
+
       {/* pet */}
       <Route path="/petregistration" element={<PetRegistration />} />
       <Route path="/mypetspage" element={<MyPetsPage />} />
@@ -65,12 +68,5 @@ function Router() {
   );
 }
 
-function Home() {
-  return (
-    <div>
-      <h2>메인 페이지</h2>
-    </div>
-  );
-}
 
 export default Router;

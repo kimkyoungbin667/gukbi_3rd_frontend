@@ -4,6 +4,7 @@ import "../../css/chat/chat.css";
 import SockJS from "sockjs-client";
 import { Client } from "@stomp/stompjs";
 import { GiNewBorn } from "react-icons/gi";
+import { jwtDecode } from "jwt-decode";
 
 export default function Chat() {
     const [selectedRoomIdx, setSelectedRoomIdx] = useState(null); // 선택된 채팅방 ID
@@ -15,7 +16,11 @@ export default function Chat() {
     const messagesEndRef = useRef(null); // 메시지 영역 끝 참조
     const [personName, setPersonName] = useState(''); // 클릭한 채팅에 있는 사람 이름
 
+    // 토큰에서 userIdx 추출
     const token = localStorage.getItem("token");
+    const decodedToken = jwtDecode(token);
+    const userIdx = decodedToken.sub;
+
 
     // WebSocket 연결
     useEffect(() => {
@@ -23,7 +28,7 @@ export default function Chat() {
 
         console.log("토큰 : ", token);
         // SockJS에 URL에 토큰 추가 (옵션 1)
-        const socket = new SockJS(`http://localhost:8080/ws?token=${token}`);
+        const socket = new SockJS(`http://58.74.46.219:33334/ws?token=${token}`);
         const client = new Client({
             webSocketFactory: () => socket,
             debug: (str) => console.log(str),
@@ -67,44 +72,36 @@ export default function Chat() {
 
     // 채팅방 클릭 핸들러
     const handleRoomClick = (roomIdx, index) => {
+        if (!stompClient || !stompClient.connected) {
+            console.error("STOMP 연결이 되어 있지 않습니다.");
+            return;  // 연결이 없으면 구독 중단
+        }
 
-        // roomIdx : 채팅방 인덱스
-        // index : 리스트 중 누른 인덱스
-        setSelectedRoomIdx(roomIdx); // 선택된 채팅방 ID 업데이트
-
-        // 채팅 상세에서 뜰 이름 설정
+        setSelectedRoomIdx(roomIdx);
         setPersonName(chatRoomList[index].opponentName);
 
-        // 채팅 내역 가져오기
-        let obj = new Object();
-        obj.roomIdx = roomIdx;
-
+        let obj = { roomIdx: roomIdx };
         getChatRoomMsg(obj)
             .then((res) => {
                 if (res.data.code === "200") {
+                    console.log(res);
                     setChatRoomMsg(res.data.data);
                 }
             })
             .catch((err) => console.error("Error fetching chat messages:", err));
 
-        // 이전 구독 해제
         if (currentSubscription) {
             currentSubscription.unsubscribe();
         }
 
-        // 새 채팅방 구독
         const newSubscription = stompClient.subscribe(`/topic/room/${roomIdx}`, (msg) => {
             const receivedMessage = JSON.parse(msg.body);
-
-            // 상태 업데이트
-            setChatRoomMsg((prev) => {
-                const updatedMessages = [...prev, receivedMessage];
-                return updatedMessages;
-            });
+            setChatRoomMsg((prev) => [...prev, receivedMessage]);
         });
 
-        setCurrentSubscription(newSubscription); // 새 구독 설정
+        setCurrentSubscription(newSubscription);
     };
+
 
     // 메시지 전송
     const sendMessage = () => {
@@ -168,7 +165,8 @@ export default function Chat() {
                         <div className="chat-room-messages">
                             {chatRoomMsg.map((item, index) => {
 
-                                const isMine = token === item.senderToken;
+                                const isMine = userIdx == item.senderIdx;
+
                                 return (
                                     <div
                                         key={index}

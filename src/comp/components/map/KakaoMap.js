@@ -8,14 +8,18 @@ import MapSearchMarker from './MapSearchMarker';
 import MapWalkPolyline from './MapWalkPolyline';
 
 function KakaoMap() {
+
+    useKakaoLoader();
     const { kakao } = window;
+    
     const [mapData, setMapData] = useState({
-        level: 0,
+        level: 3,
         position: {
-            lat: 0,
-            lng: 0,
+            lat: 36.7472206,
+            lng: 126.7038631,
         }
     })
+
     const [state, setState] = useState({
         // 지도의 초기 위치
         center: { lat: 33.450701, lng: 126.570667 },
@@ -26,8 +30,7 @@ function KakaoMap() {
     const [myWalks, setMyWalks] = useState([]);
 
     const [regionName, setRegionName] = useState("");
-    const [searchKeyword, setSearchKeyword] = useState("동물병원");
-
+    const [searchKeyword, setSearchKeyword] = useState("애견샵");
 
     const [searchResult, setSearchResult] = useState([]);
     const [pagination, setPagination] = useState({
@@ -103,37 +106,37 @@ function KakaoMap() {
     }
 
     useEffect(() => {
-        if (navigator.geolocation) {
-            // 위치 정보를 가져옴
-            navigator.geolocation.getCurrentPosition(
-                function (position) {
-                    const latitude = position.coords.latitude; // 위도
-                    const longitude = position.coords.longitude; // 경도
-                    console.log("현재 위치: " + latitude + ", " + longitude);
-                    setUserPosition({ lat: latitude, lng: longitude }); // 지도 중심 업데이트
-                    setMapData({
-                        level: 3,
-                        position: {
-                            lat: latitude, lng: longitude,
-                        }
-                    })
-                },
-                function (error) {
-                    // 에러 처리
-                    alert("위치 정보를 가져오는 데 실패했습니다. 에러 코드: " + error.code);
-                }
-            );
-        } else {
-            alert("이 브라우저는 Geolocation을 지원하지 않습니다.");
-        }
+        // if (navigator.geolocation) {
+        //     // 위치 정보를 가져옴
+        //     navigator.geolocation.getCurrentPosition(
+        //         function (position) {
+        //             const latitude = position.coords.latitude; // 위도
+        //             const longitude = position.coords.longitude; // 경도
+        //             console.log("현재 위치: " + latitude + ", " + longitude);
+        //             setUserPosition({ lat: latitude, lng: longitude }); // 지도 중심 업데이트
+        //             setMapData({
+        //                 level: 3,
+        //                 position: {
+        //                     lat: latitude, lng: longitude,
+        //                 }
+        //             })
+        //         },
+        //         function (error) {
+        //             // 에러 처리
+        //             alert("위치 정보를 가져오는 데 실패했습니다. 에러 코드: " + error.code);
+        //         }
+        //     );
+        // } else {
+        //     alert("이 브라우저는 Geolocation을 지원하지 않습니다.");
+        // }
         getWalkss();
 
     }, []);
 
 
     useEffect(() => {
-        updateRegionName();
-        searchPlace();
+        // updateRegionName();
+         searchPlace();
         console.log(myWalks);
     }, [mapData])
 

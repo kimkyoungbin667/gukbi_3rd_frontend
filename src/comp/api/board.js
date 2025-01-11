@@ -54,6 +54,16 @@ export const boardDelete = (obj) => {
 }
 
 /**
+ * 게시글 댓글,대댓글 삭제하기
+ * @param {Object} obj
+ * @param {number} obj.commentIdx - 댓글 idx
+ * @return {Promise}
+ */
+export const commentDelete = (obj) => {
+    return api.post('/board/deleteBoardPostComment', JSON.stringify(obj))
+}
+
+/**
  * 게시글 조회수 올리기
  * @param {Object} obj
  * @param {number} obj.boardIdx - 게시글 idx

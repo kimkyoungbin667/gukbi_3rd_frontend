@@ -11,7 +11,10 @@ function App() {
       <AuthProvider>
         <BrowserRouter>
           <Navbar />
+
+          <div className='middle-area'>
           <Router />
+          </div>
         </BrowserRouter>
       </AuthProvider>
     </div>
