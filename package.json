@@ -3,10 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@craco/craco": "^7.1.0",
     "@stomp/stompjs": "^7.0.0",
     "axios": "^1.7.9",
     "cra-template": "1.2.0",
     "install": "^0.13.0",
+    "jquery": "^3.6.0",
     "jwt-decode": "^4.0.0",
     "maps": "^0.3.3",
     "npm": "^11.0.0",

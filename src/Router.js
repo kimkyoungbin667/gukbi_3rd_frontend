@@ -29,7 +29,6 @@ import AccountDeactivation from './comp/components/user/accountdeactivation';
 import PetRegistration from './comp/components/pet/pet_registration'
 import MyPetsPage from './comp/components/pet/mypetspage'
 
-
 function Router() {
   return (
     <Routes>
