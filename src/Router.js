@@ -34,6 +34,7 @@ import MyPetsPage from './comp/components/pet/mypetspage'
 
 // AI
 import AiChat from './comp/components/ai/AiChat'
+import AiSolution from './comp/components/ai/AiSolution'
 
 
 function Router() {
@@ -61,9 +62,9 @@ function Router() {
       <Route path="/profile" element={<Profile />} />
       <Route path="/profilesetup" element={<ProfileSetup />} />
       <Route path="profilenavigation/*" element={<ProfileNavigation />}>
-        <Route path="profile" element={<Profile />} />
-        <Route path="change-password" element={<PasswordChange />} />
-        <Route path="delete-account" element={<AccountDeactivation />} />
+      <Route path="profile" element={<Profile />} />
+      <Route path="change-password" element={<PasswordChange />} />
+      <Route path="delete-account" element={<AccountDeactivation />} />
       </Route>
 
       {/* map */}
@@ -75,6 +76,7 @@ function Router() {
 
       {/* ai */}
       <Route path="/aiChat" element={<AiChat />} />
+      <Route path="/aiSolution" element={<AiSolution />} />
 
     </Routes>
   );
@@ -82,3 +84,4 @@ function Router() {
 
 
 export default Router;
+

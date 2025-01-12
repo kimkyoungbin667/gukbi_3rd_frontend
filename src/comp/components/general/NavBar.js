@@ -46,7 +46,8 @@ const Navbar = () => {
         board: "♧",
         chat: "♧",
         map: "♧",
-        solution: "♧",
+        aiChat: "♧",
+        aiSolution: "♧",
         mypage: "♧",
     });
 
@@ -56,7 +57,8 @@ const Navbar = () => {
             board: " † ",
             chat: "†",
             map: "†",
-            solution: "†",
+            aiChat: "†",
+            aiSolution: "†",
             mypage: "†",
         };
         setMenuText((prev) => ({ ...prev, [key]: hoverTexts[key] }));
@@ -67,7 +69,8 @@ const Navbar = () => {
             board: "♧",
             chat: "♧",
             map: "♧",
-            solution: "♧",
+            aiChat: "♧",
+            aiSolution: "♧",
             mypage: "♧",
         };
         setMenuText((prev) => ({ ...prev, [key]: defaultTexts[key] }));
@@ -107,17 +110,17 @@ const Navbar = () => {
                     </li>
 
                     <li className="navbar__item dropdown" onClick={() => moveTo("/aiChat")}
-                        onMouseEnter={() => handleMouseEnter("solution")}
-                        onMouseLeave={() => handleMouseLeave("solution")}>
-                        <div className="navbar__link">{location.pathname == "/123" ? " † " : menuText.solution}</div>
+                        onMouseEnter={() => handleMouseEnter("aiChat")}
+                        onMouseLeave={() => handleMouseLeave("aiChat")}>
+                        <div className="navbar__link">{location.pathname == "/aiChat" ? " † " : menuText.aiChat}</div>
                         <p className="navbar-text">AI 채팅</p>
                     </li>
 
-                    <li className="navbar__item dropdown" onClick={() => moveTo("/boardList")}
-                        onMouseEnter={() => handleMouseEnter("mypage")}
-                        onMouseLeave={() => handleMouseLeave("mypage")}>
-                        <div className="navbar__link">{location.pathname == "/567" ? " † " : menuText.mypage}</div>
-                        <p className="navbar-text">내정보</p>
+                    <li className="navbar__item dropdown" onClick={() => moveTo("/aiSolution")}
+                        onMouseEnter={() => handleMouseEnter("aiSolution")}
+                        onMouseLeave={() => handleMouseLeave("aiSolution")}>
+                        <div className="navbar__link">{location.pathname == "/aiSolution" ? " † " : menuText.mypage}</div>
+                        <p className="navbar-text">솔루션</p>
                     </li>
 
                     <li className="navbar__item dropdown" onClick={() => moveTo("/boardList")}
