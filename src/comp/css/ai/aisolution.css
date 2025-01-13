@@ -1,0 +1,198 @@
+/* 전체 컨테이너 */
+.ai-solution-container {
+    text-align: center;
+
+}
+
+.animal-board-background {
+    width: 100%;
+    height: 2000px;
+    object-fit: fill; 
+}
+
+
+
+/* 메인 타이틀 */
+.ai-solution-main-title {
+    font-family: "studyGood";
+    font-size: 100px;
+    z-index: 2;
+}
+
+/* 안내 문구 */
+.ai-solution-choice {
+    font-family: "catFont";
+    font-size: 40px;
+    z-index: 1;
+}
+
+/* 네모난 판 (Board) 디자인 */
+.ai-solution-board {
+    position: relative;
+    width: 1200px;
+    height: auto; /* ✅ 높이를 콘텐츠에 맞게 자동 조정 */
+    min-height: 1500px; /* ✅ 최소 높이 설정 */
+    margin: 0 auto;
+}
+
+/* 카드 영역 */
+.ai-solution-card {
+    position: absolute;
+    width: 550px;
+    height: 800px;
+    z-index: 2;
+    box-shadow: none;
+}
+
+/* 카드 배경 이미지 */
+.ai-solution-background {
+    width: 500px;
+    height: 1000px;
+    object-fit: cover;
+}
+
+/* Board 안쪽 안내 문구 */
+.ai-solution-choice-inside {
+    position: absolute;
+    top: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: "studyGood";
+    font-size: 40px;
+    color: #333;
+    background-color: rgba(255, 255, 255, 0.8);
+    /* 반투명 배경 */
+    padding: 10px 20px;
+    border-radius: 10px;
+    z-index: 2;
+}
+
+/* 카드 배경 이미지 */
+.ai-solution-background {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 15px;
+}
+
+.animal-info {
+    position: absolute;
+    top: 52%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: black;
+    font-family: "catFont";
+    text-align: center;
+    border-radius: 15px;
+
+    /* Flexbox 추가 */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* 수평 가운데 정렬 */
+    justify-content: center;
+    /* 수직 가운데 정렬 */
+    gap: 10px;
+    z-index: 3;
+}
+
+.my-animal-picture {
+    width: 200px;
+    height: 200px;
+    border-radius: 25px;
+    margin: 0 0;
+    margin-top: 70px;
+}
+
+.my-animal-name {
+    font-size: 40px;
+    font-weight: bold;
+    margin: 2px 0;
+}
+
+.my-animal-age,
+.my-animal-kind {
+    font-size: 30px;
+    margin: 0 0;
+}
+
+/* 버튼 기본 스타일 */
+button.start-ai-solution {
+    display: block;
+    width: 140px;
+    /* 더 크고 눈에 띄게 조정 가능 */
+    height: 40px;
+    text-align: center;
+    font-family: 'catFont';
+    font-size: 28px;
+    color: #FFF;
+    border-radius: 15px;
+    transition: all 0.2s;
+    background: #8EB486;
+    box-shadow: 0px 5px 0px 0px #5b7f54;
+    /* btnPush 효과 */
+    border: none;
+    cursor: pointer;
+    margin: 0 auto;
+}
+
+/* 3D 눌림 효과 */
+button.start-ai-solution:hover {
+    transform: translateY(5px);
+    /* 버튼만 아래로 이동 */
+    box-shadow: 0px 0px 0px 0px #ddf8d6;
+}
+
+/* 태블릿 화면 */
+@media (max-width: 1024px) {
+    .ai-solution-card-wrapper {
+        grid-template-columns: repeat(2, 1fr);
+        /* 2열 */
+    }
+}
+
+/* 모바일 화면 */
+@media (max-width: 600px) {
+    .ai-solution-card-wrapper {
+        grid-template-columns: 1fr;
+        /* 1열 */
+    }
+}
+
+/* 네모난 판 (Board) 디자인 */
+.ai-solution-board {
+    position: relative;
+    width: 1200px;        /* 판의 가로 크기 */
+    height: 1500px;       /* 판의 세로 크기 */
+    /* 🎨 그림자 추가 */
+}
+
+
+.animal-list-board {
+    width: 1500px;
+    height: 2000px; /* ✅ 강제로 높이 고정 */
+    object-fit: fill; /* 비율 무시하고 꽉 채움 */
+    border-radius: 15px;
+}
+
+
+
+/* Board 안쪽 안내 문구 */
+.ai-solution-choice-inside {
+    position: absolute;
+    top: 100px;
+    /* Board 안쪽에서 20px 떨어짐 */
+    left: 50%;
+    /* 가로 중앙 */
+    transform: translateX(-50%);
+    font-family: "catFont";
+    font-size: 35px;
+    color: #333;
+    background-color: rgba(255, 255, 255, 0.8);
+    /* 반투명 배경 */
+    padding: 0 15px;
+    border-radius: 10px;
+    /* 둥근 모서리 */
+    z-index: 2;
+    /* Board 이미지보다 위로 */
+}
