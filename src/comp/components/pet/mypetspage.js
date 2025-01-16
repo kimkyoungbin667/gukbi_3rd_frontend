@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { getMyPets, deletePet, uploadPetImage } from "../../api/pet";
 import "../../css/pet/MyPetsPage.css";
+import PetDetails from "./pet_details";
+import MedicalHistory from "./medical_histoy";
+import PetDailyRecord from "./petdaily_recored"; // 올바른 파일명으로 수정
+import PetGraph from "./PetGraph";
 
 function MyPetsPage() {
   const [pets, setPets] = useState([]);
@@ -97,7 +101,7 @@ function MyPetsPage() {
   const toggleDetails = (petId) => {
     setExpandedPetId(expandedPetId === petId ? null : petId);
     if (expandedPetId !== petId) {
-      setActiveTab((prev) => ({ ...prev, [petId]: "weight" }));
+      setActiveTab((prev) => ({ ...prev, [petId]: "details" }));
     }
   };
 
@@ -113,83 +117,89 @@ function MyPetsPage() {
       <div>
         {pets.map((pet) => (
           <div
-          key={pet.pet_id}
-          style={{
-            display: "flex",
-            flexDirection: "column", // 세로 정렬
-            alignItems: "center", // 가운데 정렬
-            border: "1px solid #ccc",
-            padding: "10px",
-            marginBottom: "10px",
-          }}
-        >
-          {/* 사진과 텍스트 영역 */}
-          <div style={{ display: "flex", flexDirection: "row", alignItems: "center", width: "100%" }}>
-            {/* 사진 */}
-            <img
-              src={pet.profile_url || "http://localhost:8080/default_image_url.jpg"}
-              alt={pet.dog_name}
-              width="300"
-              height="300"
-              style={{ objectFit: "cover", borderRadius: "8px", marginRight: "20px" }}
-            />
-        
-            {/* 텍스트 및 버튼 */}
-            <div style={{ textAlign: "left", flex: 1 }}>
-              <p>이름: {pet.dog_name}</p>
-              <p>품종: {pet.kind_name}</p>
-              <p>성별: {pet.sex}</p>
-              <p>중성화 여부: {pet.neuter_status}</p>
-              {editingPetId === pet.pet_id ? (
-                <div>
-                  <input type="file" onChange={handleImageChange} />
-                  {!isValidImage && <p style={{ color: "red" }}>유효하지 않은 이미지입니다.</p>}
-                  <button onClick={handleImageUpload}>업로드</button>
-                  <button onClick={() => setEditingPetId(null)}>취소</button>
-                </div>
-              ) : (
-                <button onClick={() => handleEdit(pet.pet_id)}>수정</button>
-              )}
-              <button onClick={() => handleDelete(pet.pet_id)}>삭제</button>
-              <button onClick={() => toggleDetails(pet.pet_id)} style={{ marginTop: "10px" }}>
-                {expandedPetId === pet.pet_id ? "접기 ▲" : "펼치기 ▼"}
-              </button>
-            </div>
-          </div>
-        
-          {/* 펼쳐지는 추가 정보 영역 */}
-          {expandedPetId === pet.pet_id && (
-            <div
-              style={{
-                marginTop: "20px",
-                padding: "10px",
-                backgroundColor: "#f9f9f9",
-                width: "100%",
-                borderTop: "1px solid #ccc",
-              }}
-            >
-              <div style={{ display: "flex", justifyContent: "space-around", marginBottom: "10px" }}>
-                <button
-                  onClick={() => changeTab(pet.pet_id, "weight")}
-                  style={{ fontWeight: activeTab[pet.pet_id] === "weight" ? "bold" : "normal" }}
-                >
-                  오늘의 애완동물 정보 입력하기
-                </button>
-                <button
-                  onClick={() => changeTab(pet.pet_id, "meal")}
-                  style={{ fontWeight: activeTab[pet.pet_id] === "meal" ? "bold" : "normal" }}
-                >
-                  애완동물 변화추이 보기
+            key={pet.pet_id}
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              border: "1px solid #ccc",
+              padding: "10px",
+              marginBottom: "10px",
+            }}
+          >
+            <div style={{ display: "flex", flexDirection: "row", alignItems: "center", width: "100%" }}>
+              <img
+                src={pet.profile_url || "http://localhost:8080/default_image_url.jpg"}
+                alt={pet.dog_name}
+                width="300"
+                height="300"
+                style={{ objectFit: "cover", borderRadius: "8px", marginRight: "20px" }}
+              />
+              <div style={{ textAlign: "left", flex: 1 }}>
+                <p>이름: {pet.dog_name}</p>
+                <p>품종: {pet.kind_name}</p>
+                <p>성별: {pet.sex}</p>
+                <p>중성화 여부: {pet.neuter_status}</p>
+                {editingPetId === pet.pet_id ? (
+                  <div>
+                    <input type="file" onChange={handleImageChange} />
+                    {!isValidImage && <p style={{ color: "red" }}>유효하지 않은 이미지입니다.</p>}
+                    <button onClick={handleImageUpload}>업로드</button>
+                    <button onClick={() => setEditingPetId(null)}>취소</button>
+                  </div>
+                ) : (
+                  <button onClick={() => handleEdit(pet.pet_id)}>수정</button>
+                )}
+                <button onClick={() => handleDelete(pet.pet_id)}>삭제</button>
+                <button onClick={() => toggleDetails(pet.pet_id)} style={{ marginTop: "10px" }}>
+                  {expandedPetId === pet.pet_id ? "접기 ▲" : "펼치기 ▼"}
                 </button>
               </div>
-              {activeTab[pet.pet_id] === "weight" && <p>애완동물 정보 작성: {pet.weight || "알 수 없음"}</p>}
-              {activeTab[pet.pet_id] === "meal" && <p>그래프로 보기: {pet.meal_amount || "알 수 없음"}</p>}
             </div>
-          )}
-        </div>
-        
 
-
+            {expandedPetId === pet.pet_id && (
+              <div
+                style={{
+                  marginTop: "20px",
+                  padding: "10px",
+                  backgroundColor: "#f9f9f9",
+                  width: "100%",
+                  borderTop: "1px solid #ccc",
+                }}
+              >
+                <div style={{ display: "flex", justifyContent: "space-around", marginBottom: "10px" }}>
+                  <button
+                    onClick={() => changeTab(pet.pet_id, "details")}
+                    style={{ fontWeight: activeTab[pet.pet_id] === "details" ? "bold" : "normal" }}
+                  >
+                    상세 정보
+                  </button>
+                  <button
+                    onClick={() => changeTab(pet.pet_id, "weeklyGraph")}
+                    style={{ fontWeight: activeTab[pet.pet_id] === "weeklyGraph" ? "bold" : "normal" }}
+                  >
+                    주간 그래프
+                  </button>
+                  <button
+                    onClick={() => changeTab(pet.pet_id, "dailyRecord")}
+                    style={{ fontWeight: activeTab[pet.pet_id] === "dailyRecord" ? "bold" : "normal" }}
+                  >
+                    오늘의 기록
+                  </button>
+                  <button
+                    onClick={() => changeTab(pet.pet_id, "medicalHistory")}
+                    style={{ fontWeight: activeTab[pet.pet_id] === "medicalHistory" ? "bold" : "normal" }}
+                  >
+                    의료 기록
+                  </button>
+                </div>
+                {activeTab[pet.pet_id] === "details" && <PetDetails petId={pet.pet_id} />}
+                {activeTab[pet.pet_id] === "weeklyGraph" && <PetGraph petId={pet.pet_id} />}
+                {activeTab[pet.pet_id] === "dailyRecord" && <PetDailyRecord petId={pet.pet_id} />}
+                {activeTab[pet.pet_id] === "medicalHistory" && <MedicalHistory petId={pet.pet_id} />}
+              </div>
+            )}
+          </div>
         ))}
       </div>
       {message && <p style={{ color: "green" }}>{message}</p>}
