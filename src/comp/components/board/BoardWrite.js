@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { getLikeLocation, getMapByPath } from "../../api/board";
+
 import "../../css/board/boardWrite.css";
 
 function BoardWrite() {
@@ -9,6 +11,16 @@ function BoardWrite() {
   const [imageFiles, setImageFiles] = useState([]);
   const MAX_IMAGES = 12; // 최대 업로드 이미지 개수
   const token = localStorage.getItem("token");
+
+  const [isLikeModalOpen, setIsLikeModalOpen] = useState(false);
+  const [isPathModalOpen, setIsPathModalOpen] = useState(false);
+
+  // 즐겨찾기 장소들
+  const [likeLocation, setLikeLocation] = useState([]);
+
+  // 산책 경로들
+  const [myPath, setMyPath] = useState([]);
+
 
   const handleSubmit = async () => {
     if (!title.trim() || !content.trim()) {
@@ -77,6 +89,70 @@ function BoardWrite() {
     setImageFiles((prev) => prev.filter((_, i) => i !== index));
   };
 
+  // 공유 버튼에 대한 모달창 열기
+  const openModal = (kind) => {
+
+    if (kind === "location") {
+      setIsLikeModalOpen(true);
+      getLikeLocationAction("location");
+    } else {
+      setIsPathModalOpen(true);
+      getLikeLocationAction("path");
+    }
+  };
+
+  // 모달 닫기
+  const closeModal = (kind) => {
+
+    if (kind === "location") {
+      setIsLikeModalOpen(false);
+    } else {
+      setIsPathModalOpen(false);
+    }
+  };
+
+  // 산책경로 불러오기
+  const getLikeLocationAction = (kind) => {
+
+    getLikeLocation({ kind })
+      .then(res => {
+        console.log(res.data.data);
+        if (res.data.code === "200") {
+
+          // 줄겨찾기
+          if (kind === "location") {
+            setLikeLocation(res.data.data);
+          }
+
+          // 산책 경로
+          else {
+            setMyPath(res.data.data);
+          }
+
+
+        }
+      })
+      .catch(err => {
+        console.error(err);
+      });
+  }
+
+  // 특정 산책경로 지도 불러오기
+  const getMapByPathAction = (logId) => {
+
+    getMapByPath({ lodId: logId })
+      .then(res => {
+        console.log(res);
+      })
+
+      .catch(err => {
+        console.log(err);
+      })
+  }
+
+
+
+
   return (
     <div className="board-edit-container">
       <h1 className="board-edit-title">✍ 게시글 작성</h1>
@@ -107,6 +183,7 @@ function BoardWrite() {
       {/* 이미지 업로드 */}
       <div className="board-image-input">
         <div className="file-upload">
+
           <label htmlFor="file-upload">업로드 🖼️</label>
           <input
             type="file"
@@ -115,10 +192,126 @@ function BoardWrite() {
             id="file-upload"
             onChange={handleImageFile}
           />
+
+          <input
+            type="button"
+            id="location-share"
+            value="장소 공유 🗺️"
+            onClick={(e) => openModal("location")}
+          />
+
+          <input
+            type="button"
+            id="path-share-btn"
+            value="산책경로 공유 📌"
+            onClick={() => openModal("path")}
+          />
         </div>
 
+        {/* 즐겨찾기한 경로 모달창 */}
+        {isLikeModalOpen && (
+          <div className="modal-overlay">
+            <div className="modal-content">
+              <h2>나의 즐겨찾기 장소 목록</h2>
+
+              {/* 테이블 형식으로 변경 */}
+              <table className="path-table">
+                <thead>
+                  <tr>
+                    <th>번호</th>
+                    <th>산책로 이름</th>
+                    <th>날짜</th>
+                    <th>시작 시간</th>
+                    <th>종료 시간</th>
+                    <th>선택</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {Array.isArray(likeLocation) && likeLocation.length > 0 ? (
+                    likeLocation.map((loc, index) => (
+                      <tr key={index}>
+                        <td>{index + 1}</td>
+                        <td>{loc.walkName}</td>
+                        <td>{loc.walkDate?.slice(0, 10)}</td>
+                        <td>{loc.startTime?.slice(11, 16)}</td>
+                        <td>{loc.endTime?.slice(11, 16)}</td>
+                        <td>
+                          <button className="select-button" onClick={() => getMapByPathAction(loc.logId)}>
+                            선택
+                          </button>
+                        </td>
+                      </tr>
+                    ))
+                  ) : (
+                    <tr>
+                      <td colSpan="6">데이터가 없습니다.</td>
+                    </tr>
+                  )}
+                </tbody>
+
+              </table>
+
+              <button onClick={() => closeModal("location")} className="close-modal-button">
+                취소
+              </button>
+
+            </div>
+          </div>
+        )}
+
+        {/* 산책 경로 모달창 */}
+        {isPathModalOpen && (
+          <div className="modal-overlay">
+            <div className="modal-content">
+              <h2>나의 산책경로 목록</h2>
+
+              {/* 테이블 형식으로 변경 */}
+              <table className="path-table">
+                <thead>
+                  <tr>
+                    <th>번호</th>
+                    <th>산책로 이름</th>
+                    <th>날짜</th>
+                    <th>시작 시간</th>
+                    <th>종료 시간</th>
+                    <th>선택</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {Array.isArray(myPath) && myPath.length > 0 ? (
+                    myPath.map((path, index) => (
+                      <tr key={index}>
+                        <td>{index + 1}</td>
+                        <td>{path.walkName}</td>
+                        <td>{path.walkDate?.slice(0, 10)}</td>
+                        <td>{path.startTime?.slice(11, 16)}</td>
+                        <td>{path.endTime?.slice(11, 16)}</td>
+                        <td>
+                          <button className="select-button" onClick={() => getMapByPathAction(path.logId)}>
+                            선택
+                          </button>
+                        </td>
+                      </tr>
+                    ))
+                  ) : (
+                    <tr>
+                      <td colSpan="6">데이터가 없습니다.</td>
+                    </tr>
+                  )}
+                </tbody>
+
+              </table>
+
+              <button onClick={() => closeModal("path")} className="close-modal-button">
+                취소
+              </button>
+
+            </div>
+          </div>
+        )}
+
         {/* 이미지 업로드 제한 표시 */}
-        {imageFiles.length >0 && <p p className="image-limit">
+        {imageFiles.length > 0 && <p p className="image-limit">
           업로드된 이미지: {imageFiles.length}/{MAX_IMAGES}
         </p>}
 
@@ -127,7 +320,7 @@ function BoardWrite() {
           {imageFiles.map((image, index) => (
             <div key={index} className="board-edit-upload-image">
               <img src={image.previewUrl} alt={`미리보기 ${index}`} />
-              <button type="button" onClick={() => handleRemoveImage(index)}>
+              <button type="button" className="preview-btn" onClick={() => handleRemoveImage(index)}>
                 제거
               </button>
             </div>

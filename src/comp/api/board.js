@@ -115,3 +115,25 @@ export const writeBoardReply = (obj) => {
 export const upBoardPostLike = (obj) => {
     return api.post('/board/upBoardPostLike', JSON.stringify(obj))
 }
+
+/**
+ * 장소 불러오기 (즐겨찾기 장소 or 산책 경로)
+ * @param {Object} obj
+ * @param {number} obj.kind - 불러올 종류
+ * @return {Promise}
+ */
+export const getLikeLocation = (param) => {
+    return api.get('/board/getLikeLocation', {
+        params: param
+    });
+};
+
+/**
+ * 특정 산책경로 불러오기
+ * @param {Object} obj
+ * @param {number} obj.logId - 산책 경로 아이디
+ * @return {Promise}
+ */
+export const getMapByPath = (obj) => {
+    return api.post('/board/getMapByPath', JSON.stringify(obj))
+}
