@@ -18,6 +18,13 @@ function AiSolution() {
       });
   }, []);
 
+
+// 특정 반려 동물의 정보 갖고오기
+const handleSolution = (petId) => {
+
+
+}
+
   return (
     <div className="ai-solution-container">
       <p className="ai-solution-main-title">🤖 AI 솔루션 </p>
@@ -40,9 +47,11 @@ function AiSolution() {
               <img src={`http://58.74.46.219:33334/upload/${animal.profileUrl}`} alt="반려동물 사진" className="my-animal-picture" />
               <p className="my-animal-name">{animal.dogName}</p>
               <p className="my-animal-kind">{animal.kindName}</p>
-              <button type="button" className="start-ai-solution btnPush btnLightBlue">
+              <button type="button" className="start-ai-solution btnPush btnLightBlue" onClick={()=>handleSolution(animal.petId)}>
                 솔루션 시작
               </button>
+
+
             </div>
           </div>
         ))}
