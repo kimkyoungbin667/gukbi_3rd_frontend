@@ -22,23 +22,43 @@ export default function Login() {
 
     try {
       const response = await loginUser(email, password);
-      const { accessToken, refreshToken } = response.data;
+      console.log("서버 응답 데이터:", response.data); // 디버깅용
+
+      const { accessToken, refreshToken, isAdmin, isActive } = response.data;
+
+      const isAdminBool = isAdmin === "true" || isAdmin === true;
+      const isActiveBool = isActive === "true" || isActive === true;
+
+      if (!isActiveBool) {
+        alert("비활성화된 계정입니다. 관리자에게 문의하세요.");
+        return;
+      }
+
+      if (isAdminBool) {
+        alert("관리자 계정입니다. 관리자 페이지로 이동합니다.");
+        localStorage.setItem("token", accessToken);
+        localStorage.setItem("refreshToken", refreshToken);
+        setIsLoggedIn(true);
+        navigate("/admin-dashboard"); // 관리자 페이지로 이동
+        return;
+      }
 
       localStorage.setItem("token", accessToken);
       localStorage.setItem("refreshToken", refreshToken);
-      setIsLoggedIn(true); // 로그인 상태 업데이트
+      setIsLoggedIn(true);
 
-      const nicknameResponse = await getUserNickname(accessToken);
+      // 닉네임 가져오기
+      const nicknameResponse = await getUserNickname();
       const nickname = nicknameResponse.data;
 
-      navigate(nickname ? "/" : "/profilesetup");
+      // 닉네임이 없으면 닉네임 설정 페이지로 이동
+      if (!nickname || nickname.trim() === "") {
+        navigate("/profilesetup"); // 닉네임 설정 페이지로 이동
+      } else {
+        navigate("/"); // 일반 사용자 대시보드로 이동
+      }
 
       alert("로그인 성공!");
-
-      // 로그인 성공 시 토큰 저장
-      localStorage.setItem("token", accessToken); // JWT 토큰만 저장
-
-      navigate("/"); // 대시보드 등 다음 페이지로 이동
     } catch (error) {
       console.error("로그인 실패:", error.response?.data || error.message);
       alert("로그인에 실패했습니다.");
@@ -50,16 +70,36 @@ export default function Login() {
       success: async (authObj) => {
         try {
           const response = await kakaoLogin(authObj.access_token);
-          const { accessToken, refreshToken } = response.data;
+          const { accessToken, refreshToken, isAdmin, isActive } = response.data;
+
+          const isAdminBool = isAdmin === "true" || isAdmin === true;
+          const isActiveBool = isActive === "true" || isActive === true;
+
+          if (!isActiveBool) {
+            alert("비활성화된 계정입니다. 관리자에게 문의하세요.");
+            return;
+          }
+
+          if (isAdminBool) {
+            alert("관리자 계정입니다. 관리자 페이지로 이동합니다.");
+            navigate("/admin-dashboard");
+            return;
+          }
 
           localStorage.setItem("token", accessToken);
           localStorage.setItem("refreshToken", refreshToken);
-          setIsLoggedIn(true); // 로그인 상태 업데이트
+          setIsLoggedIn(true);
 
-          const nicknameResponse = await getUserNickname(accessToken);
+          // 닉네임 가져오기
+          const nicknameResponse = await getUserNickname();
           const nickname = nicknameResponse.data;
 
-          navigate(nickname ? "/" : "/profilesetup");
+          // 닉네임이 없으면 닉네임 설정 페이지로 이동
+          if (!nickname || nickname.trim() === "") {
+            navigate("/profilesetup");
+          } else {
+            navigate("/");
+          }
         } catch (error) {
           console.error("카카오 로그인 실패:", error.response?.data || error.message);
           alert("카카오 로그인에 실패했습니다.");
@@ -98,7 +138,9 @@ export default function Login() {
             required
           />
         </div>
-        <button type="submit" className="login-button">로그인</button>
+        <button type="submit" className="login-button">
+          로그인
+        </button>
         <button
           type="button"
           className="register-button"

@@ -1,20 +1,18 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { registerUser } from "../../api/user";
+import { registerUser , checkKakaoId } from "../../api/user";
 import "../../css/user/RegisterKakao.css"; // 스타일 파일 추가
 
 export default function RegisterKakao() {
     const [formData, setFormData] = useState({
         userName: "",
         userEmail: "",
-        userPassword: "",
-        confirmPassword: "", // 비밀번호 확인 필드 추가
         userBirth: "",
         userProfileUrl: "https://i.pinimg.com/736x/df/e3/bf/dfe3bfb04d99e860dbdefaa1a5cb3c71.jpg",
         socialType: "",
         kakaoId: "",
     });
-    const [passwordMatch, setPasswordMatch] = useState(true); // 비밀번호 일치 여부 상태 추가
+
     const navigate = useNavigate();
 
     const initializeKakaoSDK = () => {
@@ -29,17 +27,32 @@ export default function RegisterKakao() {
             success: function (authObj) {
                 window.Kakao.API.request({
                     url: "/v2/user/me",
-                    success: function (response) {
+                    success: async function (response) {
                         const email = response.kakao_account.email;
                         const kakaoId = response.id;
+    
                         if (email) {
-                            setFormData({
-                                ...formData,
-                                userEmail: email,
-                                kakaoId: kakaoId,
-                                socialType: "kakao",
-                            });
-                            alert(`카카오 이메일과 ID를 가져왔습니다.\n이메일: ${email}\nID: ${kakaoId}`);
+                            try {
+                                // 카카오 ID 중복 확인
+                                const res = await checkKakaoId(kakaoId);
+                                if (res.isDuplicate) {
+                                    alert("이미 회원가입된 사용자입니다. 로그인 페이지로 이동합니다.");
+                                    navigate("/login");
+                                    return;
+                                }
+    
+                                // 중복이 아닌 경우 상태 업데이트
+                                setFormData({
+                                    ...formData,
+                                    userEmail: email,
+                                    kakaoId: kakaoId,
+                                    socialType: "kakao",
+                                });
+                                alert(`카카오 이메일과 ID를 가져왔습니다.\n이메일: ${email}\nID: ${kakaoId}`);
+                            } catch (error) {
+                                console.error("카카오 ID 중복 확인 실패:", error);
+                                alert("카카오 ID 확인 중 오류가 발생했습니다.");
+                            }
                         } else {
                             alert("이메일 정보를 가져올 수 없습니다.");
                         }
@@ -56,6 +69,7 @@ export default function RegisterKakao() {
             },
         });
     };
+    
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -63,27 +77,16 @@ export default function RegisterKakao() {
             ...formData,
             [name]: value,
         });
-
-        if (name === "userPassword" || name === "confirmPassword") {
-            checkPasswordMatch(
-                name === "userPassword" ? value : formData.userPassword,
-                name === "confirmPassword" ? value : formData.confirmPassword
-            );
-        }
-    };
-
-    const checkPasswordMatch = (password, confirmPassword) => {
-        setPasswordMatch(password === confirmPassword);
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
-
-        if (!passwordMatch) {
-            alert("비밀번호와 비밀번호 확인이 일치하지 않습니다.");
+    
+        if (!formData.kakaoId) {
+            alert("카카오 로그인을 통해 정보를 가져와야 합니다.");
             return;
         }
-
+    
         registerUser(formData)
             .then((res) => {
                 console.log("서버 응답:", res);
@@ -99,6 +102,7 @@ export default function RegisterKakao() {
                 alert("회원가입 중 오류가 발생했습니다.");
             });
     };
+    
 
     return (
         <div className="register-container">
@@ -126,27 +130,6 @@ export default function RegisterKakao() {
                         onChange={handleChange}
                         required
                     />
-                </div>
-                <div className="form-group">
-                    <label>비밀번호:</label>
-                    <input
-                        type="password"
-                        name="userPassword"
-                        value={formData.userPassword}
-                        onChange={handleChange}
-                        required
-                    />
-                </div>
-                <div className="form-group">
-                    <label>비밀번호 확인:</label>
-                    <input
-                        type="password"
-                        name="confirmPassword"
-                        value={formData.confirmPassword}
-                        onChange={handleChange}
-                        required
-                    />
-                    {!passwordMatch && <p className="error-text">비밀번호가 일치하지 않습니다.</p>}
                 </div>
                 <div className="form-group">
                     <label>생년월일:</label>
