@@ -1,6 +1,6 @@
 .ai-container .ai-title {
     font-family: "studyGood";
-    font-size: 30px;
+    font-size: 50px;
 }
 
 .ai-cat {
@@ -50,12 +50,10 @@
     font-size: 35px;
 }
 
-
-
 .ai-input-text-area {
     position: fixed;
     left: 50%;
-    top: 65%;
+    top: 67%;
     transform: translateX(-50%);
     display: flex;              /* Flexbox로 수평 정렬 */
     align-items: center;        /* 세로 중앙 정렬 */

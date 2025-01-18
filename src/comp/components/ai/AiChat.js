@@ -3,7 +3,7 @@ import cat from '../../../assets/img/ai/cat.png';
 import chilpan from '../../../assets/img/ai/chilpan.png';
 import '../../css/ai/aichat.css'
 
-function ChatGPT() {
+function AiChat() {
   const [prompt, setPrompt] = useState("");
   const [response, setResponse] = useState("");
   const [isLoading, setIsLoading] = useState(false);  // ✅ 로딩 상태 추가
@@ -101,4 +101,4 @@ function ChatGPT() {
   );
 }
 
-export default ChatGPT;
+export default AiChat;

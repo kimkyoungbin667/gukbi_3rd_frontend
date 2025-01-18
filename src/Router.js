@@ -31,9 +31,18 @@ import AccountDeactivation from './comp/components/user/accountdeactivation';
 // Pet
 import PetRegistration from './comp/components/pet/pet_registration'
 import MyPetsPage from './comp/components/pet/mypetspage'
+import PetGraph from './comp/components/pet/PetGraph'
+
+// Admin
+import AdminDashBoard from './comp/components/admin/admin_dashboard'
+import AdminBoardList from './comp/components/admin/admin_boardlist';
+
+// Calendar
+import EventCalendar from './comp/components/calendar/EventCalendar'
 
 // AI
 import AiChat from './comp/components/ai/AiChat'
+import AiSolution from './comp/components/ai/AiSolution'
 
 
 function Router() {
@@ -64,6 +73,7 @@ function Router() {
         <Route path="profile" element={<Profile />} />
         <Route path="change-password" element={<PasswordChange />} />
         <Route path="delete-account" element={<AccountDeactivation />} />
+        <Route path="petgraph" element={<PetGraph />} />
       </Route>
 
       {/* map */}
@@ -73,8 +83,16 @@ function Router() {
       <Route path="/petregistration" element={<PetRegistration />} />
       <Route path="/mypetspage" element={<MyPetsPage />} />
 
+      {/* admin */}
+      <Route path="/admin/users" element={<AdminDashBoard />}></Route>
+      <Route path="/admin/boards" element={<AdminBoardList />}></Route>
+
+      {/* calendar */}
+      <Route path="/eventcaledar" element={<EventCalendar />}></Route>
+
       {/* ai */}
       <Route path="/aiChat" element={<AiChat />} />
+      <Route path="/aiSolution" element={<AiSolution />} />
 
     </Routes>
   );
@@ -82,3 +100,4 @@ function Router() {
 
 
 export default Router;
+
