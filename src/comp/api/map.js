@@ -44,3 +44,8 @@ export const getAccompanyFav = (obj) => {
 export const deleteAccompanyFav = (obj) => {
     return api.post('/map/accompany/deleteFavorite', JSON.stringify(obj));
 }
+
+
+export const getPetLists = (obj) => {
+    return api.post('map/getPetInfo', JSON.stringify(obj));
+}

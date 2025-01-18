@@ -173,7 +173,7 @@
 
 .search-result-list {
     border: 1px solid #dee2e6;
-    border-radius: 6px;
+    border-radius: 8px;
     margin-bottom: 4px;
     padding: 16px;
     text-align: start;
@@ -429,4 +429,11 @@
 .favorite-btn:hover {
     transform: scale(1.2);
     /* 마우스를 올렸을 때 크기 증가 */
+}
+
+
+.pet-image {
+    width: 100px;
+    height: 100px;
+    border-radius: 16px;
 }
