@@ -11,3 +11,22 @@ export const getAnimalList = (param) => {
         params: param
     });
 };
+
+
+/**
+ * 특정 반려동물의 정보 가져오기
+ * @param {} param
+ * @returns {Promise}
+ */
+export const getAnimalDetail = (obj) => {
+    return api.post('/ai/getAnimalDetail', JSON.stringify(obj))
+}
+
+/**
+ * 특정 반려동물의 정보 가져오기
+ * @param {} param
+ * @returns {Promise}
+ */
+export const getAiSolution = (obj) => {
+    return api.post('/ai/chat/solution', JSON.stringify(obj))
+}

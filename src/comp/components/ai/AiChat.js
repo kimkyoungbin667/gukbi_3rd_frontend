@@ -33,7 +33,7 @@ function AiChat() {
     setIsLoading(true);  // ✅ 로딩 시작
 
     try {
-      const res = await fetch("http://58.74.46.219:33334/api/ai/chat", {
+      const res = await fetch("http://58.74.46.219:33334/api/ai/chat/cat", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

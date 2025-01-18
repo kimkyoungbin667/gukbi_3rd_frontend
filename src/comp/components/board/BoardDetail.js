@@ -160,7 +160,7 @@ function BoardDetail() {
               {boardContents.imageFiles.map((image, index) => (
                 <div key={index} className="upload-image">
                   <img
-                    src={`http://localhost:8080/${image}`}
+                    src={`http://58.74.46.219:33334/${image}`}
                     alt={`이미지 ${index + 1}`}
                   />
                 </div>
