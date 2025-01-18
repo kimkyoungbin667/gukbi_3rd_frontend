@@ -126,7 +126,7 @@
 }
 
 /* 제거 버튼 스타일 */
-.preview-image button {
+.preview-image .preview-btn {
   position: absolute;
   bottom: 10px;
   background-color: #ff4d4f;
@@ -141,7 +141,9 @@
   transition: background-color 0.3s ease;
 }
 
-.preview-image button:hover {
+
+
+.preview-image .preview-btn:hover {
   background-color: #d9363e;
 }
 
@@ -149,8 +151,12 @@
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+#location-share {
   
 }
+
 
 /* 파일 업로드 컨테이너 */
 .file-upload {
@@ -188,4 +194,80 @@
 .file-upload label:active {
   background-color: #A294F9;
   transform: scale(1);
+}
+
+/* 모달 배경 (반투명 오버레이) */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* 반투명 검정 배경 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+/* 모달 내용 */
+.modal-content {
+  background-color: #fff;
+  padding: 30px;
+  width: 800px;
+  border-radius: 15px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+/* 모달 등장 애니메이션 */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 테이블 스타일 */
+.path-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  font-family: 'studyGood';
+}
+
+/* 테이블 헤더 */
+.path-table th {
+  background-color: #f2f2f2;
+  padding: 10px;
+  border: 1px solid #ddd;
+  font-weight: bold;
+  text-align: center;
+}
+
+/* 테이블 본문 */
+.path-table td {
+  padding: 10px;
+  border: 1px solid #ddd;
+  text-align: center;
+}
+
+/* 선택 버튼 */
+.select-button {
+  background-color: #5DC8CD;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.select-button:hover {
+  background-color: #1E8185;
 }

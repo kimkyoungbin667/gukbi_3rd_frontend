@@ -86,12 +86,16 @@ function MyPetsPage() {
 
     try {
       const response = await uploadPetImage(editingPetId, formData);
+      const updatedPet = response.data; // 서버에서 수정된 펫 데이터를 반환한다고 가정
+      setPets((prevPets) =>
+        prevPets.map((pet) =>
+          pet.pet_id === editingPetId ? { ...pet, profile_url: updatedPet.profile_url } : pet
+        )
+      );
 
       setMessage("이미지가 성공적으로 업로드되었습니다.");
       setEditingPetId(null);
       setSelectedImage(null);
-
-      await fetchPets();
     } catch (error) {
       console.error("이미지 업로드 실패:", error.message);
       setMessage("이미지 업로드에 실패했습니다.");
