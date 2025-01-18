@@ -14,7 +14,6 @@ export const saveEvent = (eventData) => {
         });
 };
 
-
 // 일정 조회 API
 export const getEvents = (userId) => {
     return api.get(`/calendar/events`, {

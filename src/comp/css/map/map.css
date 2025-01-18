@@ -2,18 +2,21 @@
     display: flex;
     width: 100vw;
     height: 80vh;
+    font-family: "catFont";
+
 }
 
 
 .map-display {
     flex: 1;
-    height: 1150px;
+    height: 85vh;
+
 }
 
 .map-left-bar {
     width: 440px;
     /* 패널 너비 설정 */
-    height: 110%;
+    height: 85vh;
     /* 화면 높이에 맞춤 */
     background-color: #f8f9fa;
     /* 패널 배경색 */
@@ -29,19 +32,20 @@
 }
 
 .map-left-bar-top {
-    height: 100px;
+    height: 80px;
     /* `left-bar`의 전체 높이를 차지 */
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
+    justify-content: center;
     /* 상단 정렬 */
-    margin-bottom: 0px;
     /* 하단 여백 */
     padding: 16px;
     background-color: #FFDAB9;
-    border-end-end-radius: 8px;
-    border-end-start-radius: 8px;
+    border-end-end-radius: 0px;
+    border-end-start-radius: 0px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    font-weight: bold;
+    font-size: 48px;
 
 }
 
@@ -105,14 +109,13 @@
 .map-left-bar-menu {
     display: flex;
     justify-content: space-between;
-    margin-bottom: 16px;
 }
 
 .menu-item {
     cursor: pointer;
     padding: 8px 12px;
     border-radius: 4px;
-    font-size: 20px;
+    font-size: 28px;
     transition: background-color 0.3s ease;
     text-align: center;
 }
@@ -130,16 +133,13 @@
 .menu-item-detail {
     background-color: white;
     border: 1px solid #ddd;
-    border-radius: 8px;
     flex-direction: column;
-    margin-top: 0px;
     transition: background-color 0.3s ease;
     color: black;
     text-align: center;
-    height: 90%;
+    height: 100%;
     display: flex;
-    overflow-y: auto;
-    margin-top: 8px;
+
 }
 
 .menu-item-none {
@@ -158,9 +158,10 @@
 
 .search-result {
     background-color: white;
-    border-radius: 8px;
-    margin-bottom: 16px;
+    margin-bottom: 8px;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    border-top: 1px solid #ced4da;
+    overflow-y: auto;
 }
 
 .search-result-margin {
@@ -172,15 +173,16 @@
 
 .search-result-list {
     border: 1px solid #dee2e6;
-    border-radius: 8px;
-    margin-bottom: 8px;
+    border-radius: 6px;
+    margin-bottom: 4px;
     padding: 16px;
     text-align: start;
 }
 
 .search-result-title {
-    font-size: 32px;
-    margin-bottom: 4px;
+    font-size: 30px;
+    margin-bottom: 2px;
+    line-height: 0.8;
 }
 
 .search-result-content {
@@ -189,14 +191,24 @@
 }
 
 .search-result-count {
+    width: 49%;
     text-align: start;
-    padding-top: 16px;
-    margin-bottom: 8px;
+    padding-top: 8px;
     margin-left: 8px;
     font-size: 22px;
 }
 
+.search-result-set {
+    padding-top: 8px;
+    width: 49%;
+    font-size: 20px;
+    text-align: right;
+}
 
+.search-result-area {
+    /* border: 1px solid #000; */
+
+}
 
 .popup-overlay {
     position: fixed;
@@ -298,4 +310,123 @@
     right: px;
     position: relative;
     float: right;
+}
+
+
+.categories {
+    display: flex;
+    /* 가로로 정렬 */
+    justify-content: space-around;
+    /* 항목 간 간격 */
+    gap: 10px;
+    /* 항목 간 여백 */
+    padding-left: 16px;
+    padding-right: 16px;
+    top: 0;
+    text-align: center;
+}
+
+.category-item {
+    position: relative;
+    /* ::after 가상 요소의 기준 */
+    display: inline-block;
+    /* 글씨 크기에 맞게 조정 */
+    text-align: center;
+    cursor: pointer;
+    padding: 10px 0;
+    color: #333;
+    /* 기본 글자 색상 */
+    transition: all 0.3s ease;
+}
+
+.category-item::after {
+    content: "";
+    /* 가상 요소 추가 */
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    /* 텍스트 아래 */
+    width: 0;
+    /* 초기 너비 */
+    height: 2px;
+    /* 선 두께 */
+    background-color: transparent;
+    /* 초기 상태는 투명 */
+    transition: all 0.3s ease;
+}
+
+.category-item.selected {
+    color: #007bff;
+    /* 선택된 글씨 색상 */
+}
+
+.category-item.selected::after {
+    width: 100%;
+    /* 글씨 아래 전체 선 */
+    background-color: #007bff;
+    /* 글씨 색상과 동일한 선 색상 */
+}
+
+.search-result-checkbox {
+    margin-top: 10px;
+    width: 20px;
+    height: 20px;
+    border: 2px solid #007bff;
+    border-radius: 4px;
+    background-color: #fff;
+    cursor: pointer;
+    margin-left: 10px;
+    transition: all 0.3s ease;
+    position: relative;
+    top: 3px;
+
+}
+
+.search-result-checkbox:checked {
+    background-color: #007bff;
+    border-color: #0056b3;
+}
+
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.page-number {
+    cursor: pointer;
+    padding: 5px 10px;
+    margin: 0 5px;
+    border-radius: 5px;
+    background-color: #f0f0f0;
+}
+
+.page-number.selected {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.page-number:hover {
+    background-color: #ddd;
+}
+
+
+.favorite-btn {
+    font-size: 1.5rem;
+    color: gray;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.favorite-btn.filled {
+    color: gold;
+    /* 즐겨찾기된 상태일 때 금색으로 변합니다 */
+}
+
+.favorite-btn:hover {
+    transform: scale(1.2);
+    /* 마우스를 올렸을 때 크기 증가 */
 }

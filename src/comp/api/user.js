@@ -22,6 +22,9 @@ export const loginUser = (email, password) => {
 
 // 카카오 로그인 API 호출
 export const kakaoLogin = (accessToken) => {
+    if (!accessToken) {
+        throw new Error("카카오 Access Token이 없습니다.");
+    }
     return api.post("/user/kakao-login", { access_token: accessToken });
 };
 
@@ -120,5 +123,13 @@ export const changePassword = (data) => {
 export const deactivateUser = () => {
     return api.put("/user/deactivate", {});
 };
+
+export const checkKakaoId = async (kakaoId) => {
+    const response = await api.get(`/user/check-kakao-id`, {
+        params: { kakaoId },
+    });
+    return response.data; // { isDuplicate: true/false }
+};
+
 
 export default api;

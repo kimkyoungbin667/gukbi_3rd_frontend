@@ -1,0 +1,118 @@
+/* 프로필 설정 전체 컨테이너 스타일 */
+.profile-setup-container {
+  margin: 30px auto;
+  padding: 30px;
+  border: 1px solid #f0e68c;
+  border-radius: 10px;
+  background-color: #fffaf0;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  max-width: 80%;
+  text-align: center;
+}
+
+/* 제목 스타일 */
+.profile-setup-title {
+  font-size: 50px;
+  font-family: "studyGood";
+  color: #333;
+  margin-bottom: 20px;
+}
+
+/* 폼 스타일 */
+.profile-setup-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* 폼 그룹 스타일 */
+.form-group {
+  margin-bottom: 20px;
+  width: 100%;
+  max-width: 500px;
+}
+
+/* 라벨 스타일 */
+.form-label {
+  font-size: 30px;
+  font-family: "studyGood";
+  color: #333;
+  margin-bottom: 10px;
+  display: block;
+  text-align: left;
+}
+
+/* 입력 필드 스타일 */
+.form-input {
+  width: 100%;
+  padding: 12px;
+  font-size: 20px;
+  border: 1px solid #f0e68c;
+  border-radius: 10px;
+  background-color: #fffaf0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  font-family: "Arial", sans-serif;
+}
+
+/* 입력 필드 포커스 스타일 */
+.form-input:focus {
+  outline: none;
+  border-color: #f8d7da;
+  box-shadow: 0 0 8px rgba(255, 180, 170, 0.5);
+}
+
+/* 버튼 스타일 */
+.profile-setup-button {
+  background-color: #ff6f61;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  padding: 12px 30px;
+  font-family: "studyGood";
+  font-size: 30px;
+  cursor: pointer;
+  margin-top: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+/* 버튼 호버 효과 */
+.profile-setup-button:hover {
+  background-color: #ff9f80;
+  transform: scale(1.05);
+}
+
+/* 에러 메시지 텍스트 스타일 */
+.error-text {
+  color: #ff4f50;
+  font-size: 18px;
+  margin-top: 10px;
+  font-family: "Arial", sans-serif;
+}
+
+/* 성공 메시지 텍스트 스타일 */
+.success-text {
+  color: #28a745;
+  font-size: 18px;
+  margin-top: 10px;
+  font-family: "Arial", sans-serif;
+}
+
+/* 이미지 미리보기 컨테이너 */
+.image-preview {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10px;
+  padding: 10px;
+  border: 2px dashed #ddd; /* 대시 테두리 */
+  border-radius: 10px;
+  background-color: #f9f9f9; /* 배경색 */
+}
+
+/* 미리보기 이미지 스타일 */
+.preview-image {
+  max-width: 100%;
+  max-height: 300px; /* 이미지 최대 높이 제한 */
+  border-radius: 8px;
+}

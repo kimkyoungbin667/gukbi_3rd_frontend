@@ -9,7 +9,7 @@ export default function MapWalkPolyline(props) {
     const category = props.category;
     return (
         <>
-            {category === "ㅎㅇ" && walks.map((walk, index) => (
+            {category === "산책기록" && walks.map((walk, index) => (
                 <>
                     <Polyline key={index}
                         path={[walk.paths.map((path, index) => (
