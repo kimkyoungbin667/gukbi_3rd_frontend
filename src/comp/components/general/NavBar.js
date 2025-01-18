@@ -123,6 +123,7 @@ const Navbar = () => {
                         <p className="navbar-text">솔루션</p>
                     </li>
 
+                    {/* /admin/dashboard */}
                     <li className="navbar__item dropdown" onClick={() => moveTo("/mypetspage")}
                         onMouseEnter={() => handleMouseEnter("mypage")}
                         onMouseLeave={() => handleMouseLeave("mypage")}>

@@ -36,12 +36,8 @@ export const updateUserProfile = (data) => {
 };
 
 // 닉네임 가져오기
-export const getUserNickname = (token) => {
-    return api.get("/user/nickname", {
-        headers: {
-            Authorization: `Bearer ${token}`, // 헤더에 토큰 추가
-        },
-    });
+export const getUserNickname = () => {
+    return api.get("/user/nickname");
 };
 
 // 프로필 이미지 업로드
@@ -88,7 +84,7 @@ api.interceptors.response.use(
             error.response.status === 401 &&
             !originalRequest._retry
         ) {
-        
+            
             originalRequest._retry = true;
 
             try {
@@ -122,12 +118,7 @@ export const changePassword = (data) => {
 };
 
 export const deactivateUser = () => {
-    return api.put("/user/deactivate", {}, {
-        headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}` // 토큰 포함
-        }
-    });
+    return api.put("/user/deactivate", {});
 };
-
 
 export default api;

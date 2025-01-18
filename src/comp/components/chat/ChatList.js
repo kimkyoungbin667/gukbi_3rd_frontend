@@ -3,107 +3,145 @@ import { getChatRoomList, getChatRoomMsg } from "../../api/chat.js";
 import "../../css/chat/chat.css";
 import SockJS from "sockjs-client";
 import { Client } from "@stomp/stompjs";
-import { GiNewBorn } from "react-icons/gi";
 import { jwtDecode } from "jwt-decode";
 
 export default function Chat() {
-    const [selectedRoomIdx, setSelectedRoomIdx] = useState(null); // 선택된 채팅방 ID
-    const [chatRoomList, setChatRoomList] = useState([]); // 채팅방 리스트
-    const [chatRoomMsg, setChatRoomMsg] = useState([]); // 채팅 메시지 목록
-    const [stompClient, setStompClient] = useState(null); // STOMP 클라이언트
-    const [message, setMessage] = useState(""); // 입력 메시지
-    const [currentSubscription, setCurrentSubscription] = useState(null); // 현재 구독
-    const messagesEndRef = useRef(null); // 메시지 영역 끝 참조
-    const [personName, setPersonName] = useState(''); // 클릭한 채팅에 있는 사람 이름
+    const [isTyping, setIsTyping] = useState(false);  // 상대방 입력 중 상태
+    const [typingTimeout, setTypingTimeout] = useState(null);  // 입력 중 상태 시간 제한
+    const [typingSubscription, setTypingSubscription] = useState(null);
+    const [selectedRoomIdx, setSelectedRoomIdx] = useState(null);
+    const [chatRoomList, setChatRoomList] = useState([]);
+    const [chatRoomMsg, setChatRoomMsg] = useState([]);
+    const [stompClient, setStompClient] = useState(null);
+    const [message, setMessage] = useState("");
+    const [currentSubscription, setCurrentSubscription] = useState(null);
+    const messagesEndRef = useRef(null);
+    const [personName, setPersonName] = useState('');
 
-    // 토큰에서 userIdx 추출
     const token = localStorage.getItem("token");
     const decodedToken = jwtDecode(token);
     const userIdx = decodedToken.sub;
 
-
-    // WebSocket 연결
     useEffect(() => {
-        // 로컬 스토리지에서 토큰 가져오기
-
-        console.log("토큰 : ", token);
-        // SockJS에 URL에 토큰 추가 (옵션 1)
         const socket = new SockJS(`http://58.74.46.219:33334/ws?token=${token}`);
         const client = new Client({
             webSocketFactory: () => socket,
             debug: (str) => console.log(str),
-            onConnect: () => {
-                console.log("WebSocket 연결 성공!");
-            },
-            onDisconnect: () => {
-                console.log("WebSocket 연결 종료!");
-            },
-            beforeConnect: () => {
-                console.log("WebSocket 연결 준비 중...");
-            },
-            connectHeaders: {
-                Authorization: `Bearer ${token}`, // 헤더에 토큰 포함
-            },
+            onConnect: () => console.log("WebSocket 연결 성공!"),
+            onDisconnect: () => console.log("WebSocket 연결 종료!"),
+            beforeConnect: () => console.log("WebSocket 연결 준비 중..."),
+            connectHeaders: { Authorization: `Bearer ${token}` }
         });
 
         client.activate();
         setStompClient(client);
 
-        // 채팅방 목록 가져오기
-        let obj = {};
-        obj.token = token;
-
-        getChatRoomList(obj)
+        getChatRoomList({ token })
             .then((res) => {
-                console.log(res);
-                console.log(res.data.data);
-                if (res.data.code === "200") {
-                    setChatRoomList(res.data.data);
-                }
+                if (res.data.code === "200") setChatRoomList(res.data.data);
             })
             .catch((err) => console.error("Error fetching chat room list:", err));
 
-        return () => {
-            if (client) client.deactivate(); // 컴포넌트 언마운트 시 연결 해제
-        };
+        return () => client.deactivate();
     }, []);
 
-
-
-    // 채팅방 클릭 핸들러
-    const handleRoomClick = (roomIdx, index) => {
-        if (!stompClient || !stompClient.connected) {
-            console.error("STOMP 연결이 되어 있지 않습니다.");
-            return;  // 연결이 없으면 구독 중단
+    const handleTyping = () => {
+        if (stompClient && stompClient.connected) {
+            stompClient.publish({
+                destination: `/app/room/${selectedRoomIdx}/typing`,
+                body: JSON.stringify({
+                    senderIdx: userIdx,  // ✅ 보낸 사람 ID 추가
+                    senderToken: token,
+                    roomIdx: selectedRoomIdx,
+                    typing: true,
+                }),
+            });
         }
 
-        setSelectedRoomIdx(roomIdx);
-        setPersonName(chatRoomList[index].opponentName);
+        if (typingTimeout) clearTimeout(typingTimeout);
+        setTypingTimeout(setTimeout(() => stopTyping(), 3000));
+    };
 
-        let obj = { roomIdx: roomIdx };
-        getChatRoomMsg(obj)
-            .then((res) => {
-                if (res.data.code === "200") {
-                    console.log(res);
-                    setChatRoomMsg(res.data.data);
-                }
-            })
-            .catch((err) => console.error("Error fetching chat messages:", err));
-
-        if (currentSubscription) {
-            currentSubscription.unsubscribe();
+    const stopTyping = () => {
+        if (stompClient && stompClient.connected) {
+            stompClient.publish({
+                destination: `/app/room/${selectedRoomIdx}/typing`,
+                body: JSON.stringify({
+                    senderToken: token,
+                    roomIdx: selectedRoomIdx,
+                    typing: false,
+                }),
+            });
         }
-
-        const newSubscription = stompClient.subscribe(`/topic/room/${roomIdx}`, (msg) => {
-            const receivedMessage = JSON.parse(msg.body);
-            setChatRoomMsg((prev) => [...prev, receivedMessage]);
-        });
-
-        setCurrentSubscription(newSubscription);
     };
 
 
-    // 메시지 전송
+
+    const handleRoomClick = (roomIdx, index) => {
+        if (!stompClient || !stompClient.connected) return;
+    
+        setSelectedRoomIdx(roomIdx);
+        setPersonName(chatRoomList[index].opponentName);
+    
+        // 기존 메시지 구독 해제
+        if (currentSubscription) currentSubscription.unsubscribe();
+    
+        // 기존 타이핑 상태 구독 해제
+        if (typingSubscription) typingSubscription.unsubscribe();
+    
+        // 기존 메시지 불러오기
+        getChatRoomMsg({ roomIdx })
+            .then((res) => {
+                if (res.data.code === "200") setChatRoomMsg(res.data.data);
+            })
+            .catch((err) => console.error("Error fetching chat messages:", err));
+    
+        // ✅ 메시지 구독
+        const newMessageSubscription = stompClient.subscribe(`/topic/room/${roomIdx}`, (msg) => {
+            const receivedMessage = JSON.parse(msg.body);
+            setChatRoomMsg((prev) => [...prev, receivedMessage]);
+        });
+    
+        // ✅ 타이핑 상태 구독
+        const newTypingSubscription = stompClient.subscribe(`/topic/room/${roomIdx}/typing`, (msg) => {
+            const typingStatus = JSON.parse(msg.body);
+    
+            // ✅ 본인이 아니면 isTyping 활성화
+            if (typingStatus.senderIdx != userIdx) {
+                setIsTyping(typingStatus.typing);
+            }
+        });
+    
+        // ✅ 구독 상태 저장
+        setCurrentSubscription(newMessageSubscription);
+        setTypingSubscription(newTypingSubscription);
+    };
+
+    
+
+    // ✅ 날짜별 그룹화
+    const groupMessagesByDate = (messages) => {
+        const grouped = {};
+        messages.forEach((msg) => {
+            const dateObj = new Date(msg.sentAt);
+            const date = `${dateObj.getFullYear()}-${String(dateObj.getMonth() + 1).padStart(2, '0')}-${String(dateObj.getDate()).padStart(2, '0')}`;
+            if (!grouped[date]) grouped[date] = [];
+            grouped[date].push(msg);
+        });
+        return grouped;
+    };
+
+
+    // ✅ 시간 포맷 (HH:mm:ss)
+    const formatTime = (timestamp) => {
+        const date = new Date(timestamp);
+        const hours = String(date.getHours()).padStart(2, "0");
+        const minutes = String(date.getMinutes()).padStart(2, "0");
+        const seconds = String(date.getSeconds()).padStart(2, "0");
+        return `${hours}:${minutes}:${seconds}`;
+    };
+
+    // ✅ 메시지 전송
     const sendMessage = () => {
         if (stompClient && message.trim() !== "") {
             stompClient.publish({
@@ -112,97 +150,98 @@ export default function Chat() {
                     senderToken: token,
                     roomIdx: selectedRoomIdx,
                     message: message,
-                    sentAt: new Date().toISOString(), // 현재 시간 추가
+                    sentAt: new Date().toISOString(),
                 }),
             });
-            setMessage(""); // 입력 필드 초기화
+            setMessage("");
         }
     };
 
-    // 메시지 업데이트 시 스크롤 이동
     useEffect(() => {
         if (messagesEndRef.current) {
             messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
         }
     }, [chatRoomMsg]);
 
+    const groupedMessages = groupMessagesByDate(chatRoomMsg);
+
     return (
         <div className="chat-container">
-
-            {/* 채팅 리스트 */}
             <div className="chat-list">
-                <h2>채팅방 리스트</h2>
+                <h2>📫 채팅방 리스트</h2>
                 {chatRoomList.map((room, index) => (
                     <div
                         key={index}
                         className={`chat-list-item ${selectedRoomIdx === room.roomIdx ? "active" : ""}`}
                         onClick={() => handleRoomClick(room.roomIdx, index)}
                     >
-                        <div className="chat-room-profile">
-                            <img
-                                src={room.opponentProfileUrl}
-                                alt={`${room.opponentName}의 프로필`}
-                                className="profile-image"
-                                style={{ width: "50px", height: "50px", borderRadius: "50%" }}
-                            />
-                        </div>
-                        <div className="chat-list-details">
-                            <span className="chat-list-title">{room.opponentName} 님과의 대화</span>
-                        </div>
+                        <img src={room.opponentProfileUrl} alt="프로필" className="profile-image" />
+                        <div className="opponent-name">{room.opponentName} 님과의 대화</div>
                     </div>
                 ))}
             </div>
 
-            {/* 선택된 채팅방 */}
             <div className="chat-room">
                 {selectedRoomIdx ? (
                     <>
                         <div className="chat-room-header">
-                            <div className="chat-room-info">
-                                <span className="chat-room-title">{personName}</span>
-                            </div>
+                            <span className="chat-room-title">{personName}</span>
                         </div>
+
                         <div className="chat-room-messages">
-                            {chatRoomMsg.map((item, index) => {
+                            {Object.keys(groupedMessages).map((date) => (
+                                <div key={date}>
+                                    <div className="date-divider">{date}</div>
 
-                                const isMine = userIdx == item.senderIdx;
+                                    {groupedMessages[date].map((item, index) => {
+                                        const isMine = userIdx == item.senderIdx;
+                                        return (
+                                            <div key={index} className={isMine ? "message-right" : "message-left"}>
+                                                {!isMine && (
+                                                    <img src={item.senderProfile} alt="프로필" className="profile-image" />
+                                                )}
+                                                <div className="message-content">
+                                                    <p>{item.message}</p>
+                                                    <p className="message-time">{formatTime(item.sentAt)}</p>
+                                                </div>
+                                            </div>
+                                        );
+                                    })}
+                                </div>
+                            ))}
 
-                                return (
-                                    <div
-                                        key={index}
-                                        className={isMine ? "message-right" : "message-left"} // 조건부 클래스 적용
-                                    >
-                                        <div className="message-content">
-                                            <p>
-                                                <strong>{item.sender}</strong>
-                                            </p>
-                                            <p>{item.message}</p>
-                                            <p className="message-time">{item.sentAt.slice(-8)}</p>
-                                        </div>
+                            {/* ✅ 상대방 입력 중일 때 점 애니메이션 */}
+                            {isTyping && (
+                                <div className="message-left">
+                                    <div className="message-content typing-indicator">
+                                        <span></span>
+                                        <span></span>
+                                        <span></span>
                                     </div>
-                                );
-                            })}
-                            <div ref={messagesEndRef} /> {/* 메시지 영역 끝에 참조 추가 */}
+                                </div>
+                            )}
+
+                            <div ref={messagesEndRef} />
                         </div>
+
 
                         <div className="chat-room-input">
                             <input
                                 type="text"
                                 value={message}
                                 placeholder="메시지를 입력하세요"
-                                onChange={(e) => setMessage(e.target.value)}
+                                onChange={(e) => {
+                                    setMessage(e.target.value);
+                                    handleTyping();  // ✅ 입력 중 상태 전송
+                                }}
                                 onKeyDown={(e) => {
-                                    if (e.key === "Enter") {
-                                        sendMessage(); // 엔터 키로 메시지 전송
-                                        e.preventDefault(); // 기본 엔터 동작(줄바꿈) 방지
-                                    }
+                                    handleTyping();  // ✅ 입력 중 상태 전송
+                                    if (e.key === "Enter") sendMessage();
                                 }}
                             />
-                            <button className="send-button" onClick={sendMessage}>
-                                전송
-                            </button>
-                        </div>
 
+                            <button onClick={sendMessage}>전송</button>
+                        </div>
                     </>
                 ) : (
                     <h2>채팅방을 선택하세요</h2>
