@@ -4,7 +4,7 @@ import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import "../../css/calendar/EventCalendar.css";
 import { getMyPets } from "../../api/pet";
-import { saveEvent, getEvents, updateEvent, deleteEvent, handleKakaoCallback  } from "../../api/calendar";
+import { saveEvent, getEvents, updateEvent, deleteEvent, handleKakaoCallback } from "../../api/calendar";
 import { getUserProfile } from "../../api/user";
 import axios from "axios";
 
@@ -15,7 +15,7 @@ const EventCalendar = () => {
   const [pets, setPets] = useState([]);
   const [userId, setUserId] = useState(null);
   const [events, setEvents] = useState([]);
-  const [isKakaoUser, setIsKakaoUser] = useState(false); // 기본값은 일반 사용자로 설정
+  const [socialType, setSocialType] = useState(null);
   const [newEvent, setNewEvent] = useState({
     petId: "",
     title: "",
@@ -50,16 +50,15 @@ const EventCalendar = () => {
 
     const fetchUserId = async () => {
       try {
-          const response = await getUserProfile();
-          setUserId(response.data.userIdx);
-          setIsKakaoUser(response.data.socialType === "KAKAO"); // 카카오 유저 여부 설정
-          fetchEvents(response.data.userIdx);
+        const response = await getUserProfile();
+        setUserId(response.data.userIdx);
+        setSocialType(response.data.socialType);
+        fetchEvents(response.data.userIdx);
       } catch (error) {
-          console.error("사용자 정보 가져오기 실패:", error);
-          alert("사용자 정보를 가져오는데 실패했습니다.");
+        console.error("사용자 정보 가져오기 실패:", error);
+        alert("사용자 정보를 가져오는데 실패했습니다.");
       }
-  };
-  
+    };
 
     fetchPets();
     fetchUserId();
@@ -68,16 +67,16 @@ const EventCalendar = () => {
   const handleKakaoConsent = async (code) => {
     console.log("OAuth Callback 요청 준비 - 전달된 인증 코드:", code);
     try {
-        const response = await handleKakaoCallback(code); // API 호출
-        console.log("OAuth Callback 처리 성공 - 응답 데이터:", response);
-        alert("동의가 완료되었습니다! 다시 이벤트를 저장할 수 있습니다.");
+      const response = await handleKakaoCallback(code); // API 호출
+      console.log("OAuth Callback 처리 성공 - 응답 데이터:", response);
+      alert("동의가 완료되었습니다! 다시 이벤트를 저장할 수 있습니다.");
     } catch (error) {
-        console.error("OAuth Callback 처리 중 실패:", error);
-        alert("동의 처리 중 오류가 발생했습니다.");
+      console.error("OAuth Callback 처리 중 실패:", error);
+      alert("동의 처리 중 오류가 발생했습니다.");
     }
-};
+  };
 
-  
+
   const fetchEvents = async (userId) => {
     try {
       const response = await getEvents(userId);
@@ -114,43 +113,60 @@ const EventCalendar = () => {
 
   const handleEventSubmit = async () => {
     if (!userId) {
-        alert("사용자 인증 정보가 없습니다.");
-        return;
+      alert("사용자 인증 정보가 없습니다.");
+      return;
     }
-
-    const dateString = newEvent.date.toISOString().split("T")[0];
+  
+    // 날짜와 시간을 로컬 시간 기준으로 생성
+    const localDate = new Date(newEvent.date);
+    const [hours, minutes] = newEvent.time.split(":").map(Number);
+    localDate.setHours(hours, minutes, 0, 0); // 시간을 설정
+  
+    // UTC로 변환
+    const utcDate = new Date(localDate.getTime() - localDate.getTimezoneOffset() * 60000);
+    const dateString = utcDate.toISOString().split("T")[0]; // UTC 기준 날짜
     const timeString = newEvent.time;
-
+  
     const formattedEvent = {
-        ...newEvent,
-        userId,
-        eventDate: dateString,
-        eventTime: timeString,
+      ...newEvent,
+      userId,
+      eventDate: dateString,
+      eventTime: timeString,
     };
-
+  
     console.log("보내는 이벤트 데이터:", formattedEvent);
-
+  
     try {
-        const response = await saveEvent(formattedEvent);
-
-        if (isKakaoUser) {
-            console.log("카카오톡 메시지 전송 로직 실행");
-            // 카카오톡 메시지 전송 로직 추가
-        } else {
-            console.log("이메일 알림 전송 로직 실행");
-            // 이메일 알림 전송 로직 추가
+      const response = await saveEvent(formattedEvent);
+  
+      if (response.status === 403 && response.data?.url) {
+        console.warn("동의가 필요합니다. URL:", response.data.url);
+        alert("추가 동의가 필요합니다. 동의 화면으로 이동합니다.");
+        window.location.href = response.data.url; // 동의 화면으로 리다이렉트
+      } else {
+        if (socialType === "KAKAO") {
+          console.log("카카오톡 사용자에게 알림 전송");
+          alert("일정이 저장되었으며, 카카오톡으로 알림이 전송되었습니다.");
+        } else if (socialType === "GENERAL") {
+          console.log("일반 사용자에게 이메일 알림 전송");
+          alert("일정이 저장되었으며, 이메일로 알림이 전송되었습니다.");
         }
-
-        alert("일정이 저장되었습니다!");
         fetchEvents(userId); // 이벤트 목록 새로고침
         closeModal(); // 모달 닫기
+      }
     } catch (error) {
-        console.error("일정 저장 실패:", error.response || error);
+      console.error("일정 저장 실패:", error.response || error);
+      if (error.response && error.response.data?.url) {
+        console.warn("동의 URL:", error.response.data.url);
+        alert("추가 동의가 필요합니다. 동의 화면으로 이동합니다.");
+        window.location.href = error.response.data.url; // 에러 응답에서 URL 가져오기
+      } else {
         alert("일정을 저장하는 데 실패했습니다.");
+      }
     }
-};
-
-
+  };
+  
+  
   const handleEventClick = (event) => {
     setSelectedEvent(event);
     setIsEditPanelOpen(true);
@@ -274,15 +290,20 @@ const EventCalendar = () => {
               <input
                 type="date"
                 name="date"
-                value={newEvent.date.toISOString().split("T")[0]}
+                value={
+                  newEvent.date instanceof Date
+                    ? newEvent.date.toLocaleDateString("en-CA") // 로컬 시간 기준으로 'yyyy-MM-dd' 형식 반환
+                    : ""
+                }
                 onChange={(e) =>
                   setNewEvent((prev) => ({
                     ...prev,
-                    date: new Date(e.target.value),
+                    date: new Date(e.target.value + "T00:00:00"), // 로컬 날짜를 보장
                   }))
                 }
               />
             </label>
+
             <label>
               시간:
               <input
