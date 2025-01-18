@@ -107,8 +107,9 @@
     display: flex;
     align-items: center;
     gap: 10px;
-    padding: 10px 0;
-    border-bottom: 1px solid #ddd;
+    justify-content: center;
+    padding: 15px 0;
+    border-bottom: 3px solid #ddd;
 }
 
 .chat-room-profile {
@@ -127,7 +128,8 @@
 
 .chat-room-title {
     font-weight: bold;
-    font-size: 35px;
+    font-size: 55px;
+    font-family: 'studyGood';
     color: #333;
     margin-bottom: 10px;
 }
@@ -306,49 +308,6 @@
     }
 }
 
-.message-right {
-    display: flex;
-    justify-content: flex-end;
-    align-items: flex-end;
-    margin: 10px 0;
-    position: relative;
-}
-
-.message-right .message-content {
-    max-width: 60%;
-    background-color: #007bff;      /* 파란색 배경 */
-    color: white;
-    padding: 12px 18px;
-    border-radius: 15px 15px 0 15px; /* 둥근 모서리 */
-    font-size: 16px;
-    line-height: 1.5;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-    position: relative;
-}
-
-/* 👉 오른쪽 말풍선 꼬리 수정 */
-.message-right .message-content::after {
-    content: "";
-    position: absolute;
-    right: -6px;    /* 더 가까이 붙이기 */
-    bottom: 10px;   /* 아래에서 조금 위로 */
-    width: 0;
-    height: 0;
-    border-top: 6px solid transparent;
-    border-bottom: 6px solid transparent;
-    border-left: 6px solid #007bff;  /* 말풍선 색상과 동일 */
-}
-
-
-.message-content p {
-    font-size: 35px;
-    /* 원하는 크기로 조정 */
-    line-height: 1.5;
-    /* 줄 간격 조정 */
-    margin: 5px 0;
-    /* 상하 간격 조정 */
-    font-family: 'studyGood';
-}
 
 /* 날짜 구분선 */
 .date-divider {
@@ -372,59 +331,29 @@
 }
 
 
-/* 왼쪽(상대방 메시지) 말풍선 */
-.message-left {
-    display: flex;
-    justify-content: flex-start;
-    align-items: flex-end;
-    margin: 10px 0;
-    position: relative;
-    margin-left:5px;
-}
 
-.message-left .message-content {
-    max-width: 60%;
-    background-color: #f1f1f1;    /* 회색 배경 */
-    color: #333;
-    padding: 12px 18px;
-    border-radius: 15px 15px 15px 0; /* 둥근 모서리 */
-    font-size: 16px;
-    line-height: 1.5;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    position: relative;
-    /* ✅ margin-left 제거하고 padding으로 조정 */
-    padding-left: 15px;
-    margin-right: 10px;
-}
 
-/* 👈 왼쪽 말풍선 꼬리 (본체) */
-.message-left .message-content::after {
-    content: "";
-    position: absolute;
-    left: -8px;   /* 꼬리 위치 */
-    bottom: 12px; /* 꼬리 위치 */
-    width: 0;
-    height: 0;
-    border-top: 8px solid transparent;
-    border-bottom: 8px solid transparent;
-    border-right: 8px solid #f1f1f1;  /* ✅ 말풍선 본체와 동일한 색상 */
-    z-index: 2; /* 본체가 위로 */
-}
 
 /* 👈 왼쪽 말풍선 꼬리 그림자 */
 .message-left .message-content::before {
     content: "";
     position: absolute;
-    left: -9px;  /* ✅ 본체보다 살짝 왼쪽 */
-    bottom: 12px; /* 본체와 동일한 위치 */
+    left: -19px;
+    /* ✅ 본체보다 살짝 왼쪽 */
+    bottom: 12px;
+    /* 본체와 동일한 위치 */
     width: 0;
     height: 0;
     border-top: 9px solid transparent;
     border-bottom: 9px solid transparent;
-    border-right: 9px solid rgba(0, 0, 0, 0.08);  /* ✅ 자연스러운 그림자 */
-    filter: blur(1px); /* ✅ 부드러운 그림자 효과 */
-    z-index: 1; /* 본체 뒤로 */
+    border-right: 9px solid rgba(0, 0, 0, 0.08);
+    /* ✅ 자연스러운 그림자 */
+    filter: blur(1px);
+    /* ✅ 부드러운 그림자 효과 */
+    z-index: 1;
+    /* 본체 뒤로 */
 }
+
 
 
 
@@ -462,7 +391,7 @@
     /* 폰트 설정 */
 }
 
-.chat-room-input input {
+.chat-room-input textarea {
     flex: 1;
     /* 가로로 최대 크기 */
     padding: 20px 35px;
@@ -471,11 +400,12 @@
     /* 파란색 테두리 */
     border-radius: 8px;
     /* 둥근 모서리 */
-    font-size: 30px;
+    white-Space: "pre-wrap";
+    font-size: 40px;
     /* 글자 크기 */
     font-family: "studyGood";
     /* 폰트 설정 */
-    color: #333;
+    color: #000;
     /* 글자 색 */
     background-color: #f9f9f9;
     /* 입력 배경 */
@@ -538,24 +468,32 @@
 
 /* ✅ 말풍선 스타일 */
 .typing-indicator {
-    background-color: #e0f0ff; /* 더 선명한 색상 */
-    padding: 20px 25px; /* 말풍선 크기 확대 */
-    border-radius: 20px 20px 20px 0; /* 둥근 말풍선 */
+    background-color: #e0f0ff;
+    /* 더 선명한 색상 */
+    padding: 14px 18px;
+    /* 말풍선 크기 확대 */
+    border-radius: 20px 20px 20px 0;
+    /* 둥근 말풍선 */
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 140px; /* 말풍선 너비 확대 */
-    height: 70px; /* 말풍선 높이 확대 */
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* 그림자 추가 */
+    width: 120px;
+    /* 말풍선 너비 확대 */
+    height: 50px;
+    /* 말풍선 높이 확대 */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    /* 그림자 추가 */
 }
 
 /* ✅ 점 세 개 스타일 */
 .typing-indicator span {
     display: inline-block;
-    width: 20px;  /* 점 크기 확대 */
-    height: 20px;
+    width: 15px;
+    /* 점 크기 확대 */
+    height: 15px;
     margin: 0 5px;
-    background-color: #007bff; /* 선명한 파란색 */
+    background-color: #007bff;
+    /* 선명한 파란색 */
     border-radius: 50%;
     animation: bounce 1.2s infinite ease-in-out both;
 }
@@ -570,6 +508,145 @@
     animation-delay: -0.16s;
 }
 
+/* ✅ 공통 메시지 스타일 */
+.message-left,
+.message-right {
+    display: flex;
+    align-items: flex-end;
+    margin-bottom: 10px;
+}
+
+/* ✅ 상대방 메시지 (왼쪽) */
+.message-left {
+    display: flex;
+    justify-content: flex-start;
+    /* ✅ 왼쪽 정렬 */
+    align-items: flex-end;
+    width: 100%;
+    margin-right: auto;
+    /* ✅ 오른쪽 여백 자동으로 조정 */
+}
+
+/* ✅ 상대 메시지 (왼쪽) */
+.message-left .message-wrapper {
+    justify-content: flex-start;
+    /* 왼쪽 정렬 */
+}
+
+.message-left .message-content {
+    background-color: #f1f1f1;
+    color: #333;
+    padding: 12px 18px;
+    border-radius: 15px 15px 15px 0;
+    max-width: 75%;
+    word-break: break-word;
+    margin-right: 8px;
+    /* ✅ 시간과 간격 조정 */
+}
+
+/* ✅ 상대방 메시지 시간 (오른쪽) */
+.message-time-right {
+    font-size: 20px;
+    color: #000;
+    font-family: 'studyGood';
+    margin-left: 5px;
+    /* ✅ 말풍선과 시간 간격 */
+    align-self: flex-end;
+}
+
+/* ✅ 내 메시지 (오른쪽) */
+.message-right {
+    display: flex;
+    justify-content: flex-end;
+    /* ✅ 오른쪽 정렬 */
+    align-items: flex-end;
+    width: 100%;
+    margin-left: auto;
+    /* ✅ 왼쪽 여백 자동 조정 */
+}
+
+.message-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start; /* ✅ 왼쪽 정렬 */
+    max-width: 100%;
+    flex-grow: 0; /* ✅ 공간을 더 이상 차지하지 않도록 */
+}
+
+
+.message-left .message-content,
+.message-right .message-content {
+    margin: 5px 10px;  /* ✅ 위아래 5px, 좌우 10px 여백 추가 */
+}
+
+
+.message-right .message-wrapper {
+    justify-content: flex-end;
+    /* 오른쪽 정렬 */
+}
+
+/* ✅ 내 메시지 말풍선 */
+.message-right .message-content {
+    background-color: #007bff;
+    color: white;
+    padding: 12px 18px;
+    border-radius: 15px 15px 0 15px;
+    max-width: 75%;
+    word-break: break-word;
+    margin-left: 8px;
+    /* ✅ 시간과 간격 조정 */
+}
+
+/* ✅ 내 메시지 시간 (왼쪽) */
+.message-time-left {
+    font-size: 20px;
+    font-family: 'studyGood';
+    color: #000;
+    margin-right: 5px;
+    /* ✅ 말풍선과 시간 간격 */
+    align-self: flex-end;
+}
+
+.message-content {
+    font-family: 'studyGood';
+    font-size: 35px;
+    word-break: break-word;  /* ✅ 단어가 넘칠 경우 줄바꿈 */
+    white-space: pre-wrap;   /* ✅ 공백 및 줄바꿈 유지 */
+    word-break: keep-all; /* ✅ 단어 단위로 줄바꿈 */
+    white-space: pre-wrap; /* ✅ 줄바꿈 및 공백 유지 */
+    padding: 12px 18px;
+    border-radius: 15px;
+    text-align: left;
+}
+
+
+/* ✅ 오른쪽 말풍선 꼬리 */
+.message-right .message-content::after {
+    content: "";
+    position: absolute;
+    right: -6px;
+    bottom: 10px;
+    width: 0;
+    height: 0;
+    border-top: 6px solid transparent;
+    border-bottom: 6px solid transparent;
+    border-left: 6px solid #007bff;
+}
+
+/* ✅ 왼쪽 말풍선 꼬리 */
+.message-left .message-content::after {
+    content: "";
+    position: absolute;
+    left: -8px;
+    bottom: 12px;
+    width: 0;
+    height: 0;
+    border-top: 8px solid transparent;
+    border-bottom: 8px solid transparent;
+    border-right: 8px solid #f1f1f1;
+}
+
+
 /* ✅ 세 번째 점 */
 .typing-indicator span:nth-child(3) {
     animation-delay: 0s;
@@ -577,13 +654,16 @@
 
 /* ✅ 점이 커졌다 작아지는 부드러운 애니메이션 */
 @keyframes bounce {
-    0%, 80%, 100% {
+
+    0%,
+    80%,
+    100% {
         transform: scale(0.5);
         opacity: 0.3;
     }
+
     40% {
         transform: scale(1);
         opacity: 1;
     }
 }
-

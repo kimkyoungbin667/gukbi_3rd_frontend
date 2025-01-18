@@ -15,6 +15,7 @@ export default function Chat() {
     const [stompClient, setStompClient] = useState(null);
     const [message, setMessage] = useState("");
     const [currentSubscription, setCurrentSubscription] = useState(null);
+    const [opponentProfileUrl, setOpponentProfileUrl] = useState('');
     const messagesEndRef = useRef(null);
     const [personName, setPersonName] = useState('');
 
@@ -59,7 +60,7 @@ export default function Chat() {
         }
 
         if (typingTimeout) clearTimeout(typingTimeout);
-        setTypingTimeout(setTimeout(() => stopTyping(), 3000));
+        setTypingTimeout(setTimeout(() => stopTyping(), 2000));
     };
 
     const stopTyping = () => {
@@ -77,47 +78,51 @@ export default function Chat() {
 
 
 
-    const handleRoomClick = (roomIdx, index) => {
+    const handleRoomClick = (roomIdx, index, opponentProfileUrl) => {
         if (!stompClient || !stompClient.connected) return;
-    
+
         setSelectedRoomIdx(roomIdx);
         setPersonName(chatRoomList[index].opponentName);
-    
+        setOpponentProfileUrl(opponentProfileUrl);
+
         // 기존 메시지 구독 해제
         if (currentSubscription) currentSubscription.unsubscribe();
-    
+
         // 기존 타이핑 상태 구독 해제
         if (typingSubscription) typingSubscription.unsubscribe();
-    
+
         // 기존 메시지 불러오기
         getChatRoomMsg({ roomIdx })
             .then((res) => {
-                if (res.data.code === "200") setChatRoomMsg(res.data.data);
+                if (res.data.code === "200") {
+                    console.log(res.data);
+                    setChatRoomMsg(res.data.data);
+                }
             })
             .catch((err) => console.error("Error fetching chat messages:", err));
-    
+
         // ✅ 메시지 구독
         const newMessageSubscription = stompClient.subscribe(`/topic/room/${roomIdx}`, (msg) => {
             const receivedMessage = JSON.parse(msg.body);
             setChatRoomMsg((prev) => [...prev, receivedMessage]);
         });
-    
+
         // ✅ 타이핑 상태 구독
         const newTypingSubscription = stompClient.subscribe(`/topic/room/${roomIdx}/typing`, (msg) => {
             const typingStatus = JSON.parse(msg.body);
-    
+
             // ✅ 본인이 아니면 isTyping 활성화
             if (typingStatus.senderIdx != userIdx) {
                 setIsTyping(typingStatus.typing);
             }
         });
-    
+
         // ✅ 구독 상태 저장
         setCurrentSubscription(newMessageSubscription);
         setTypingSubscription(newTypingSubscription);
     };
 
-    
+
 
     // ✅ 날짜별 그룹화
     const groupMessagesByDate = (messages) => {
@@ -132,30 +137,35 @@ export default function Chat() {
     };
 
 
-    // ✅ 시간 포맷 (HH:mm:ss)
+    // ✅ 시간만 추출하는 함수 (HH:mm)
     const formatTime = (timestamp) => {
         const date = new Date(timestamp);
         const hours = String(date.getHours()).padStart(2, "0");
         const minutes = String(date.getMinutes()).padStart(2, "0");
-        const seconds = String(date.getSeconds()).padStart(2, "0");
-        return `${hours}:${minutes}:${seconds}`;
+        return `${hours}:${minutes}`;
     };
 
-    // ✅ 메시지 전송
+
+    // 메시지 전송
     const sendMessage = () => {
         if (stompClient && message.trim() !== "") {
+            const now = new Date();
+            const koreaTime = new Date(now.getTime() + 9 * 60 * 60 * 1000);  // KST로 변환
+
             stompClient.publish({
                 destination: `/app/room/${selectedRoomIdx}/send`,
                 body: JSON.stringify({
                     senderToken: token,
                     roomIdx: selectedRoomIdx,
                     message: message,
-                    sentAt: new Date().toISOString(),
+                    sentAt: koreaTime.toISOString(),
                 }),
             });
             setMessage("");
+            stopTyping();
         }
     };
+
 
     useEffect(() => {
         if (messagesEndRef.current) {
@@ -173,7 +183,7 @@ export default function Chat() {
                     <div
                         key={index}
                         className={`chat-list-item ${selectedRoomIdx === room.roomIdx ? "active" : ""}`}
-                        onClick={() => handleRoomClick(room.roomIdx, index)}
+                        onClick={() => handleRoomClick(room.roomIdx, index, room.opponentProfileUrl)}
                     >
                         <img src={room.opponentProfileUrl} alt="프로필" className="profile-image" />
                         <div className="opponent-name">{room.opponentName} 님과의 대화</div>
@@ -192,27 +202,38 @@ export default function Chat() {
                             {Object.keys(groupedMessages).map((date) => (
                                 <div key={date}>
                                     <div className="date-divider">{date}</div>
-
                                     {groupedMessages[date].map((item, index) => {
-                                        const isMine = userIdx == item.senderIdx;
+                                        const isMine = userIdx == item.senderIdx;  // 내 메시지인지 확인
+
                                         return (
                                             <div key={index} className={isMine ? "message-right" : "message-left"}>
-                                                {!isMine && (
-                                                    <img src={item.senderProfile} alt="프로필" className="profile-image" />
-                                                )}
-                                                <div className="message-content">
-                                                    <p>{item.message}</p>
-                                                    <p className="message-time">{formatTime(item.sentAt)}</p>
+                                                <div className="message-wrapper">
+                                                    {isMine ? (
+                                                        <>
+                                                            {/* ✅ 내 메시지 */}
+                                                            <p className="message-time-left">{formatTime(item.sentAt)}</p>
+                                                            <div className="message-content">{item.message}</div>
+                                                        </>
+                                                    ) : (
+                                                        <>
+                                                            {/* ✅ 상대 메시지 */}
+                                                            <img src={item.senderProfile} alt="프로필" className="profile-image" />
+                                                            <div className="message-content">{item.message}</div>
+                                                            <p className="message-time-right">{formatTime(item.sentAt)}</p>
+                                                        </>
+                                                    )}
                                                 </div>
                                             </div>
                                         );
                                     })}
+
                                 </div>
                             ))}
 
                             {/* ✅ 상대방 입력 중일 때 점 애니메이션 */}
                             {isTyping && (
                                 <div className="message-left">
+                                    <img src={opponentProfileUrl} alt="프로필" className="profile-image" />
                                     <div className="message-content typing-indicator">
                                         <span></span>
                                         <span></span>
@@ -226,20 +247,31 @@ export default function Chat() {
 
 
                         <div className="chat-room-input">
-                            <input
-                                type="text"
+
+                            <textarea
                                 value={message}
-                                placeholder="메시지를 입력하세요"
+                                placeholder="메시지 입력 (Shift + Enter는 줄바꿈)"
                                 onChange={(e) => {
                                     setMessage(e.target.value);
                                     handleTyping();  // ✅ 입력 중 상태 전송
                                 }}
                                 onKeyDown={(e) => {
                                     handleTyping();  // ✅ 입력 중 상태 전송
-                                    if (e.key === "Enter") sendMessage();
+                                    if (e.key === "Enter" && !e.shiftKey) {
+                                        e.preventDefault();  // ✅ 줄바꿈 방지
+                                        sendMessage();       // ✅ Enter로 전송
+                                    }
+                                }}
+                                rows="1"  // ✅ 처음에는 한 줄
+                                style={{
+                                    width: "100%",
+                                    maxHeight: "100px",     // ✅ 최대 높이 설정
+                                    padding: "10px",
+                                    border: "1px solid #ddd",
+                                    borderRadius: "8px",
+
                                 }}
                             />
-
                             <button onClick={sendMessage}>전송</button>
                         </div>
                     </>
