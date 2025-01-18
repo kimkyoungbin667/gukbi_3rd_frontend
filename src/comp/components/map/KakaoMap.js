@@ -3,7 +3,7 @@ import { Map, MapInfoWindow, MapMarker, MapTypeControl, Polyline, useKakaoLoader
 
 import '../../css/map/map.css'
 import MapLeftBar from './MapLeftBar';
-import { getWalks } from '../../api/map';
+import { getAcommpanyDetails, getWalks, getAccompanyFav, getCategoryFav } from '../../api/map';
 import MapSearchMarker from './MapSearchMarker';
 import MapWalkPolyline from './MapWalkPolyline';
 
@@ -11,7 +11,6 @@ function KakaoMap() {
 
     useKakaoLoader();
     const { kakao } = window;
-    
     const [mapData, setMapData] = useState({
         level: 3,
         position: {
@@ -20,18 +19,20 @@ function KakaoMap() {
         }
     })
 
-    const [state, setState] = useState({
-        // 지도의 초기 위치
-        center: { lat: 33.450701, lng: 126.570667 },
-        // 지도 위치 변경시 panto를 이용할지에 대해서 정의
-        isPanto: false,
-    })
-
     const [myWalks, setMyWalks] = useState([]);
-
     const [regionName, setRegionName] = useState("");
-    const [searchKeyword, setSearchKeyword] = useState("애견샵");
+    const [userPosition, setUserPosition] = useState({
+        lat: 36.7472206,
+        lng: 126.7038631,
+    });
 
+    const [activeMenu, setActiveMenu] = useState("카테고리");
+
+    const menu = ["카테고리", "동반가능", "즐겨찾기", "산책기록"];
+    //카테고리 관련
+    const categories = ["동물병원", "애견샵", "편의점"];
+    const [searchState, setSearchState] = useState(false);
+    const [searchKeyword, setSearchKeyword] = useState("애견샵");
     const [searchResult, setSearchResult] = useState([]);
     const [pagination, setPagination] = useState({
         totalCount: 0,
@@ -39,19 +40,64 @@ function KakaoMap() {
         last: 0,
     });
 
-    const [activeCategory, setActiveCategory] = useState("검색");
-    const [userPosition, setUserPosition] = useState({
-        lat: 36.7472206,
-        lng: 126.7038631,
-    });
 
-    const categoryColors = {
-        "검색": "#ffeb3b",
-        "카테고리2": "#8bc34a",
-        "카테고리3": "#03a9f4",
-        "ㅎㅇ": "#03a9f4",
-    };
+    //동반가능 시설 관련
+    const contentTypes = { 12: "관광지", 14: "문화시설", 28: "레포츠", 32: "숙박", 38: "쇼핑", 39: "음식점" };
+    const [accompanyListForType, setAccompanyListForType] = useState();
+    const [accompanyList, setAccompanyList] = useState([]);
 
+
+    const [myCategoryFav, setMyCategoryFav] = useState([]);
+    const [myAccompanyFav, setMyAccompanyFav] = useState([]);
+
+
+
+    function getCategoryFavorite() {
+        const obj = {
+            userIdx: 1
+        }
+        getCategoryFav(obj).then(res => {
+            console.log(res.data);
+            setMyCategoryFav(res.data.data);
+        }).catch(err => {
+
+        })
+    }
+
+    function getAccompanyFavorite() {
+        const obj = {
+            userIdx: 1
+        }
+
+        getAccompanyFav(obj).then(res => {
+            console.log(res.data);
+            setMyAccompanyFav(res.data.data);
+        }).catch(err => {
+
+        })
+    }
+
+
+
+
+    //동반가능리스트 불러오기기
+    function getAcommpanyList() {
+        getAcommpanyDetails().then(res => {
+            console.log(res.data)
+            setAccompanyList(res.data.data);
+
+        }).catch(err => {
+
+        })
+    }
+    //동반가능리스트 항목선택택
+    function filterByContentTypeId(contentTypeId) {
+        setAccompanyListForType(accompanyList.filter(item => item.contenttypeid === contentTypeId));
+        console.log(accompanyListForType);
+    }
+
+
+    //카테고리 검색
     const searchPlace = (page = 1) => {
         const ps = new kakao.maps.services.Places();
         ps.keywordSearch(searchKeyword, function (data, status, pagination) {
@@ -78,10 +124,11 @@ function KakaoMap() {
         }, { x: mapData.position.lng, y: mapData.position.lat, radius: 2000, size: 7, page: page })
 
     }
-
+    //카테고리 페이지 변경
     const handlePageChange = (page) => {
         searchPlace(page); // 새로운 페이지 검색
     };
+
 
     function updateRegionName() {
         const geocoder = new kakao.maps.services.Geocoder();
@@ -92,6 +139,7 @@ function KakaoMap() {
         })
     }
 
+    //산책기록 가져오기
     function getWalkss() {
         const obj = {
             userIdx: "1",
@@ -102,8 +150,9 @@ function KakaoMap() {
         }).catch(err => {
 
         })
-
     }
+
+
 
     useEffect(() => {
         // if (navigator.geolocation) {
@@ -130,40 +179,33 @@ function KakaoMap() {
         //     alert("이 브라우저는 Geolocation을 지원하지 않습니다.");
         // }
         getWalkss();
-
+        getAcommpanyList();
+        getAccompanyFavorite();
+        getCategoryFavorite();
+        filterByContentTypeId('12');
     }, []);
 
 
     useEffect(() => {
         // updateRegionName();
-         searchPlace();
-        console.log(myWalks);
+        if (!searchState) {
+            searchPlace();
+        }
     }, [mapData])
-
-
 
     return (
         <div className="map-body">
             <div className="map-left-bar">
                 {/* 검색창 */}
                 <div className='map-left-bar-top'>
-                    <div className="search-container">
-                        <input
-                            type="text"
-                            className="search-bar"
-                            placeholder="검색"
-                        />
-                        <button className="search-button" onClick={searchPlace}>🔍</button>
-                    </div>
-
                     <div className="map-left-bar-menu">
-                        {Object.keys(categoryColors).map((category) => (
+                        {menu.map((item) => (
                             <div
-                                key={category}
-                                className={`menu-item ${activeCategory === category ? "active" : ""}`}
-                                onClick={() => setActiveCategory(category)}
+                                key={item}
+                                className={`menu-item ${activeMenu === item ? "active" : ""}`}
+                                onClick={() => setActiveMenu(item)}
                             >
-                                {category}
+                                {item}
                             </div>
                         ))}
 
@@ -173,8 +215,20 @@ function KakaoMap() {
 
                 <div className="menu-item-detail">
 
-                    <MapLeftBar category={activeCategory} searchResults={searchResult}
+                    <MapLeftBar menu={activeMenu} categories={categories} setSearchKeyword={setSearchKeyword}
+                        searchKeyword={searchKeyword} searchState={searchState} setSearchState={setSearchState}
+                        searchResults={searchResult}
                         pagination={pagination} handlePageChange={handlePageChange}
+
+
+                        //동반가능
+                        accompanyList={accompanyList} contentTypes={contentTypes} accompanyListForType={accompanyListForType}
+                        filterByContentTypeId={filterByContentTypeId}
+
+                        //즐겨찾기
+                        categoryFav={myCategoryFav} accompanyFav={myAccompanyFav}
+
+
                         walks={myWalks} setMapData={setMapData}
                     />
                     <div className='menu-item-none'></div>
@@ -207,13 +261,15 @@ function KakaoMap() {
                 onIdle={(map) => {
                     const level = map.getLevel();
                     const latlng = map.getCenter();
-                    setMapData({
-                        level: level,
-                        position: {
-                            lat: latlng.getLat(),
-                            lng: latlng.getLng(),
-                        },
-                    });
+                    if (!searchState) {
+                        setMapData({
+                            level: level,
+                            position: {
+                                lat: latlng.getLat(),
+                                lng: latlng.getLng(),
+                            },
+                        });
+                    }
                 }}
             >
 
@@ -225,8 +281,8 @@ function KakaoMap() {
                 >
                     <div style={{ padding: "5px", color: "#000" }}>Hello World!</div>
                 </MapMarker>
-                <MapSearchMarker result={searchResult} category={activeCategory} />
-                <MapWalkPolyline walks={myWalks} category={activeCategory} />
+                <MapSearchMarker result={searchResult} category={activeMenu} accompanyListForType={accompanyListForType} />
+                <MapWalkPolyline walks={myWalks} category={activeMenu} />
 
             </Map>
 
