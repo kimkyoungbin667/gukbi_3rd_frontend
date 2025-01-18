@@ -124,7 +124,7 @@ const Navbar = () => {
                     </li>
 
                     {/* /admin/dashboard */}
-                    <li className="navbar__item dropdown" onClick={() => moveTo("/eventcaledar")}
+                    <li className="navbar__item dropdown" onClick={() => moveTo("/mypetspage")}
                         onMouseEnter={() => handleMouseEnter("mypage")}
                         onMouseLeave={() => handleMouseLeave("mypage")}>
                         <div className="navbar__link">{location.pathname == "/567" ? " † " : menuText.mypage}</div>

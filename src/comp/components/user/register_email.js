@@ -18,7 +18,12 @@ export default function RegisterEmail() {
     const [codeSent, setCodeSent] = useState(false);
     const [passwordConfirm, setPasswordConfirm] = useState(""); // 비밀번호 확인 필드
     const [passwordMatch, setPasswordMatch] = useState(true); // 비밀번호 일치 여부
+    const [isEmailValid, setIsEmailValid] = useState(true); // 이메일 유효성 검사 상태
+    const [isEmailDuplicate, setIsEmailDuplicate] = useState(false); // 이메일 중복 상태
     const navigate = useNavigate();
+
+    // 이메일 유효성 검사 함수
+    const isValidEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -26,6 +31,11 @@ export default function RegisterEmail() {
             ...formData,
             [name]: value,
         });
+
+        if (name === "userEmail") {
+            setIsEmailValid(isValidEmail(value));
+            setIsEmailDuplicate(false); // 이메일 변경 시 중복 상태 초기화
+        }
 
         if (name === "userPassword" || name === "passwordConfirm") {
             checkPasswordMatch(
@@ -46,13 +56,23 @@ export default function RegisterEmail() {
     };
 
     const handleSendCode = () => {
+        if (!isValidEmail(formData.userEmail)) {
+            alert("유효한 이메일 주소를 입력해주세요.");
+            return;
+        }
+
         sendVerificationCode(formData.userEmail)
             .then(() => {
                 alert("인증 코드가 발송되었습니다.");
                 setCodeSent(true);
+                setIsEmailDuplicate(false); // 중복 상태 초기화
             })
-            .catch(() => {
-                alert("인증 코드 발송에 실패했습니다. 이메일을 확인하세요.");
+            .catch((error) => {
+                if (error.response && error.response.status === 409) {
+                    setIsEmailDuplicate(true); // 이메일 중복 상태 설정
+                } else {
+                    alert("인증 코드 발송에 실패했습니다. 이메일을 확인하세요.");
+                }
             });
     };
 
@@ -108,10 +128,18 @@ export default function RegisterEmail() {
                         value={formData.userEmail}
                         onChange={handleChange}
                         required
+                        className={isEmailValid && !isEmailDuplicate ? "" : "invalid-input"}
                     />
-                    <button type="button" onClick={handleSendCode} disabled={codeSent} className="send-code-button">
+                    <button
+                        type="button"
+                        onClick={handleSendCode}
+                        disabled={!isEmailValid || codeSent}
+                        className="send-code-button"
+                    >
                         {codeSent ? "코드 재발송" : "코드 발송"}
                     </button>
+                    {!isEmailValid && <p className="error-text">유효한 이메일 주소를 입력해주세요.</p>}
+                    {isEmailDuplicate && <p className="error-text">이미 사용 중인 이메일입니다.</p>}
                 </div>
                 {codeSent && (
                     <div className="form-group">

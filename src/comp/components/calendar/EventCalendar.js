@@ -166,7 +166,7 @@ const EventCalendar = () => {
     }
   };
   
-  
+
   const handleEventClick = (event) => {
     setSelectedEvent(event);
     setIsEditPanelOpen(true);
