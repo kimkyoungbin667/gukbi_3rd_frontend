@@ -1,0 +1,97 @@
+/* 알림들 컨테이너 */
+.notification-container {
+  position: fixed;
+  bottom: 20px;      /* 페이지 하단 20px */
+  right: 20px;       /* 페이지 오른쪽 20px */
+  display: flex;
+  flex-direction: column-reverse;  /* 새 알림이 위로 쌓이게 */
+  align-items: flex-end;
+  z-index: 9999; /* 다른 요소들보다 위에 표시되도록 */
+  gap: 15px;  /* 알림 간 간격 설정 */
+}
+
+/* 알림박스 */
+.notification-box {
+  background-color: #ffffff;
+  padding: 20px;
+  font-family: 'studyGood';
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  width: 320px;
+  max-width: 100%;
+  font-family: 'Arial', sans-serif;  /* 세련된 폰트 */
+  position: relative;
+  animation: fadeIn 0.5s ease-in-out;  /* 알림 등장 애니메이션 */
+}
+
+/* 알림창 헤더 */
+.notification-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+/* 알림 제목 */
+.notification-header h3 {
+  margin: 0;
+  font-size: 35px;  /* 제목 폰트 크기 */
+  font-family: 'studyGood'; /* 사용자 지정 폰트 */
+  color: #000;
+}
+
+/* 닫기 버튼 */
+.close-btn {
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  color: #888;
+  transition: color 0.3s;
+}
+
+.close-btn:hover {
+  color: #333;  /* 마우스 오버 시 색상 변화 */
+}
+
+/* 알림 본문 */
+.notification-body {
+  font-size: 30px;
+  font-family: 'studyGood'; /* 사용자 지정 폰트 */
+  color: #000; 
+}
+
+/* 알림 등장 애니메이션 */
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 알림 아이콘 스타일 */
+.notification-icon {
+  width: 70px;  
+  height: 70px;
+  margin-left: 10px;
+  margin-top: 10px;
+  vertical-align: middle;  /* 텍스트와 수평 정렬 */
+}
+
+/* 보낸 시간 스타일 */
+.message-time {
+  font-size: 35px;
+  color: #000;
+  margin-top: 5px;
+  font-family: 'studyGood';
+}
+
+.alarm-message {
+  font-family: 'studyGood';
+  color: red;
+}

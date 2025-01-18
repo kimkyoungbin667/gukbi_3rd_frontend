@@ -4,6 +4,8 @@ import "../../css/chat/chat.css";
 import SockJS from "sockjs-client";
 import { Client } from "@stomp/stompjs";
 import { jwtDecode } from "jwt-decode";
+import notificationIcon from '../../../assets/img/bbab.png';
+import Notification from '../chat/ChatAlarm.js';
 
 export default function Chat() {
     const [isTyping, setIsTyping] = useState(false);  // 상대방 입력 중 상태
@@ -21,12 +23,17 @@ export default function Chat() {
     const [personName, setPersonName] = useState('');
     const [selectedImage, setSelectedImage] = useState('');
     const chunkSize = 10000;  // ✅ 청크 크기 (10KB)
+    const [showNotification, setShowNotification] = useState(false); // 알림 표시 상태
+    const [alarmMessage, setAlarmMessage] = useState('');
+    const [notifications, setNotifications] = useState([]); // 알림 리스트 상태 추가
+
 
     const token = localStorage.getItem("token");
     const decodedToken = jwtDecode(token);
     const userIdx = decodedToken.sub;
 
     useEffect(() => {
+
         const socket = new SockJS(`http://58.74.46.219:33334/ws?token=${token}`);
         const client = new Client({
             webSocketFactory: () => socket,
@@ -82,7 +89,40 @@ export default function Chat() {
         }
     };
 
+    // 알람 리스트 설정
+    const handleNewMessage = (receivedMessage) => {
+        const now = new Date();
+        const sendTime = formatTime2(now);
 
+        // 알림 최대 5개 유지
+        setNotifications((prevNotifications) => {
+            if (prevNotifications.length >= 5) {
+                prevNotifications.shift(); // 가장 오래된 알림을 삭제
+            }
+            return [...prevNotifications, { message: receivedMessage.message, time: sendTime }]; // 메시지와 시간을 함께 추가
+        });
+
+        // 3초 후 알림을 삭제
+        setTimeout(() => {
+            setNotifications((prevNotifications) =>
+                prevNotifications.filter((_, index) => index !== 0) // 첫 번째 알림 삭제
+            );
+        }, 3000);
+    };
+
+
+    // 알림 시간 설정
+    const formatTime2 = (date) => {
+        const hours = String(date.getHours()).padStart(2, "0");
+        const minutes = String(date.getMinutes()).padStart(2, "0");
+        return `${hours}:${minutes}`;
+    };
+
+    const handleCloseNotification = (index) => {
+        setNotifications((prevNotifications) =>
+            prevNotifications.filter((_, i) => i !== index) // 선택된 알림 삭제
+        );
+    };
 
     const handleRoomClick = (roomIdx, index, opponentProfileUrl) => {
         if (!stompClient || !stompClient.connected) return;
@@ -108,14 +148,15 @@ export default function Chat() {
         }
 
 
-
-
         // ✅ 메시지 구독을 먼저 설정
         const newMessageSubscription = stompClient.subscribe(`/topic/room/${roomIdx}`, (msg) => {
             const receivedMessage = JSON.parse(msg.body);
             console.log("📩 새 메시지 수신:", receivedMessage);
+
+            handleNewMessage(receivedMessage);  // 알림 처리 함수 호출
             setChatRoomMsg((prev) => [...prev, receivedMessage]);
         });
+
 
         const newTypingSubscription = stompClient.subscribe(`/topic/room/${roomIdx}/typing`, (msg) => {
             const typingStatus = JSON.parse(msg.body);
@@ -274,8 +315,6 @@ export default function Chat() {
 
 
 
-
-    // ✅ 시간만 추출하는 함수 (HH:mm)
     const formatTime = (timestamp) => {
         const date = new Date(timestamp);
         const hours = String(date.getHours()).padStart(2, "0");
@@ -329,7 +368,7 @@ export default function Chat() {
                         className={`chat-list-item ${selectedRoomIdx === room.roomIdx ? "active" : ""}`}
                         onClick={() => handleRoomClick(room.roomIdx, index, room.opponentProfileUrl)}
                     >
-                        <img src={room.opponentProfileUrl} alt="프로필" className="profile-image" />
+                        <img src={`http://58.74.46.219:33334${room.opponentProfileUrl}`} alt="프로필" className="profile-image" />
                         <div className="opponent-name">{room.opponentName} 님과의 대화</div>
                     </div>
                 ))}
@@ -364,13 +403,14 @@ export default function Chat() {
                                                             )}
                                                         </>
                                                     )}
-                                                    
+
 
                                                     {/* ✅ 상대 메시지: 말풍선 → 시간 */}
                                                     {!isMine && (
                                                         <>
                                                             {!isMine && (
-                                                                <img src={item.senderProfile} alt="프로필" className="profile-image" />
+
+                                                                <img src={`http://58.74.46.219:33334${item.senderProfile}`} alt="프로필" className="profile-image" />
                                                             )}
                                                             {item.type === "IMAGE" || item.message == null ? (
                                                                 <img src={`http://58.74.46.219:33334${item.image}`} alt="이미지 메시지" className="chat-image" onLoad={handleImageLoad} />
@@ -403,6 +443,20 @@ export default function Chat() {
 
                             <div ref={messagesEndRef} />
                         </div>
+
+
+                        {/* 알림 표시 */}
+                        <div className="notification-container">
+                            {notifications.map((notification, index) => (
+                                <Notification
+                                    key={index}
+                                    message={notification.message}
+                                    time={notification.time}  // 시간 전달
+                                    onClose={() => handleCloseNotification(index)}  // 알림 닫기
+                                />
+                            ))}
+                        </div>
+
 
 
                         <div className="chat-room-input">
