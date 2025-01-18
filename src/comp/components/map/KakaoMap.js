@@ -3,7 +3,7 @@ import { Map, MapInfoWindow, MapMarker, MapTypeControl, Polyline, useKakaoLoader
 
 import '../../css/map/map.css'
 import MapLeftBar from './MapLeftBar';
-import { getAcommpanyDetails, getWalks, getAccompanyFav, getCategoryFav } from '../../api/map';
+import { getAcommpanyDetails, getWalks, getAccompanyFav, getCategoryFav, getPetLists } from '../../api/map';
 import MapSearchMarker from './MapSearchMarker';
 import MapWalkPolyline from './MapWalkPolyline';
 
@@ -20,6 +20,19 @@ function KakaoMap() {
     })
 
     const [myWalks, setMyWalks] = useState([]);
+    const [myPets, setMyPets] = useState([]);
+
+    function getPetList() {
+        const obj = {
+            userIdx: 6
+        }
+        getPetLists(obj).then(res => {
+            setMyPets(res.data.data);
+            console.log(res.data.data);
+        })
+    }
+
+
     const [regionName, setRegionName] = useState("");
     const [userPosition, setUserPosition] = useState({
         lat: 36.7472206,
@@ -47,6 +60,7 @@ function KakaoMap() {
     const [accompanyList, setAccompanyList] = useState([]);
 
 
+    const [selectedFavType, setSelectedFavType] = useState('카테고리');
     const [myCategoryFav, setMyCategoryFav] = useState([]);
     const [myAccompanyFav, setMyAccompanyFav] = useState([]);
 
@@ -142,11 +156,14 @@ function KakaoMap() {
     //산책기록 가져오기
     function getWalkss() {
         const obj = {
-            userIdx: "1",
+            userIdx: "6",
         }
         getWalks(obj).then(res => {
 
             setMyWalks(res.data.data);
+            console.log(res.data.data);
+            console.log(res.data.data);
+            console.log(res.data.data);
         }).catch(err => {
 
         })
@@ -182,6 +199,7 @@ function KakaoMap() {
         getAcommpanyList();
         getAccompanyFavorite();
         getCategoryFavorite();
+        getPetList();
         filterByContentTypeId('12');
     }, []);
 
@@ -191,7 +209,7 @@ function KakaoMap() {
         if (!searchState) {
             searchPlace();
         }
-    }, [mapData])
+    }, [mapData, searchKeyword])
 
     return (
         <div className="map-body">
@@ -227,9 +245,14 @@ function KakaoMap() {
 
                         //즐겨찾기
                         categoryFav={myCategoryFav} accompanyFav={myAccompanyFav}
+                        selectedFavType={selectedFavType} setSelectedFavType={setSelectedFavType}
+
+                        //산책기록
+                        myPets={myPets} walks={myWalks}
 
 
-                        walks={myWalks} setMapData={setMapData}
+
+                        setMapData={setMapData}
                     />
                     <div className='menu-item-none'></div>
                 </div>
@@ -281,7 +304,10 @@ function KakaoMap() {
                 >
                     <div style={{ padding: "5px", color: "#000" }}>Hello World!</div>
                 </MapMarker>
-                <MapSearchMarker result={searchResult} category={activeMenu} accompanyListForType={accompanyListForType} />
+                <MapSearchMarker result={searchResult} menu={activeMenu} accompanyListForType={accompanyListForType}
+                    selectedFavType={selectedFavType} myCategoryFav={myCategoryFav} myAccompanyFav={myAccompanyFav}
+
+                />
                 <MapWalkPolyline walks={myWalks} category={activeMenu} />
 
             </Map>
