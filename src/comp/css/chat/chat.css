@@ -262,8 +262,8 @@
 
 /* 기존 profile-image 개선 */
 .profile-image {
-    width: 50px;
-    height: 50px;
+    width: 65px;
+    height: 65px;
     margin-right: 20px;
     border-radius: 50%;
     /* 둥근 프로필 */
@@ -573,7 +573,6 @@
     flex-grow: 0; /* ✅ 공간을 더 이상 차지하지 않도록 */
 }
 
-
 .message-left .message-content,
 .message-right .message-content {
     margin: 5px 10px;  /* ✅ 위아래 5px, 좌우 10px 여백 추가 */
@@ -666,4 +665,69 @@
         transform: scale(1);
         opacity: 1;
     }
+}
+
+/* 전체 업로드 버튼 스타일 */
+.file-upload-container {
+    display: inline-block;
+    position: relative;
+}
+
+/* 실제 input 숨기기 */
+#file-upload {
+    display: none;
+}
+
+/* 커스텀 파일 업로드 버튼 */
+.custom-file-upload {
+    display: inline-block;
+    padding: 20px 25px;
+    background-color:red; /* 파란색 배경 */
+    color: white;
+    border-radius: 8px;
+    font-size:30px;
+    height: 75px;
+    margin-top:10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+
+/* 호버 효과 */
+.custom-file-upload:hover {
+    background-color: #0056b3;
+    transform: scale(1.05); /* 살짝 커짐 */
+}
+
+/* 클릭 효과 */
+.custom-file-upload:active {
+    background-color: #004099;
+    transform: scale(0.98); /* 살짝 작아짐 */
+}
+
+.chat-image {
+    max-width: 700px; /* 최대 너비 */
+    height: auto; /* 높이는 자동으로 비율에 맞게 설정 */
+    border-radius: 8px; /* 모서리를 둥글게 */
+  }
+  
+
+  /* 모든 브라우저에서 스크롤바를 꾸미기 위한 기본 스타일 */
+::-webkit-scrollbar {
+    width: 15px; /* 스크롤바의 너비 */
+}
+
+::-webkit-scrollbar-track {
+    background-color: #f1f1f1; /* 스크롤바의 트랙 색상 */
+    border-radius: 10px; /* 트랙의 모서리를 둥글게 */
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #888; /* 스크롤바의 손잡이 색상 */
+    border-radius: 10px; /* 손잡이의 모서리를 둥글게 */
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background-color: #555; /* 손잡이에 마우스를 올렸을 때 색상 */
 }
