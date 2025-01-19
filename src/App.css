@@ -1,15 +1,33 @@
 .App {
-  text-align: center;
+  display: flex;
+  /* ✅ 내부 요소를 정렬하기 위해 flex 사용 */
+  flex-direction: column;
+  justify-content: center;
+  /* ✅ 수직 가운데 정렬 */
+  align-items: center;
+  /* ✅ 가로 가운데 정렬 */
+  min-height: 100vh;
+  /* ✅ 화면 전체 높이 */
+  margin: 0;
+  padding: 0;
 }
 
 .App-logo {
   height: 40vmin;
   pointer-events: none;
 }
-html {
+
+html,
+body {
   margin: 0;
+  /* ✅ 페이지 여백 제거 */
   padding: 0;
-  overflow-x: hidden; /* ✅ 가로 스크롤 방지 */
+  width: 100%;
+  /* ✅ 화면 전체 너비 */
+  height: 100%;
+  /* ✅ 화면 전체 높이 */
+  overflow-x: hidden;
+  /* ✅ 가로 스크롤 방지 */
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -37,6 +55,7 @@ html {
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
@@ -44,11 +63,18 @@ html {
 
 .middle-area {
   background-image: url('./assets/img/background.png');
-  background-size: auto;                          
-  background-position: center;                    
-  background-repeat: repeat;                      
-
-  min-height: 100vh;                              
+  /* 배경 이미지 경로 */
+  background-size: cover;
+  /* ✅ 배경이 전체를 덮도록 설정 */
+  background-position: center;
+  /* ✅ 중앙 배치 */
+  background-repeat: no-repeat;
+  /* ✅ 반복 방지 */
+  min-height: 100vh;
+  /* ✅ 화면 전체 높이 */
+  width: 100%;
+  /* ✅ 화면 전체 너비 */
   font-family: 'Noto Sans KR', sans-serif;
+  margin: 0;
+  padding: 0;
 }
-

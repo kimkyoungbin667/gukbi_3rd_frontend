@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import Modal from "react-modal"; // react-modal 설치 필요
+import Modal from "react-modal";
 import AdminNavbar from "./AdminNavBar";
 import { fetchUsers, toggleUserStatus, fetchUserActivity } from "../../api/admin";
 import "../../css/admin/AdminDashboard.css";
@@ -11,9 +11,9 @@ const AdminDashboard = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [currentKakaoPage, setCurrentKakaoPage] = useState(1);
   const [currentGeneralPage, setCurrentGeneralPage] = useState(1);
-  const [activeFilter, setActiveFilter] = useState("ALL"); // "ALL", "ACTIVE", "INACTIVE"
-  const [selectedUserActivity, setSelectedUserActivity] = useState(null); // 사용자 활동 기록
-  const [isModalOpen, setIsModalOpen] = useState(false); // 모달 열림 상태
+  const [activeFilter, setActiveFilter] = useState("ALL");
+  const [selectedUserActivity, setSelectedUserActivity] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const itemsPerPage = 5;
 
   useEffect(() => {
@@ -31,6 +31,13 @@ const AdminDashboard = () => {
     loadUsers();
   }, []);
 
+  // User statistics
+  const totalUsers = users.length;
+  const activeUsers = users.filter((user) => user.is_active).length;
+  const inactiveUsers = users.filter((user) => !user.is_active).length;
+  const kakaoUsersCount = users.filter((user) => user.social_type === "KAKAO").length;
+  const generalUsersCount = users.filter((user) => user.social_type === "GENERAL").length;
+
   const handleSearch = (event) => {
     setSearchTerm(event.target.value.toLowerCase());
     setCurrentKakaoPage(1);
@@ -46,7 +53,7 @@ const AdminDashboard = () => {
   const handleToggleStatus = async (userId, currentStatus) => {
     try {
       await toggleUserStatus(userId, !currentStatus);
-      setUsers(users.map(user => user.user_idx === userId ? { ...user, is_active: !currentStatus } : user));
+      setUsers(users.map((user) => (user.user_idx === userId ? { ...user, is_active: !currentStatus } : user)));
     } catch (err) {
       alert("Failed to toggle user status");
     }
@@ -56,7 +63,7 @@ const AdminDashboard = () => {
     try {
       const response = await fetchUserActivity(userId);
       setSelectedUserActivity(response.data);
-      setIsModalOpen(true); // 모달 열기
+      setIsModalOpen(true);
     } catch (err) {
       alert("Failed to fetch user activity.");
     }
@@ -70,7 +77,7 @@ const AdminDashboard = () => {
     .filter((user) => {
       if (activeFilter === "ACTIVE") return user.is_active;
       if (activeFilter === "INACTIVE") return !user.is_active;
-      return true; // "ALL"
+      return true;
     });
 
   const kakaoUsers = filteredUsers.filter((user) => user.social_type === "KAKAO");
@@ -151,6 +158,52 @@ const AdminDashboard = () => {
       <AdminNavbar />
       <div style={{ marginLeft: "250px", padding: "20px", width: "100%" }}>
         <h1>Admin Dashboard</h1>
+
+        {/* User Statistics Section */}
+        <div
+          className="statistics"
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            backgroundColor: "#f9f9f9",
+            padding: "20px",
+            borderRadius: "8px",
+            marginBottom: "20px",
+          }}
+        >
+          <div style={{ textAlign: "center", flex: 1 }}>
+            <p style={{ fontSize: "20px", margin: "0" }}>
+              <strong>{totalUsers}</strong>
+            </p>
+            <span>Total Users</span>
+          </div>
+          <div style={{ textAlign: "center", flex: 1 }}>
+            <p style={{ fontSize: "20px", margin: "0" }}>
+              <strong>{activeUsers}</strong>
+            </p>
+            <span>Active Users</span>
+          </div>
+          <div style={{ textAlign: "center", flex: 1 }}>
+            <p style={{ fontSize: "20px", margin: "0" }}>
+              <strong>{inactiveUsers}</strong>
+            </p>
+            <span>Inactive Users</span>
+          </div>
+          <div style={{ textAlign: "center", flex: 1 }}>
+            <p style={{ fontSize: "20px", margin: "0" }}>
+              <strong>{kakaoUsersCount}</strong>
+            </p>
+            <span>Kakao Users</span>
+          </div>
+          <div style={{ textAlign: "center", flex: 1 }}>
+            <p style={{ fontSize: "20px", margin: "0" }}>
+              <strong>{generalUsersCount}</strong>
+            </p>
+            <span>General Users</span>
+          </div>
+        </div>
+
         <div style={{ marginBottom: "20px" }}>
           <input
             type="text"
@@ -181,7 +234,7 @@ const AdminDashboard = () => {
             {renderTable(generalUsers, currentGeneralPage, setCurrentGeneralPage)}
           </>
         )}
-        {/* 활동 기록 모달 */}
+        {/* Activity Modal */}
         <Modal
           isOpen={isModalOpen}
           onRequestClose={() => setIsModalOpen(false)}
@@ -218,7 +271,6 @@ const AdminDashboard = () => {
             )}
           </div>
         </Modal>
-
       </div>
     </div>
   );

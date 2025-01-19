@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { getPetDetails, savePetDetails } from "../../api/pet";
+import "../../css/pet/PetDetails.css"; // 스타일 파일
 
 function PetDetails({ petId }) {
   const [details, setDetails] = useState(null);
@@ -14,18 +15,16 @@ function PetDetails({ petId }) {
 
   useEffect(() => {
     const fetchDetails = async () => {
-        try {
-          const data = await getPetDetails(petId);
-          console.log("API 응답 데이터:", data);
-          setDetails(data);
-          setForm(data);
-        } catch (error) {
-          console.error("상세정보 로드 실패:", error);
-        } finally {
-          setLoading(false);
-        }
-      };
-      
+      try {
+        const data = await getPetDetails(petId);
+        setDetails(data);
+        setForm(data);
+      } catch (error) {
+        console.error("상세정보 로드 실패:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
 
     fetchDetails();
   }, [petId]);
@@ -38,14 +37,14 @@ function PetDetails({ petId }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const details = {
-      petId: petId, // camelCase로 백엔드와 맞추기
-      birthDate: form.birth_date, // snake_case -> camelCase
+      petId: petId,
+      birthDate: form.birth_date,
       healthStatus: form.health_status,
       dietaryRequirements: form.dietary_requirements,
       allergies: form.allergies,
       notes: form.notes,
     };
-  
+
     try {
       await savePetDetails(details);
       alert("상세정보가 저장되었습니다.");
@@ -54,15 +53,14 @@ function PetDetails({ petId }) {
       alert("상세정보 저장에 실패했습니다.");
     }
   };
-  
 
-  if (loading) return <p>로딩 중...</p>;
+  if (loading) return <p className="loading">로딩 중...</p>;
 
   return (
-    <div>
-      <h2>상세 정보</h2>
-      <form onSubmit={handleSubmit}>
-        <div>
+    <div className="details-container">
+      <h2 className="details-title">상세 정보</h2>
+      <form onSubmit={handleSubmit} className="details-grid">
+        <div className="form-group">
           <label>생년월일:</label>
           <input
             type="date"
@@ -72,7 +70,7 @@ function PetDetails({ petId }) {
             required
           />
         </div>
-        <div>
+        <div className="form-group">
           <label>건강 상태:</label>
           <input
             type="text"
@@ -81,7 +79,7 @@ function PetDetails({ petId }) {
             onChange={handleChange}
           />
         </div>
-        <div>
+        <div className="form-group">
           <label>식단 요구사항:</label>
           <textarea
             name="dietary_requirements"
@@ -89,7 +87,7 @@ function PetDetails({ petId }) {
             onChange={handleChange}
           />
         </div>
-        <div>
+        <div className="form-group">
           <label>알레르기 정보:</label>
           <textarea
             name="allergies"
@@ -97,7 +95,7 @@ function PetDetails({ petId }) {
             onChange={handleChange}
           />
         </div>
-        <div>
+        <div className="form-group wide">
           <label>특이 사항:</label>
           <textarea
             name="notes"
@@ -105,7 +103,9 @@ function PetDetails({ petId }) {
             onChange={handleChange}
           />
         </div>
-        <button type="submit">저장</button>
+        <button type="submit" className="details-submit">
+          저장
+        </button>
       </form>
     </div>
   );
