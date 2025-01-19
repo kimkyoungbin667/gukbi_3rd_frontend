@@ -125,7 +125,7 @@
 /* 커스텀 업로드 버튼 */
 .custom-upload-button {
   display: inline-block;
-  padding: 10px 200px;
+  padding: 10px 50px;
   margin-left: 10px;
   font-size: 30px !important;
   font-weight: bold;

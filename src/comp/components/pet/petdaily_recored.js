@@ -20,6 +20,7 @@ function PetDailyRecord({ petId }) {
     const fetchRecords = async () => {
       try {
         const data = await getDailyRecordsBySection(petId, activeSection);
+        console.log("Fetched Data:", data); // 데이터 확인
 
         // 오늘 날짜 필터링
         const today = new Date().toISOString().split("T")[0];
@@ -167,7 +168,7 @@ function PetDailyRecord({ petId }) {
             </>
           )}
         </div>
-        <button type="submit" className="submit-button">
+        <button type="submit" className="daily-submit-button">
           저장
         </button>
       </form>
@@ -195,15 +196,10 @@ function PetDailyRecord({ petId }) {
                   <span>특이 사항: {record.notes || "없음"}</span>
                 </>
               )}
-              <button
-                className="delete-button"
-                onClick={() => handleDelete(record.daily_id)}
-              >
-                X
-              </button>
             </li>
           ))}
         </ul>
+
       </div>
     </div>
   );

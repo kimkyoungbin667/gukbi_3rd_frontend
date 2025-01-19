@@ -4,6 +4,8 @@ import "../../css/pet/MedicalHistory.css"; // CSS 파일 연결
 
 function MedicalHistory({ petId }) {
   const [records, setRecords] = useState([]);
+  const [filteredRecords, setFilteredRecords] = useState([]);
+  const [searchTerm, setSearchTerm] = useState(""); // 검색어 상태
   const [loading, setLoading] = useState(true);
   const [form, setForm] = useState({
     record_type: "vaccination",
@@ -15,10 +17,12 @@ function MedicalHistory({ petId }) {
     notes: "",
   });
 
+  // 의료 기록 가져오기
   const fetchMedicalRecords = async () => {
     try {
       const data = await getMedicalRecords(petId);
       setRecords(data);
+      setFilteredRecords(data); // 초기화 시 모든 기록 표시
     } catch (error) {
       console.error("의료 기록 로드 실패:", error.message);
     } finally {
@@ -29,6 +33,20 @@ function MedicalHistory({ petId }) {
   useEffect(() => {
     fetchMedicalRecords();
   }, [petId]);
+
+  // 검색 처리
+  const handleSearch = (e) => {
+    const term = e.target.value.toLowerCase();
+    setSearchTerm(term);
+
+    const filtered = records.filter((record) =>
+      record.description.toLowerCase().includes(term) || // 내용 검색
+      record.clinic_name?.toLowerCase().includes(term) || // 병원 이름 검색 (null 처리)
+      record.record_date.includes(term) // 날짜 검색
+    );
+
+    setFilteredRecords(filtered);
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -73,6 +91,17 @@ function MedicalHistory({ petId }) {
   return (
     <div className="medical-history-container">
       <h3 className="medical-history-header">의료 기록</h3>
+      
+      {/* 검색창 */}
+      <div className="search-bar">
+        <input
+          type="text"
+          placeholder="내용, 병원 이름, 날짜로 검색..."
+          value={searchTerm}
+          onChange={handleSearch}
+        />
+      </div>
+
       <div className="medical-history-grid">
         {/* 의료 기록 추가 폼 */}
         <form onSubmit={handleSubmit} className="medical-form">
@@ -114,19 +143,60 @@ function MedicalHistory({ petId }) {
         {/* 의료 기록 목록 */}
         <div className="medical-records-list">
           <h4 className="list-title">기존 기록</h4>
-          {records.length === 0 ? (
-            <p>의료 기록이 없습니다.</p>
+          {filteredRecords.length === 0 ? (
+            <p>검색 결과가 없습니다.</p>
           ) : (
-            records.map((record) => (
+            filteredRecords.map((record) => (
               <div key={record.medical_id} className="medical-record-card">
-                <p>기록 유형: {record.record_type === "vaccination" ? "예방접종" : "치료"}</p>
-                <p>기록 날짜: {record.record_date}</p>
-                <p>내용: {record.description}</p>
-                {record.next_due_date && <p>다음 접종 예정일: {record.next_due_date}</p>}
-                {record.clinic_name && <p>병원 이름: {record.clinic_name}</p>}
-                {record.vet_name && <p>수의사 이름: {record.vet_name}</p>}
-                {record.notes && <p>특이 사항: {record.notes}</p>}
-                <button onClick={() => handleDelete(record.medical_id)} className="delete-button">삭제</button>
+                <button
+                  onClick={() => handleDelete(record.medical_id)}
+                  className="delete-button"
+                >
+                  삭제
+                </button>
+                <p>
+                  <span className="icon">🩺</span><span>기록 유형:</span> {record.record_type === "vaccination" ? "예방접종" : "치료"}
+                </p>
+                <div className="field-divider"></div>
+                <p>
+                  <span className="icon">📅</span><span>기록 날짜:</span> {record.record_date}
+                </p>
+                <div className="field-divider"></div>
+                <p>
+                  <span className="icon">📝</span><span>내용:</span> {record.description}
+                </p>
+                {record.next_due_date && (
+                  <>
+                    <div className="field-divider"></div>
+                    <p>
+                      <span className="icon">🔔</span><span>다음 접종 예정일:</span> {record.next_due_date}
+                    </p>
+                  </>
+                )}
+                {record.clinic_name && (
+                  <>
+                    <div className="field-divider"></div>
+                    <p>
+                      <span className="icon">🏥</span><span>병원 이름:</span> {record.clinic_name}
+                    </p>
+                  </>
+                )}
+                {record.vet_name && (
+                  <>
+                    <div className="field-divider"></div>
+                    <p>
+                      <span className="icon">👨‍⚕️</span><span>수의사 이름:</span> {record.vet_name}
+                    </p>
+                  </>
+                )}
+                {record.notes && (
+                  <>
+                    <div className="field-divider"></div>
+                    <p>
+                      <span className="icon">💡</span><span>특이 사항:</span> {record.notes}
+                    </p>
+                  </>
+                )}
               </div>
             ))
           )}

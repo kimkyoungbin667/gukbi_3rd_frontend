@@ -123,12 +123,12 @@ const Navbar = () => {
                         <p className="navbar-text">솔루션</p>
                     </li>
 
-                    {/* /admin/dashboard */}
+                    {/* /admin/users */}
                     {/* /profilenavigation/profile */}
                     {/* /eventcaledar */}
                     {/* /mypetspage */}
                     {/* /petregistration */}
-                    <li className="navbar__item dropdown" onClick={() => moveTo("/mypetspage")}
+                    <li className="navbar__item dropdown" onClick={() => moveTo("/mypetspage ")}
                         onMouseEnter={() => handleMouseEnter("mypage")}
                         onMouseLeave={() => handleMouseLeave("mypage")}>
                         <div className="navbar__link">{location.pathname == "/567" ? " † " : menuText.mypage}</div>

@@ -15,6 +15,8 @@ const EventCalendar = () => {
   const [pets, setPets] = useState([]);
   const [userId, setUserId] = useState(null);
   const [events, setEvents] = useState([]);
+  const [selectedPetId, setSelectedPetId] = useState("");
+  const [petColors, setPetColors] = useState({}); // 펫별 색상 상태
   const [socialType, setSocialType] = useState(null);
   const [newEvent, setNewEvent] = useState({
     petId: "",
@@ -42,6 +44,13 @@ const EventCalendar = () => {
         const petsData = await getMyPets();
         console.log("펫 데이터:", petsData);
         setPets(petsData);
+  
+        // 펫 ID별 색상 생성
+        const colors = petsData.reduce((acc, pet, index) => {
+          acc[pet.pet_id] = `hsl(${(index * 60) % 360}, 70%, 80%)`; // 고유 색상 생성
+          return acc;
+        }, {});
+        setPetColors(colors); // 색상 매핑 상태 업데이트
       } catch (error) {
         console.error("펫 정보 가져오기 실패:", error);
         alert("펫 정보를 불러오는데 실패했습니다.");
@@ -89,7 +98,10 @@ const EventCalendar = () => {
 
   const handleDateClick = (date) => {
     setSelectedDate(date);
+    setNewEvent((prev) => ({ ...prev, date })); // 선택한 날짜를 newEvent.date로 설정
+    setIsModalOpen(true); // 모달 열기
   };
+  
 
   const openModal = () => {
     setNewEvent({
@@ -111,34 +123,38 @@ const EventCalendar = () => {
     setNewEvent((prev) => ({ ...prev, [name]: value }));
   };
 
+  const filteredEvents = selectedPetId
+    ? events.filter((event) => event.petId === Number(selectedPetId)) // petId를 숫자로 변환
+    : events;
+
   const handleEventSubmit = async () => {
     if (!userId) {
       alert("사용자 인증 정보가 없습니다.");
       return;
     }
-  
+
     // 날짜와 시간을 로컬 시간 기준으로 생성
     const localDate = new Date(newEvent.date);
     const [hours, minutes] = newEvent.time.split(":").map(Number);
     localDate.setHours(hours, minutes, 0, 0); // 시간을 설정
-  
+
     // UTC로 변환
     const utcDate = new Date(localDate.getTime() - localDate.getTimezoneOffset() * 60000);
     const dateString = utcDate.toISOString().split("T")[0]; // UTC 기준 날짜
     const timeString = newEvent.time;
-  
+
     const formattedEvent = {
       ...newEvent,
       userId,
       eventDate: dateString,
       eventTime: timeString,
     };
-  
+
     console.log("보내는 이벤트 데이터:", formattedEvent);
-  
+
     try {
       const response = await saveEvent(formattedEvent);
-  
+
       if (response.status === 403 && response.data?.url) {
         console.warn("동의가 필요합니다. URL:", response.data.url);
         alert("추가 동의가 필요합니다. 동의 화면으로 이동합니다.");
@@ -165,7 +181,7 @@ const EventCalendar = () => {
       }
     }
   };
-  
+
 
   const handleEventClick = (event) => {
     setSelectedEvent(event);
@@ -208,17 +224,32 @@ const EventCalendar = () => {
   return (
     <div className="calendar-container">
       <div className="calendar-panel">
+        <div style={{ marginBottom: "20px" }}>
+          <label>
+            <strong>펫 선택:</strong>{" "}
+            <select
+              value={selectedPetId}
+              onChange={(e) => setSelectedPetId(e.target.value)} // 선택된 펫 상태 업데이트
+            >
+              <option value="">모두 보기</option> {/* 기본값: 모두 보기 */}
+              {pets.map((pet) => (
+                <option key={pet.pet_id} value={pet.pet_id}>
+                  {pet.dog_name} {/* 펫 이름 표시 */}
+                </option>
+              ))}
+            </select>
+          </label>
+        </div>
         <Calendar
           value={selectedDate}
           onClickDay={handleDateClick}
           className="react-calendar"
           locale="en-US"
           tileContent={({ date }) => {
-            const dayEvents = events.filter(
-              (event) =>
-                new Date(event.eventDate).toDateString() === date.toDateString()
+            const dayEvents = filteredEvents.filter(
+              (event) => new Date(event.eventDate).toDateString() === date.toDateString()
             );
-
+          
             return (
               <div style={{ position: "relative", height: "100%" }}>
                 <abbr>{date.getDate()}</abbr>
@@ -227,7 +258,7 @@ const EventCalendar = () => {
                     className="calendar-events"
                     style={{
                       position: "absolute",
-                      top: "30px",
+                      top: "50px",
                       left: "10px",
                       right: "10px",
                       display: "flex",
@@ -243,7 +274,7 @@ const EventCalendar = () => {
                         onClick={() => handleEventClick(event)}
                         style={{
                           padding: "4px 8px",
-                          backgroundColor: "#f0f0f0",
+                          backgroundColor: petColors[event.petId] || "#ccc", // 색상 적용
                           border: "1px solid #ccc",
                           borderRadius: "4px",
                           cursor: "pointer",
@@ -260,9 +291,6 @@ const EventCalendar = () => {
             );
           }}
         />
-        <button className="add-event-btn" onClick={openModal}>
-          일정 추가
-        </button>
       </div>
       {isModalOpen && (
         <div className="modal-overlay">

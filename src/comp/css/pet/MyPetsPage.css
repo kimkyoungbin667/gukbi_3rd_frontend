@@ -221,3 +221,16 @@
   border-radius: 8px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
+
+/* ▼ 버튼 초기 상태: 숨김 */
+.button.toggle {
+  visibility: hidden; /* 버튼 숨김 */
+  opacity: 0; /* 투명도 설정 */
+  transition: visibility 0s, opacity 0.3s ease; /* 부드러운 전환 */
+}
+
+/* .pet-card에 마우스가 올라가면 ▼ 버튼 보임 */
+.pet-card:hover .button.toggle {
+  visibility: visible; /* 버튼 보이기 */
+  opacity: 1; /* 투명도 설정 */
+}

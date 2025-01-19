@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { getMyPets, deletePet, uploadPetImage } from "../../api/pet";
+import { useNavigate } from "react-router-dom";
 import "../../css/pet/MyPetsPage.css";
 import PetDetails from "./pet_details";
 import MedicalHistory from "./medical_histoy";
@@ -15,6 +16,7 @@ function MyPetsPage() {
   const [message, setMessage] = useState("");
   const [expandedPetId, setExpandedPetId] = useState(null);
   const [activeTab, setActiveTab] = useState({});
+  const navigate = useNavigate();
 
   // 펫 목록을 서버에서 가져오는 함수
   const fetchPets = async () => {
@@ -118,12 +120,19 @@ function MyPetsPage() {
     window.location.reload(); // 새로고침 유지
   };
 
+  const handleAddPet = () => {
+    navigate("/petregistration"); // 원하는 경로로 이동
+  };
+
 
   if (loading) return <p className="loading">로딩 중...</p>;
 
   return (
     <div className="pets-container">
       <h1 className="title">내 반려동물 목록</h1>
+      <button className="add-pet-button" onClick={handleAddPet}>
+          동물 등록하기
+        </button>
       <div className="pets-list">
         {pets.map((pet) => (
           <div key={pet.pet_id} className="pet-card">

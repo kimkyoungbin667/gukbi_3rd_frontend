@@ -148,12 +148,17 @@ export const updateDailyRecord = async (recordId, updateData) => {
 };
 
 // 반려동물 그래프 데이터 가져오기
-export const getPetGraphData = async (petId) => {
+export const getPetGraphData = async (petId, { startDate, endDate }) => {
   try {
-      const response = await api.get(`/pet/${petId}/graph-data`);
-      return response.data;
+    const response = await api.get(`/pet/${petId}/graph-data`, {
+      params: {
+        startDate, // 시작 날짜
+        endDate,   // 종료 날짜
+      },
+    });
+    return response.data;
   } catch (error) {
-      console.error("그래프 데이터 가져오기 실패:", error.response || error.message);
-      throw error;
+    console.error("그래프 데이터 가져오기 실패:", error.response || error.message);
+    throw error;
   }
 };

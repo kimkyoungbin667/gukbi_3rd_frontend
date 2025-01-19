@@ -55,7 +55,7 @@
     padding: 15px;
     font-size: 18px;
     color: white;
-    background-color: #4caf50;
+    background-color: #ff6f61; /* 버튼 색상 */
     border: none;
     border-radius: 10px;
     cursor: pointer;
