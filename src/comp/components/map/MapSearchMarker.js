@@ -11,7 +11,7 @@ export default function MapSearchMarker(props) {
     const accompanyListForType = props.accompanyListForType;
 
 
-
+    const contentTypes = { 12: "관광지", 14: "문화시설", 28: "레포츠", 32: "숙박", 38: "쇼핑", 39: "음식점" };
 
     const selectedFavType = props.selectedFavType;
     const myCategoryFav = props.myCategoryFav;
@@ -44,24 +44,24 @@ export default function MapSearchMarker(props) {
                                 lat: searchInfoWindow.y, lng: searchInfoWindow.x
                             }} >
                             <div className="bubble">
-                                <span className="left">{searchInfoWindow.place_name}</span>
+                                <div className="title">
+                                    <div className="">{searchInfoWindow.place_name}</div>
+                                    {/* 즐겨찾기 별 버튼 */}
+                                    <button className={`favorite-btn ${isFavorite ? 'filled' : ''}`} onClick={toggleFavorite}>
+                                        ★
+                                    </button>
 
-                                {/* 즐겨찾기 별 버튼 */}
-                                <button className={`favorite-btn ${isFavorite ? 'filled' : ''}`} onClick={toggleFavorite}>
-                                    ★
-                                </button>
-
-                                {/* '닫기' 버튼 */}
-                                <button className="xbox" onClick={() => setSearchInfoWindow(null)}></button><br />
-
-                                <span className="center">주소: {searchInfoWindow.address_name}</span><br />
-                                <span className="center">도로명 주소: {searchInfoWindow.road_address_name}</span><br />
-                                <span className="center">전화번호: {searchInfoWindow.phone || "정보 없음"}</span><br />
-                                <span className="center">
-                                    <a href={searchInfoWindow.place_url} target="_blank" rel="noopener noreferrer">
-                                        상세보기 {searchInfoWindow.category}
+                                    {/* '닫기' 버튼 */}
+                                    <button className="xbox" onClick={() => setSearchInfoWindow(null)}></button>
+                                </div>
+                                <div className="content">{searchInfoWindow.address_name}</div>
+                                <div className="content">{searchInfoWindow.road_address_name}</div>
+                                <div className="content">{searchInfoWindow.phone || "정보 없음"}</div>
+                                <div className="content" >
+                                    <a href={searchInfoWindow.place_url} target="_blank" rel="noopener noreferrer" style={{ color: "#2e75b6" }}>
+                                        상세보기
                                     </a>
-                                </span><br />
+                                </div><br />
                             </div>
                         </CustomOverlayMap>
 
@@ -88,15 +88,24 @@ export default function MapSearchMarker(props) {
                                 lat: searchInfoWindow.mapy, lng: searchInfoWindow.mapx
                             }} >
                             <div className="bubble">
+                                <div className="title">
+                                    <div className="">{searchInfoWindow.title}</div>
+                                    {/* 즐겨찾기 별 버튼 */}
+                                    <button className={`favorite-btn ${isFavorite ? 'filled' : ''}`} onClick={toggleFavorite}>
+                                        ★
+                                    </button>
 
-                                <span className="left">{searchInfoWindow.place_name}</span>
-                                <button className="xbox" onClick={() => setSearchInfoWindow()}></button><br />
-                                <span className="center">주소: {searchInfoWindow.address_name}</span><br />
-                                <span className="center">도로명 주소: {searchInfoWindow.road_address_name}</span><br />
-                                <span className="center">전화번호: {searchInfoWindow.phone || "정보 없음"}</span><br />
-                                <span className="center">카테고리: {searchInfoWindow.category_name}</span><br />
-                                <span className="center"><a href={searchInfoWindow.place_url} target="_blank">상세보기 {searchInfoWindow.category}</a></span><br />
-
+                                    {/* '닫기' 버튼 */}
+                                    <button className="xbox" onClick={() => setSearchInfoWindow(null)}></button>
+                                </div>
+                                <div className="content">{searchInfoWindow.addr1}</div>
+                                <div className="content">{contentTypes[searchInfoWindow.contenttypeid] || "알 수 없음"}</div>
+                                <div className="content">{searchInfoWindow.tel || "번호정보 없음"}</div>
+                                <div className="content" >
+                                    <a href={searchInfoWindow.place_url} target="_blank" rel="noopener noreferrer" style={{ color: "#2e75b6" }}>
+                                        상세보기
+                                    </a>
+                                </div><br />
                             </div>
                         </CustomOverlayMap>
 
@@ -124,24 +133,24 @@ export default function MapSearchMarker(props) {
                                 lat: searchInfoWindow.y, lng: searchInfoWindow.x
                             }} >
                             <div className="bubble">
-                                <span className="left">{searchInfoWindow.place_name}</span>
+                                <div className="title">
+                                    <div className="">{searchInfoWindow.placeName}</div>
+                                    {/* 즐겨찾기 별 버튼 */}
+                                    <button className={`favorite-btn ${isFavorite ? 'filled' : ''}`} onClick={toggleFavorite}>
+                                        ★
+                                    </button>
 
-                                {/* 즐겨찾기 별 버튼 */}
-                                <button className={`favorite-btn ${isFavorite ? 'filled' : ''}`} onClick={toggleFavorite}>
-                                    ★
-                                </button>
-
-                                {/* '닫기' 버튼 */}
-                                <button className="xbox" onClick={() => setSearchInfoWindow(null)}></button><br />
-
-                                <span className="center">주소: {searchInfoWindow.address_name}</span><br />
-                                <span className="center">도로명 주소: {searchInfoWindow.road_address_name}</span><br />
-                                <span className="center">전화번호: {searchInfoWindow.phone || "정보 없음"}</span><br />
-                                <span className="center">
-                                    <a href={searchInfoWindow.place_url} target="_blank" rel="noopener noreferrer">
-                                        상세보기 {searchInfoWindow.category}
+                                    {/* '닫기' 버튼 */}
+                                    <button className="xbox" onClick={() => setSearchInfoWindow(null)}></button>
+                                </div>
+                                <div className="content">{searchInfoWindow.addressName}</div>
+                                <div className="content">{searchInfoWindow.roadAddressName}</div>
+                                <div className="content">{searchInfoWindow.phone || "정보 없음"}</div>
+                                <div className="content" >
+                                    <a href={searchInfoWindow.placeUrl} target="_blank" rel="noopener noreferrer" style={{ color: "#2e75b6" }}>
+                                        상세보기
                                     </a>
-                                </span><br />
+                                </div><br />
                             </div>
                         </CustomOverlayMap>
 
@@ -164,15 +173,24 @@ export default function MapSearchMarker(props) {
                                 lat: searchInfoWindow.mapy, lng: searchInfoWindow.mapx
                             }} >
                             <div className="bubble">
+                                <div className="title">
+                                    <div className="">{searchInfoWindow.title}</div>
+                                    {/* 즐겨찾기 별 버튼 */}
+                                    <button className={`favorite-btn ${isFavorite ? 'filled' : ''}`} onClick={toggleFavorite}>
+                                        ★
+                                    </button>
 
-                                <span className="left">{searchInfoWindow.place_name}</span>
-                                <button className="xbox" onClick={() => setSearchInfoWindow()}></button><br />
-                                <span className="center">주소: {searchInfoWindow.address_name}</span><br />
-                                <span className="center">도로명 주소: {searchInfoWindow.road_address_name}</span><br />
-                                <span className="center">전화번호: {searchInfoWindow.phone || "정보 없음"}</span><br />
-                                <span className="center">카테고리: {searchInfoWindow.category_name}</span><br />
-                                <span className="center"><a href={searchInfoWindow.place_url} target="_blank">상세보기 {searchInfoWindow.category}</a></span><br />
-
+                                    {/* '닫기' 버튼 */}
+                                    <button className="xbox" onClick={() => setSearchInfoWindow(null)}></button>
+                                </div>
+                                <div className="content">{searchInfoWindow.addr1}</div>
+                                <div className="content">{contentTypes[searchInfoWindow.contenttypeid] || "알 수 없음"}</div>
+                                <div className="content">{searchInfoWindow.tel || "번호정보 없음"}</div>
+                                <div className="content" >
+                                    <a href={searchInfoWindow.place_url} target="_blank" rel="noopener noreferrer" style={{ color: "#2e75b6" }}>
+                                        상세보기
+                                    </a>
+                                </div><br />
                             </div>
                         </CustomOverlayMap>
 

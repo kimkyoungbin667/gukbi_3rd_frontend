@@ -37,16 +37,23 @@ export default function MapWalkPolyline(props) {
                         lat: walkInfoWindow.paths[0].latitude, lng: walkInfoWindow.paths[0].longitude
                     }}>
                     <div className="bubble">
+                        <div className="title">
+                            <div className="">{walkInfoWindow.walkName}</div>
 
-                        <span className="left">{walkInfoWindow.walkName}</span>
-                        <button className="xbox" onClick={() => setWalkInfoWindow()}></button><br />
-                        <span className="center">{walkInfoWindow.startTime}</span><br />
-                        <span className="center">{walkInfoWindow.endTime}</span><br />
-                        <span className="center">{walkInfoWindow.distance}Km</span><br />
-                        <span className="center">{walkInfoWindow.duration}분</span><br />
+
+                            {/* '닫기' 버튼 */}
+                            <button className="xbox" onClick={() => setWalkInfoWindow(null)}></button>
+                        </div>
+
+                        <div className="content">{walkInfoWindow.startTime}</div>
+                        <div className="content">{walkInfoWindow.endTime}</div>
+                        <div className="content">{walkInfoWindow.distance}Km</div>
+                        <div className="content">{walkInfoWindow.duration}분</div>
 
 
                     </div>
+
+
                 </CustomOverlayMap>
 
 

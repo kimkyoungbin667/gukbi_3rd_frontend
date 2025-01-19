@@ -14,8 +14,8 @@ function KakaoMap() {
     const [mapData, setMapData] = useState({
         level: 3,
         position: {
-            lat: 36.7472206,
-            lng: 126.7038631,
+            lat: 37.5542442978668,
+            lng: 126.934199807183,
         }
     })
 
@@ -43,9 +43,9 @@ function KakaoMap() {
 
     const menu = ["카테고리", "동반가능", "즐겨찾기", "산책기록"];
     //카테고리 관련
-    const categories = ["동물병원", "애견샵", "편의점"];
+    const categories = ["동물병원", "애견샵", "애견카페", "고양이카페"];
     const [searchState, setSearchState] = useState(false);
-    const [searchKeyword, setSearchKeyword] = useState("애견샵");
+    const [searchKeyword, setSearchKeyword] = useState("동물병원");
     const [searchResult, setSearchResult] = useState([]);
     const [pagination, setPagination] = useState({
         totalCount: 0,
@@ -56,8 +56,11 @@ function KakaoMap() {
 
     //동반가능 시설 관련
     const contentTypes = { 12: "관광지", 14: "문화시설", 28: "레포츠", 32: "숙박", 38: "쇼핑", 39: "음식점" };
+    const [selectedType, setSelectedType] = useState("12");
     const [accompanyListForType, setAccompanyListForType] = useState();
     const [accompanyList, setAccompanyList] = useState([]);
+
+
 
 
     const [selectedFavType, setSelectedFavType] = useState('카테고리');
@@ -65,7 +68,7 @@ function KakaoMap() {
     const [myAccompanyFav, setMyAccompanyFav] = useState([]);
 
 
-
+    //즐겨찾기 가져오기기
     function getCategoryFavorite() {
         const obj = {
             userIdx: 1
@@ -91,6 +94,12 @@ function KakaoMap() {
         })
     }
 
+    //즐겨찾기 추가
+    function addCategoryFavorite() {
+
+    }
+
+
 
 
 
@@ -107,7 +116,7 @@ function KakaoMap() {
     //동반가능리스트 항목선택택
     function filterByContentTypeId(contentTypeId) {
         setAccompanyListForType(accompanyList.filter(item => item.contenttypeid === contentTypeId));
-        console.log(accompanyListForType);
+
     }
 
 
@@ -135,7 +144,7 @@ function KakaoMap() {
                     last: 0,
                 });
             }
-        }, { x: mapData.position.lng, y: mapData.position.lat, radius: 2000, size: 7, page: page })
+        }, { x: mapData.position.lng, y: mapData.position.lat, radius: 2000, size: 14, page: page })
 
     }
     //카테고리 페이지 변경
@@ -200,16 +209,19 @@ function KakaoMap() {
         getAccompanyFavorite();
         getCategoryFavorite();
         getPetList();
-        filterByContentTypeId('12');
     }, []);
 
 
     useEffect(() => {
-        // updateRegionName();
+        updateRegionName();
         if (!searchState) {
             searchPlace();
         }
     }, [mapData, searchKeyword])
+
+    useEffect(() => {
+        filterByContentTypeId(selectedType);
+    }, [accompanyList, selectedType])
 
     return (
         <div className="map-body">
@@ -242,6 +254,8 @@ function KakaoMap() {
                         //동반가능
                         accompanyList={accompanyList} contentTypes={contentTypes} accompanyListForType={accompanyListForType}
                         filterByContentTypeId={filterByContentTypeId}
+                        selectedType={selectedType} setSelectedType={setSelectedType}
+
 
                         //즐겨찾기
                         categoryFav={myCategoryFav} accompanyFav={myAccompanyFav}
@@ -298,12 +312,7 @@ function KakaoMap() {
 
                 <MapTypeControl position={"TOPRIGHT"} />
                 <ZoomControl position={"RIGHT"} />
-                <MapMarker // 마커를 생성합니다
-                    position={userPosition}
 
-                >
-                    <div style={{ padding: "5px", color: "#000" }}>Hello World!</div>
-                </MapMarker>
                 <MapSearchMarker result={searchResult} menu={activeMenu} accompanyListForType={accompanyListForType}
                     selectedFavType={selectedFavType} myCategoryFav={myCategoryFav} myAccompanyFav={myAccompanyFav}
 

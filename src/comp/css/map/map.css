@@ -162,6 +162,7 @@
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
     border-top: 1px solid #ced4da;
     overflow-y: auto;
+    height: 79%;
 }
 
 .search-result-margin {
@@ -260,57 +261,76 @@
 
 .bubble {
     position: relative;
-    width: 300px;
-    height: 200px;
-    padding: 8px;
-
-    bottom: 180px;
-    right: 38px;
-
+    /* .bubble 내의 절대적 위치 요소의 기준 */
+    align-items: start;
+    width: 120%;
+    height: 190px;
+    padding: 10px;
+    bottom: 140px;
     background: #FFFFFF;
-    -webkit-border-radius: 23px;
-    -moz-border-radius: 23px;
-    border-radius: 23px;
+    border-radius: 16px;
     border: #7F7F7F solid 2px;
 }
 
-.bubble:after {
-    content: '';
-    position: absolute;
-    border-style: solid;
-    border-width: 26px 34px 0;
-    border-color: #FFFFFF transparent;
-    display: block;
-    width: 0;
-    z-index: 1;
-    bottom: -26px;
-    left: 163px;
+.bubble .title {
+    position: relative;
+    /* xbox 버튼의 기준 */
+    width: 100%;
+    margin-left: 6px;
+    display: flex;
+    align-items: center;
+    /* 수직 정렬 */
+    font-size: 32px;
+
 }
 
-.bubble:before {
-    content: '';
-    position: absolute;
-    border-style: solid;
-    border-width: 27px 35px 0;
-    border-color: #7F7F7F transparent;
-    display: block;
-    width: 0;
-    z-index: 0;
-    bottom: -29px;
-    left: 162px;
-}
 
 .xbox {
-    background: url(../../../assets/img/xbox.png);
-    height: 26px;
-    width: 26px;
+    position: absolute;
+    /* title의 오른쪽 상단에 고정 */
+    top: 0;
+    right: 4px;
+    background: url(../../../assets/img/xbox.png) no-repeat center center;
+    height: 30px;
+    width: 30px;
     background-size: cover;
-    background-position: center;
     border: none;
-    right: px;
-    position: relative;
-    float: right;
+    cursor: pointer;
 }
+
+
+
+.bubble .content {
+    margin-left: 6px;
+    align-items: start;
+    text-align: start;
+    line-height: 1.2;
+}
+
+.bubble .star {}
+
+
+.favorite-btn {
+    line-height: 1.0;
+    font-size: 32px;
+    color: gray;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.favorite-btn.filled {
+    color: gold;
+    /* 즐겨찾기된 상태일 때 금색으로 변합니다 */
+}
+
+.favorite-btn:hover {
+    transform: scale(1.2);
+    /* 마우스를 올렸을 때 크기 증가 */
+}
+
+
 
 
 .categories {
@@ -388,48 +408,8 @@
 }
 
 
-.pagination {
-    display: flex;
-    justify-content: center;
-    margin-top: 20px;
-}
-
-.page-number {
-    cursor: pointer;
-    padding: 5px 10px;
-    margin: 0 5px;
-    border-radius: 5px;
-    background-color: #f0f0f0;
-}
-
-.page-number.selected {
-    background-color: #4CAF50;
-    color: white;
-}
-
-.page-number:hover {
-    background-color: #ddd;
-}
 
 
-.favorite-btn {
-    font-size: 1.5rem;
-    color: gray;
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    transition: color 0.3s ease;
-}
-
-.favorite-btn.filled {
-    color: gold;
-    /* 즐겨찾기된 상태일 때 금색으로 변합니다 */
-}
-
-.favorite-btn:hover {
-    transform: scale(1.2);
-    /* 마우스를 올렸을 때 크기 증가 */
-}
 
 
 .pet-image {
