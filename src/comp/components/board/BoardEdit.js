@@ -76,7 +76,7 @@ function BoardEdit() {
     });
 
     axios
-      .post("http://localhost:8080/api/board/updateBoardPost", formData, {
+      .post("http://58.74.46.219:33334/api/board/updateBoardPost", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${token}`,
@@ -179,7 +179,7 @@ function BoardEdit() {
                 src={
                   image.previewUrl
                     ? image.previewUrl
-                    : `http://localhost:8080/${image}`
+                    : `http://58.74.46.219:33334/${image}`
                 }
                 alt={`이미지 ${index + 1}`}
               />

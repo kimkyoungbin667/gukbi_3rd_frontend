@@ -33,7 +33,7 @@ function AiChat() {
     setIsLoading(true);  // ✅ 로딩 시작
 
     try {
-      const res = await fetch("http://58.74.46.219:33334/api/ai/chat", {
+      const res = await fetch("http://58.74.46.219:33334/api/ai/chat/cat", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -91,6 +91,7 @@ function AiChat() {
           cols="50"
           placeholder="질문을 입력해주세요.. (Shift + Enter는 줄바꿈)"
         />
+        
         <button onClick={handleSubmit} disabled={isLoading}>  {/* ✅ 로딩 중 버튼 비활성화 */}
           {isLoading ? "답변 중..." : "질문하기"}
         </button>
