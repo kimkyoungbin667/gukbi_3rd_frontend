@@ -61,21 +61,7 @@
     margin-bottom: 15px;
 }
 
-/* Board 안쪽 안내 문구 */
-.ai-solution-choice-inside {
-    position: absolute;
-    top: 40px;
-    left: 50%;
-    transform: translateX(-50%);
-    font-family: "studyGood";
-    font-size: 40px;
-    color: #333;
-    background-color: rgba(255, 255, 255, 0.8);
-    /* 반투명 배경 */
-    padding: 10px 20px;
-    border-radius: 10px;
-    z-index: 2;
-}
+
 
 /* 카드 배경 이미지 */
 .ai-solution-background {
@@ -113,9 +99,15 @@
     margin-bottom: 20px;
 }
 
-.my-animal-name,
+.my-animal-name {
+    font-size: 40px;
+    font-weight: bold;
+    text-align: center;
+    margin: 20px 0;
+}
+
 .my-animal-kind {
-    font-size: 32px;
+    font-size: 30px;
     font-weight: bold;
     text-align: center;
     margin: 20px 0;
@@ -188,15 +180,16 @@ button.start-ai-solution:hover {
 
 .animal-list-board {
     display: flex;
-    flex-wrap: wrap;  /* 여러 줄로 카드가 배열되도록 설정 */
-    justify-content: space-evenly;  /* 카드 간의 균등한 간격을 유지 */
-    padding: 20px;
+    flex-wrap: wrap; /* 여러 줄로 나뉘도록 설정 */
+    justify-content: space-between; /* 카드 간의 간격 균등 */
+    gap: 20px; /* 카드 간격 추가 */
+    padding: 24px;
     max-width: 1200px;
     margin: 0 auto;
     background-color: #fff;
     border-radius: 12px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
+  }
 
 .ai-resulttitle {
     font-family: 'studyGood';
@@ -205,17 +198,18 @@ button.start-ai-solution:hover {
 
 
 .ai-solution-choice-inside {
-    position: relative;  /* 상대적 위치로 설정 */
-    top: 20px;  /* 문장을 위에서 조금 내려서 배치 */
-    font-family: "catFont";
-    font-size: 30px;
+    position: relative; /* 상대적 위치로 설정 */
+    top: 20px; /* 문장을 위에서 조금 내려서 배치 */
+    font-family: "studyGood";
+    font-size: 50px;
     color: #333;
     background-color: rgba(255, 255, 255, 0.8); /* 반투명 배경 */
-    padding: 10px 20px;
+    padding: 10px 10px; /* 내부 여백 */
     border-radius: 10px;
     z-index: 2;
-    margin-top: 30px;  /* 위쪽에 여백을 추가 */
-    text-align: center;  /* 문장 중앙 정렬 */
+    margin-top: 20px; /* 위쪽 여백 */
+    margin-bottom: 50px; /* 아래쪽 여백 추가 */
+    text-align: center; /* 문장 중앙 정렬 */
 }
 
 
@@ -247,17 +241,6 @@ button.start-ai-solution:hover {
     animation: fadeIn 0.3s ease-in-out;
 }
 
-.animal-list-board {
-    width: 100%;
-    max-width: 1200px;  /* 최대 너비 설정 (필요 시 조정) */
-    height: auto;
-    border: 2px solid #ddd;  /* 얇은 회색 테두리 */
-    border-radius: 10px;  /* 둥근 모서리 */
-    padding: 20px;  /* 안쪽 여백 */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);  /* 가벼운 그림자 효과 */
-    margin: 20px auto;  /* 위아래 여백, 가로 중앙 정렬 */
-    background-color: #fff;  /* 배경색을 흰색으로 설정 */
-}
 
 .animal-card {
     display: flex;
@@ -284,7 +267,7 @@ button.start-ai-solution:hover {
 }
 
 .animal-card button {
-    padding: 10px 20px;
+    padding: 15px 25px;
     background-color: #4CAF50;
     color: white;
     border: none;
