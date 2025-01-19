@@ -1,0 +1,130 @@
+.daily-record-container {
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 20px 30px;
+  background-color: #fffaf0; /* 배경색 통일 */
+  border-radius: 16px;
+  border: 1px solid #f0e68c; /* 테두리 통일 */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1); /* 섀도우 통일 */
+  font-family: "studyGood", Arial, sans-serif; /* 폰트 통일 */
+}
+
+.daily-record-header {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+}
+
+.section-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.section-buttons button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  background-color: #f0e68c; /* 색상 변경 */
+  color: #333;
+  font-family: "studyGood" !important;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.section-buttons button:hover {
+  background-color: #ffd700; /* hover 색상 */
+  transform: scale(1.05);
+}
+
+.section-buttons button.active {
+  background-color: #ff6f61;
+  color: white;
+}
+
+.form-section label {
+  display: block;
+  font-size: 16px; /* 폰트 크기 통일 */
+  font-weight: bold;
+  margin-bottom: 8px;
+  color: #555;
+}
+
+.form-section input,
+.form-section textarea {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 14px;
+  background-color: #fff;
+  transition: border-color 0.3s ease;
+}
+
+.form-section input:focus,
+.form-section textarea:focus {
+  border-color: #ff6f61; /* 포커스 색상 */
+  outline: none;
+}
+
+.form-section textarea {
+  resize: none;
+  height: 100px;
+}
+
+.submit-button {
+  display: block;
+  width: 100%;
+  padding: 12px;
+  font-size: 16px;
+  font-weight: bold;
+  color: white;
+  background-color: #ff6f61;
+  font-family: "studyGood" !important;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.submit-button:hover {
+  background-color: #e63946;
+  transform: scale(1.05);
+}
+
+.records-list {
+  margin-top: 20px;
+}
+
+.records-list h4 {
+  font-size: 20px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.records-list ul {
+  list-style: none;
+  padding: 0;
+}
+
+.records-list li {
+  background-color: #fff;
+  padding: 10px 15px;
+  margin-bottom: 10px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 16px;
+  color: #555;
+}
+
+.records-list li span {
+  display: block;
+  margin-bottom: 5px;
+}

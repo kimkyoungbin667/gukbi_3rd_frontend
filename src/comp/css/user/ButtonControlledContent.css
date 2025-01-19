@@ -54,15 +54,3 @@
     background-color: #ffe4e6;
 }
 
-/* 콘텐츠 영역 스타일 */
-.content-area {
-    padding: 20px;
-    border: 1px solid #f0e68c;
-    border-radius: 10px;
-    background-color: #fffaf0;
-    min-height: 200px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-}

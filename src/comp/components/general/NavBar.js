@@ -124,6 +124,10 @@ const Navbar = () => {
                     </li>
 
                     {/* /admin/dashboard */}
+                    {/* /profilenavigation/profile */}
+                    {/* /eventcaledar */}
+                    {/* /mypetspage */}
+                    {/* /petregistration */}
                     <li className="navbar__item dropdown" onClick={() => moveTo("/mypetspage")}
                         onMouseEnter={() => handleMouseEnter("mypage")}
                         onMouseLeave={() => handleMouseLeave("mypage")}>
