@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { getMyPets, deletePet, uploadPetImage } from "../../api/pet";
+import { useNavigate } from "react-router-dom";
 import "../../css/pet/MyPetsPage.css";
 import PetDetails from "./pet_details";
 import MedicalHistory from "./medical_histoy";
-import PetDailyRecord from "./petdaily_recored"; // 올바른 파일명으로 수정
+import PetDailyRecord from "./petdaily_recored";
 import PetGraph from "./PetGraph";
 
 function MyPetsPage() {
@@ -15,8 +16,11 @@ function MyPetsPage() {
   const [message, setMessage] = useState("");
   const [expandedPetId, setExpandedPetId] = useState(null);
   const [activeTab, setActiveTab] = useState({});
+  const navigate = useNavigate();
 
+  // 펫 목록을 서버에서 가져오는 함수
   const fetchPets = async () => {
+    setLoading(true);
     try {
       const petData = await getMyPets();
       setPets(petData);
@@ -45,13 +49,6 @@ function MyPetsPage() {
     }
   };
 
-  const handleEdit = (petId) => {
-    setEditingPetId(petId);
-    setSelectedImage(null);
-    setIsValidImage(true);
-    setMessage("");
-  };
-
   const validateImage = (file) => {
     const validExtensions = ["jpg", "jpeg", "png", "gif", "bmp", "webp"];
     const fileExtension = file.name.split(".").pop().toLowerCase();
@@ -66,133 +63,153 @@ function MyPetsPage() {
     return true;
   };
 
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-
-    if (validateImage(file)) {
-      setSelectedImage(file);
-    }
-  };
-
   const handleImageUpload = async () => {
-    if (!selectedImage) {
+    if (!selectedImage?.file) {
       alert("이미지를 선택해주세요.");
       return;
     }
 
     const formData = new FormData();
-    formData.append("file", selectedImage);
+    formData.append("file", selectedImage.file);
 
     try {
       const response = await uploadPetImage(editingPetId, formData);
-      const updatedPet = response.data; // 서버에서 수정된 펫 데이터를 반환한다고 가정
-      setPets((prevPets) =>
-        prevPets.map((pet) =>
-          pet.pet_id === editingPetId ? { ...pet, profile_url: updatedPet.profile_url } : pet
-        )
-      );
 
-      setMessage("이미지가 성공적으로 업로드되었습니다.");
-      setEditingPetId(null);
-      setSelectedImage(null);
+      if (response.url) {
+        setMessage("이미지가 성공적으로 업로드되었습니다.");
+        window.location.reload(); // 새로고침 유지
+      }
     } catch (error) {
       console.error("이미지 업로드 실패:", error.message);
       setMessage("이미지 업로드에 실패했습니다.");
+    } finally {
+      setEditingPetId(null);
+      setSelectedImage(null);
+    }
+  };
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file && validateImage(file)) {
+      const previewUrl = URL.createObjectURL(file);
+
+      setSelectedImage({ file, previewUrl });
+
+      setPets((prevPets) =>
+        prevPets.map((pet) =>
+          pet.pet_id === editingPetId
+            ? { ...pet, profile_url: previewUrl }
+            : pet
+        )
+      );
     }
   };
 
   const toggleDetails = (petId) => {
-    setExpandedPetId(expandedPetId === petId ? null : petId);
-    if (expandedPetId !== petId) {
-      setActiveTab((prev) => ({ ...prev, [petId]: "details" }));
-    }
+    setExpandedPetId((prevId) => (prevId === petId ? null : petId));
+    setActiveTab((prev) => ({ ...prev, [petId]: "details" }));
   };
 
   const changeTab = (petId, tab) => {
     setActiveTab((prev) => ({ ...prev, [petId]: tab }));
   };
 
-  if (loading) return <p>로딩 중...</p>;
+  const cancelEdit = () => {
+    setSelectedImage(null); // 선택된 이미지 초기화
+    setEditingPetId(null); // 수정 상태 초기화
+    window.location.reload(); // 새로고침 유지
+  };
+
+  const handleAddPet = () => {
+    navigate("/petregistration"); // 원하는 경로로 이동
+  };
+
+
+  if (loading) return <p className="loading">로딩 중...</p>;
 
   return (
-    <div>
-      <h1>내 반려동물 목록</h1>
-      <div>
+    <div className="pets-container">
+      <h1 className="title">내 반려동물 목록</h1>
+      <button className="add-pet-button" onClick={handleAddPet}>
+          동물 등록하기
+        </button>
+      <div className="pets-list">
         {pets.map((pet) => (
-          <div
-            key={pet.pet_id}
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              border: "1px solid #ccc",
-              padding: "10px",
-              marginBottom: "10px",
-            }}
-          >
-            <div style={{ display: "flex", flexDirection: "row", alignItems: "center", width: "100%" }}>
+          <div key={pet.pet_id} className="pet-card">
+            <div className="pet-info">
               <img
-                src={pet.profile_url || "http://localhost:8080/default_image_url.jpg"}
+                key={editingPetId === pet.pet_id ? selectedImage?.previewUrl || pet.profile_url : pet.profile_url}
+                src={
+                  editingPetId === pet.pet_id && selectedImage?.previewUrl
+                    ? selectedImage.previewUrl
+                    : `http://localhost:8080${pet.profile_url}`
+                }
                 alt={pet.dog_name}
-                width="300"
-                height="300"
-                style={{ objectFit: "cover", borderRadius: "8px", marginRight: "20px" }}
+                className="pet-image"
               />
-              <div style={{ textAlign: "left", flex: 1 }}>
+              <div className="pet-details">
                 <p>이름: {pet.dog_name}</p>
                 <p>품종: {pet.kind_name}</p>
                 <p>성별: {pet.sex}</p>
                 <p>중성화 여부: {pet.neuter_status}</p>
                 {editingPetId === pet.pet_id ? (
                   <div>
-                    <input type="file" onChange={handleImageChange} />
+                    <label htmlFor={`file-input-${pet.pet_id}`} className="custom-file-label">
+                      파일 선택
+                    </label>
+                    <input
+                      id={`file-input-${pet.pet_id}`}
+                      type="file"
+                      className="custom-file-input"
+                      onChange={handleImageChange}
+                    />
                     {!isValidImage && <p style={{ color: "red" }}>유효하지 않은 이미지입니다.</p>}
-                    <button onClick={handleImageUpload}>업로드</button>
-                    <button onClick={() => setEditingPetId(null)}>취소</button>
+                    <button className="button upload" onClick={handleImageUpload}>
+                      업로드
+                    </button>
+                    <button className="button cancel" onClick={cancelEdit}>
+                      취소
+                    </button>
                   </div>
                 ) : (
-                  <button onClick={() => handleEdit(pet.pet_id)}>수정</button>
+                  <button className="button edit" onClick={() => setEditingPetId(pet.pet_id)}>
+                    수정
+                  </button>
                 )}
-                <button onClick={() => handleDelete(pet.pet_id)}>삭제</button>
-                <button onClick={() => toggleDetails(pet.pet_id)} style={{ marginTop: "10px" }}>
-                  {expandedPetId === pet.pet_id ? "접기 ▲" : "펼치기 ▼"}
+
+                <button className="button delete" onClick={() => handleDelete(pet.pet_id)}>
+                  삭제
+                </button>
+                <button className="button toggle" onClick={() => toggleDetails(pet.pet_id)}>
+                  {expandedPetId === pet.pet_id ? "▲" : "▼"}
                 </button>
               </div>
             </div>
 
             {expandedPetId === pet.pet_id && (
-              <div
-                style={{
-                  marginTop: "20px",
-                  padding: "10px",
-                  backgroundColor: "#f9f9f9",
-                  width: "100%",
-                  borderTop: "1px solid #ccc",
-                }}
-              >
-                <div style={{ display: "flex", justifyContent: "space-around", marginBottom: "10px" }}>
+              <div className="pet-extra-details">
+                <div className="tabs">
                   <button
+                    className={`tab ${activeTab[pet.pet_id] === "details" ? "active" : ""}`}
                     onClick={() => changeTab(pet.pet_id, "details")}
-                    style={{ fontWeight: activeTab[pet.pet_id] === "details" ? "bold" : "normal" }}
                   >
                     상세 정보
                   </button>
                   <button
+                    className={`tab ${activeTab[pet.pet_id] === "weeklyGraph" ? "active" : ""}`}
                     onClick={() => changeTab(pet.pet_id, "weeklyGraph")}
-                    style={{ fontWeight: activeTab[pet.pet_id] === "weeklyGraph" ? "bold" : "normal" }}
                   >
                     주간 그래프
                   </button>
                   <button
+                    className={`tab ${activeTab[pet.pet_id] === "dailyRecord" ? "active" : ""}`}
                     onClick={() => changeTab(pet.pet_id, "dailyRecord")}
-                    style={{ fontWeight: activeTab[pet.pet_id] === "dailyRecord" ? "bold" : "normal" }}
                   >
                     오늘의 기록
                   </button>
                   <button
+                    className={`tab ${activeTab[pet.pet_id] === "medicalHistory" ? "active" : ""}`}
                     onClick={() => changeTab(pet.pet_id, "medicalHistory")}
-                    style={{ fontWeight: activeTab[pet.pet_id] === "medicalHistory" ? "bold" : "normal" }}
                   >
                     의료 기록
                   </button>
@@ -206,7 +223,7 @@ function MyPetsPage() {
           </div>
         ))}
       </div>
-      {message && <p style={{ color: "green" }}>{message}</p>}
+      {message && <p className="success-message">{message}</p>}
     </div>
   );
 }

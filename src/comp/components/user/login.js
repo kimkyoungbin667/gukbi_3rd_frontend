@@ -2,11 +2,13 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { loginUser, kakaoLogin, getUserNickname } from "../../api/user";
 import { useAuth } from "../../../AuthContext"; // AuthContext 사용
+import AlertBox from "../general/alertbox"; // AlertBox import
 import "../../css/user/login.css";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [alertMessage, setAlertMessage] = useState(""); // AlertBox 메시지 상태
   const navigate = useNavigate();
   const { setIsLoggedIn } = useAuth(); // 상태 업데이트 함수 가져오기
 
@@ -30,12 +32,12 @@ export default function Login() {
       const isActiveBool = isActive === "true" || isActive === true;
 
       if (!isActiveBool) {
-        alert("비활성화된 계정입니다. 관리자에게 문의하세요.");
+        setAlertMessage("비활성화된 계정입니다. 관리자에게 문의하세요.");
         return;
       }
 
       if (isAdminBool) {
-        alert("관리자 계정입니다. 관리자 페이지로 이동합니다.");
+        setAlertMessage("관리자 계정입니다. 관리자 페이지로 이동합니다.");
         localStorage.setItem("token", accessToken);
         localStorage.setItem("refreshToken", refreshToken);
         setIsLoggedIn(true);
@@ -58,10 +60,10 @@ export default function Login() {
         navigate("/"); // 일반 사용자 대시보드로 이동
       }
 
-      alert("로그인 성공!");
+      setAlertMessage("로그인 성공!");
     } catch (error) {
       console.error("로그인 실패:", error.response?.data || error.message);
-      alert("로그인에 실패했습니다.");
+      setAlertMessage("로그인에 실패했습니다.");
     }
   };
 
@@ -76,12 +78,12 @@ export default function Login() {
           const isActiveBool = isActive === "true" || isActive === true;
 
           if (!isActiveBool) {
-            alert("비활성화된 계정입니다. 관리자에게 문의하세요.");
+            setAlertMessage("비활성화된 계정입니다. 관리자에게 문의하세요.");
             return;
           }
 
           if (isAdminBool) {
-            alert("관리자 계정입니다. 관리자 페이지로 이동합니다.");
+            setAlertMessage("관리자 계정입니다. 관리자 페이지로 이동합니다.");
             navigate("/admin-dashboard");
             return;
           }
@@ -102,12 +104,12 @@ export default function Login() {
           }
         } catch (error) {
           console.error("카카오 로그인 실패:", error.response?.data || error.message);
-          alert("카카오 로그인에 실패했습니다.");
+          setAlertMessage("카카오 로그인에 실패했습니다.");
         }
       },
       fail: (err) => {
         console.error("카카오 로그인 실패:", err);
-        alert("카카오 로그인에 실패했습니다.");
+        setAlertMessage("카카오 로그인에 실패했습니다.");
       },
     });
   };
@@ -149,11 +151,26 @@ export default function Login() {
           회원가입
         </button>
       </form>
-      <div className="kakao-login-container">
-        <button className="kakao-login-button" onClick={handleKakaoLogin}>
-          카카오 로그인
-        </button>
+
+      {/* 구분선 추가 */}
+      <div className="divider">
+        <span className="divider-text">또는</span>
       </div>
+
+      <div className="kakao-login-container">
+        <img
+          src={require("../../../assets/img/kakao_login_medium_wide.png")}
+          alt="카카오 로그인"
+          className="kakao-login-image"
+          onClick={handleKakaoLogin}
+          style={{ cursor: "pointer" }}
+        />
+      </div>
+
+      {/* AlertBox 컴포넌트 */}
+      {alertMessage && (
+        <AlertBox message={alertMessage} onClose={() => setAlertMessage("")} />
+      )}
     </div>
   );
 }

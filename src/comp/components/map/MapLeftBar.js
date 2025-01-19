@@ -4,7 +4,7 @@ export default function MapLeftBar(props) {
     const [hoveredIndex, setHoveredIndex] = useState(null);
     const [selectedType, setSelectedType] = useState();
 
-    const [selectedFavType, setSelectedFavType] = useState('카테고리');
+
 
     const asd = props.searchResults;
     const pagination = props.pagination;
@@ -17,10 +17,17 @@ export default function MapLeftBar(props) {
 
 
     const favoriteList = ["카테고리", "동반가능"];
+    const selectedFavType = props.selectedFavType;
     const categoryFav = props.categoryFav;
     const accompanyFav = props.accompanyFav;
 
+
     const walks = props.walks;
+    const myPets = props.myPets;
+    const [selectedPet, setSelectedPet] = useState(null);
+
+
+
     const getBackgroundColor = (index) => {
         const colors = ['#FFC1C1', '#FFD8B1', '#FFFACD', '#DFFFD6', '#B3E5FC', '#BDB3FF', '#E1BEE7']
         return colors[index % colors.length];
@@ -40,7 +47,7 @@ export default function MapLeftBar(props) {
                             key={index}
                             className={`category-item ${props.searchKeyword === category ? "selected" : ""
                                 }`}
-                            onClick={() => props.setSearchKeyword(category)}
+                            onClick={() => { props.setSearchKeyword(category) }}
                         >
                             {category}
                         </div>
@@ -239,7 +246,7 @@ export default function MapLeftBar(props) {
                             key={index}
                             className={`category-item ${selectedFavType === category ? "selected" : ""
                                 }`}
-                            onClick={() => setSelectedFavType(category)}
+                            onClick={() => props.setSelectedFavType(category)}
                         >
                             {category}
                         </div>
@@ -353,42 +360,115 @@ export default function MapLeftBar(props) {
     else if (props.menu === '산책기록') {
         return (
             <div className="search-result">
-                {props.menu === '산책기록' && (
+                {props.menu === "산책기록" && (
                     <div className="search-result-margin">
-                        <div className="search-result-count">검색 결과 {walks ? walks.length : 0} 건</div>
-                        {/* asd 배열을 순회하면서 동물병원 정보를 표시 */}
-                        {walks && walks.length > 0 ? (
-                            walks.map((item, index) => (
+                        {selectedPet ? (
+                            // 선택된 반려동물의 산책 경로 화면
+                            <div style={{ textAlign: "start" }}>
                                 <div
-                                    key={index}
-                                    className="search-result-list"
+                                    onClick={() => setSelectedPet(null)} // 뒤로 가기 버튼
                                     style={{
-                                        backgroundColor: hoveredIndex === index
-                                            ? getHoverBackgroundColor(index)  // 마우스가 올라갔을 때 배경색
-                                            : getBackgroundColor(index)
-                                    }}
-                                    onClick={(e) => {
-                                        e.preventDefault();
-                                        props.setMapData(
-                                            {
-                                                level: 3,
-                                                position: {
-                                                    lat: item.paths[0].latitude,
-                                                    lng: item.paths[0].longitude
-                                                }
-                                            });
-                                    }}
-                                    onMouseEnter={() => setHoveredIndex(index)}  // 마우스 올리기
-                                    onMouseLeave={() => setHoveredIndex(null)}
-                                >
-                                    <div className="search-result-title">{item.walkName}</div>
-                                    <div className="search-result-content">{item.walkDate}</div>
-                                </div>
-                            ))
-                        ) : (
-                            <p>검색 결과가 없습니다.</p>
-                        )}
+                                        display: "inline-block",
+                                        marginBottom: "0px",
+                                        marginTop: "10px",
+                                        cursor: "pointer",
+                                        fontSize: "48px",
+                                        color: "#333",
+                                        fontWeight: "bold",
+                                        textAlign: "start"
 
+                                    }}
+                                >
+                                    ←
+                                </div>
+                                <div className="pet-walk-path" style={{ textAlign: "center", fontSize: "32px", fontWeight: "bold", marginBottom: "10px" }}>
+                                    <div>{selectedPet.dog_name}의 산책 경로</div>
+                                </div>
+                                {/* 산책 경로를 지도 또는 리스트로 표시 */}
+                                <div>
+
+                                    {walks.filter((walk) => walk.petId === selectedPet.pet_id).
+                                        map((item, index) => (
+                                            <div key={index} className="search-result-list"
+                                                style={{
+                                                    backgroundColor:
+                                                        hoveredIndex === index
+                                                            ? getHoverBackgroundColor(index) // 마우스가 올라갔을 때 배경색
+                                                            : getBackgroundColor(index),
+                                                }}
+                                                onClick={(e) => {
+                                                    e.preventDefault();
+                                                    props.setMapData(
+                                                        {
+                                                            level: 3,
+                                                            position: {
+                                                                lat: item.paths[0].latitude,
+                                                                lng: item.paths[0].longitude
+                                                            }
+                                                        });
+                                                }}
+                                                onMouseEnter={() => setHoveredIndex(index)}  // 마우스 올리기
+                                                onMouseLeave={() => setHoveredIndex(null)}
+                                            >
+                                                <div className="search-result-title">{item.walkName}</div>
+                                                <div className="search-result-content">{item.walkDate}</div>
+                                            </div>
+                                        ))}
+                                </div>
+                            </div>
+
+                        ) : (
+                            // 동물 선택 화면
+                            <div>
+                                <div className="search-result-count">
+                                    검색 결과 {myPets ? myPets.length : 0} 건
+                                </div>
+                                {myPets && myPets.length > 0 ? (
+                                    myPets.map((item, index) => (
+                                        <div
+                                            key={index}
+                                            className="search-result-list"
+                                            style={{
+                                                backgroundColor:
+                                                    hoveredIndex === index
+                                                        ? getHoverBackgroundColor(index) // 마우스가 올라갔을 때 배경색
+                                                        : getBackgroundColor(index),
+                                            }}
+                                            onClick={(e) => {
+                                                e.preventDefault();
+                                                setSelectedPet(item); // 반려동물 선택
+
+                                            }}
+                                            onMouseEnter={() => setHoveredIndex(index)} // 마우스 올리기
+                                            onMouseLeave={() => setHoveredIndex(null)}
+                                        >
+                                            <div style={{ display: "flex" }}>
+                                                <img
+                                                    src={`http://58.74.46.219:33334/upload/${item.profile_url}`}
+                                                    alt="반려동물 사진"
+                                                    className="pet-image"
+                                                />
+                                                <div>
+                                                    <div
+                                                        className="search-result-title"
+                                                        style={{
+                                                            marginLeft: "20px",
+                                                            marginTop: "6px",
+                                                            fontSize: "38px",
+                                                        }}
+                                                    >
+                                                        {item.dog_name}
+                                                    </div>
+                                                    <div>추가 정보</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    ))
+                                ) : (
+                                    <p>검색 결과가 없습니다.</p>
+                                )}
+                            </div>
+                        )}
                     </div>
                 )}
 

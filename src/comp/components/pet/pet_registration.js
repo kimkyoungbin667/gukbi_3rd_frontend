@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { getPetInfo, savePetInfo } from "../../api/pet";
 import { getUserProfile } from "../../api/user"; // 사용자 프로필 가져오기 API
+import "../../css/pet/PetRegistration.css"; // CSS 파일 추가
 
 function PetRegistration() {
   const [dogRegNo, setDogRegNo] = useState("");
@@ -24,10 +25,9 @@ function PetRegistration() {
         alert("사용자 정보를 가져오는 데 실패했습니다.");
       }
     };
-  
+
     fetchUserId();
   }, []);
-  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -61,9 +61,9 @@ function PetRegistration() {
       alert("저장할 데이터가 없습니다.");
       return;
     }
-  
+
     setSaving(true);
-  
+
     try {
       const petData = {
         ...results.response.body.item,
@@ -79,12 +79,12 @@ function PetRegistration() {
       setSaving(false);
     }
   };
-  
+
   return (
-    <div>
-      <h1>반려동물 정보 조회</h1>
-      <form onSubmit={handleSubmit}>
-        <div>
+    <div className="registration-container">
+      <h1 className="registration-title">반려동물 정보 조회</h1>
+      <form className="registration-form" onSubmit={handleSubmit}>
+        <div className="form-group">
           <label>동물등록번호:</label>
           <input
             type="text"
@@ -94,8 +94,8 @@ function PetRegistration() {
             required
           />
         </div>
-        <div>
-          <label>RFID 코드 (선택):</label>
+        <div className="form-group">
+          <label>RFID 코드:</label>
           <input
             type="text"
             placeholder="RFID 코드"
@@ -103,7 +103,7 @@ function PetRegistration() {
             onChange={(e) => setRfidCd(e.target.value)}
           />
         </div>
-        <div>
+        <div className="form-group">
           <label>소유자 성명:</label>
           <input
             type="text"
@@ -113,8 +113,8 @@ function PetRegistration() {
             required
           />
         </div>
-        <div>
-          <label>소유자 생년월일 (YYYYMMDD) (선택):</label>
+        <div className="form-group">
+          <label>소유자 생년월일 (주민등록번호 앞자리):</label>
           <input
             type="text"
             placeholder="소유자 생년월일"
@@ -122,14 +122,14 @@ function PetRegistration() {
             onChange={(e) => setOwnerBirth(e.target.value)}
           />
         </div>
-        <button type="submit" disabled={loading}>
+        <button type="submit" className="submit-button" disabled={loading}>
           {loading ? "조회 중..." : "조회하기"}
         </button>
       </form>
 
       {results && results.response && results.response.body && results.response.body.item && (
-        <div>
-          <h2>조회 결과</h2>
+        <div className="results-container">
+          <h2 className="results-title">조회 결과</h2>
           <p><strong>이름:</strong> {results.response.body.item.dogNm}</p>
           <p><strong>성별:</strong> {results.response.body.item.sexNm}</p>
           <p><strong>품종:</strong> {results.response.body.item.kindNm}</p>
@@ -138,10 +138,12 @@ function PetRegistration() {
           <p><strong>등록 기관 전화번호:</strong> {results.response.body.item.officeTel}</p>
           <p><strong>승인 상태:</strong> {results.response.body.item.aprGbNm}</p>
 
-          <button onClick={handleSave} disabled={saving}>
-            {saving ? "저장 중..." : "예"}
-          </button>
-          <button onClick={() => setResults(null)}>아니오</button>
+          <div className="button-group">
+            <button className="save-button" onClick={handleSave} disabled={saving}>
+              {saving ? "저장 중..." : "저장"}
+            </button>
+            <button className="cancel-button" onClick={() => setResults(null)}>취소</button>
+          </div>
         </div>
       )}
     </div>

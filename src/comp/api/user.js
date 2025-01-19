@@ -131,5 +131,22 @@ export const checkKakaoId = async (kakaoId) => {
     return response.data; // { isDuplicate: true/false }
 };
 
+export const checkNicknameAvailability = async (nickname) => {
+    try {
+        console.log("중복 확인 요청 닉네임:", nickname); // 닉네임 확인
+
+        const response = await api.get(`/user/check-nickname`, {
+            params: { nickname: nickname }, // 닉네임을 명확히 전달
+        });
+
+        console.log("중복 확인 응답 데이터:", response.data); // 서버 응답 확인
+        return response.data.isAvailable;
+    } catch (error) {
+        console.error("닉네임 중복 확인 API 오류:", error.response?.data || error.message);
+        throw error;
+    }
+};
+
+
 
 export default api;

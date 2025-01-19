@@ -1,86 +1,86 @@
 .board-edit-container {
-    width: 90%;
-    max-width: 900px;
-    height: 500px;
-    margin: 50px auto;
-    padding: 20px;
-    background-color: #fff;
-    border-radius: 12px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    font-family: "studyGood";
-  }
-  
-  .board-edit-title {
-    font-size: 35px;
-    font-weight: bold;
-    color: #2c3e50;
-    text-align: center;
-    font-family: 'studyGood';
-    margin-bottom: 20px;
-  }
-  
-  .board-edit-input {
-    margin-bottom: 20px;
-    font-family: 'studyGood';
-  }
-  
-  .board-edit-input label {
-    display: block;
-    font-size: 30px;
-    font-weight: bold;
-    margin-bottom: 8px;
-    color: #37474f;
-  }
-  
-  .board-edit-input input,
-  .board-edit-input textarea {
-    width: 100%;
-    padding: 30px;
-    font-size: 30px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    box-sizing: border-box;
-    font-family: 'studyGood';
-    resize: none;
-  }
-  
-  .board-edit-input input {
-    height: 40px;
-  }
-  
-  .board-edit-input textarea {
-    height: 250px;
-  }
-  
-  .board-edit-input input:focus,
-  .board-edit-input textarea:focus {
-    outline: none;
-    border-color: #007bff;
-    box-shadow: 0 0 4px rgba(0, 123, 255, 0.2);
-  }
-  
-  /* 작성 완료 버튼 */
-  .board-edit-actions {
-    margin-top: 20px;
-    display: flex;
-    justify-content: center;
-  }
-  
-  .board-edit-actions .edit-button {
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 30px;
-    padding: 10px 20px;
-    font-size: 25px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-  }
-  
-  .board-edit-actions .edit-button:hover {
-    background-color: #0056b3;
-  }
-  
+  width: 90%;
+  max-width: 900px;
+  height: 500px;
+  margin: 50px auto;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  font-family: "studyGood";
+}
+
+.board-edit-title {
+  font-size: 35px;
+  font-weight: bold;
+  color: #2c3e50;
+  text-align: center;
+  font-family: 'studyGood';
+  margin-bottom: 20px;
+}
+
+.board-edit-input {
+  margin-bottom: 20px;
+  font-family: 'studyGood';
+}
+
+.board-edit-input label {
+  display: block;
+  font-size: 30px;
+  font-weight: bold;
+  margin-bottom: 8px;
+  color: #37474f;
+}
+
+.board-edit-input input,
+.board-edit-input textarea {
+  width: 100%;
+  padding: 30px;
+  font-size: 30px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-sizing: border-box;
+  font-family: 'studyGood';
+  resize: none;
+}
+
+.board-edit-input input {
+  height: 40px;
+}
+
+.board-edit-input textarea {
+  height: 250px;
+}
+
+.board-edit-input input:focus,
+.board-edit-input textarea:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 4px rgba(0, 123, 255, 0.2);
+}
+
+/* 작성 완료 버튼 */
+.board-edit-actions {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.board-edit-actions .edit-button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 30px;
+  padding: 10px 20px;
+  font-size: 25px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.board-edit-actions .edit-button:hover {
+  background-color: #0056b3;
+}
+
 
 /* 전체 미리보기 영역 스타일 */
 .images-preview {
@@ -101,8 +101,10 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 200px; /* 이미지 최대 크기 */
-  height: 250px; /* 이미지 최대 크기 */
+  width: 200px;
+  /* 이미지 최대 크기 */
+  height: 250px;
+  /* 이미지 최대 크기 */
   background-color: #ffffff;
   border: 1px solid #ddd;
   border-radius: 10px;
@@ -118,9 +120,11 @@
 
 /* 미리보기 이미지 스타일 */
 .preview-image img {
-  width: 100%; /* 부모 컨테이너에 맞춤 */
+  width: 100%;
+  /* 부모 컨테이너에 맞춤 */
   height: auto;
-  object-fit: contain; /* 이미지 비율 유지 */
+  object-fit: contain;
+  /* 이미지 비율 유지 */
   border-bottom: 1px solid #eee;
   padding: 10px;
 }
@@ -153,9 +157,7 @@
   align-items: center;
 }
 
-#location-share {
-  
-}
+#location-share {}
 
 
 /* 파일 업로드 컨테이너 */
@@ -167,7 +169,8 @@
 
 /* 숨겨진 기본 파일 업로드 입력 필드 */
 .file-upload input[type="file"] {
-  display: none; /* 기본 파일 선택 버튼 숨김 */
+  display: none;
+  /* 기본 파일 선택 버튼 숨김 */
 }
 
 /* 커스텀 업로드 버튼 */
@@ -203,7 +206,8 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5); /* 반투명 검정 배경 */
+  background-color: rgba(0, 0, 0, 0.5);
+  /* 반투명 검정 배경 */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -211,10 +215,10 @@
 }
 
 /* 모달 내용 */
-.modal-content {
+.modal-content1 {
   background-color: #fff;
   padding: 30px;
-  width: 800px;
+  width: 2000px;
   border-radius: 15px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
   text-align: center;
@@ -227,6 +231,7 @@
     opacity: 0;
     transform: translateY(-20px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);

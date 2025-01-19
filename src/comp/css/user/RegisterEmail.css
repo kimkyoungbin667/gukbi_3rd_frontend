@@ -7,23 +7,26 @@
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     max-width: 500px;
     text-align: center;
+    font-family: "studyGood";
 }
 
 .register-title {
     font-size: 32px;
-    font-family: "Arial", sans-serif;
     font-weight: bold;
     color: #ff6f61;
     margin-bottom: 20px;
+    font-family: "studyGood" !important;
 }
 
 .register-form .form-group {
     margin-bottom: 20px;
     text-align: left;
+    font-family: "studyGood";
 }
 
 .register-form label {
     font-size: 16px;
+    font-family: "studyGood";
     font-weight: bold;
     margin-bottom: 10px;
     display: block;
@@ -37,6 +40,7 @@
     width: 100%;
     padding: 12px;
     font-size: 16px;
+    font-family: "studyGood";
     border: 1px solid #f0e68c;
     border-radius: 8px;
     background-color: #fff;
@@ -47,6 +51,7 @@
     width: 100%;
     padding: 12px;
     font-size: 18px;
+    font-family: "studyGood";
     font-weight: bold;
     border: none;
     border-radius: 8px;
@@ -61,6 +66,7 @@
     margin-top: 10px;
     background-color: #f8d7da;
     color: #333;
+    font-family: "studyGood";
 }
 
 .register-form button:hover {
@@ -72,4 +78,5 @@
     color: red;
     font-size: 14px;
     margin-top: 5px;
+    font-family: "studyGood" !important;
 }

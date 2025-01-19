@@ -93,3 +93,33 @@ input:focus {
   font-size: 0.875rem;
   margin-top: 0.25rem;
 }
+
+.divider {
+  display: flex;
+  align-items: center;
+  margin: 20px 0;
+}
+
+.divider::before,
+.divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: #ddd;
+}
+
+.divider-text {
+  margin: 0 10px;
+  color: #888;
+  font-size: 14px;
+}
+
+.kakao-login-image {
+  transition: all 0.3s ease; /* 부드러운 애니메이션 효과 */
+}
+
+.kakao-login-image:hover {
+  transform: scale(1.1); /* 이미지 확대 */
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2); /* 그림자 추가 */
+  opacity: 0.9; /* 살짝 투명하게 */
+}

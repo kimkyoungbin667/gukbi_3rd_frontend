@@ -87,7 +87,7 @@
   color: #ff4f50;
   font-size: 18px;
   margin-top: 10px;
-  font-family: "Arial", sans-serif;
+  font-family: "studyGood" !important;
 }
 
 /* 성공 메시지 텍스트 스타일 */
@@ -95,7 +95,7 @@
   color: #28a745;
   font-size: 18px;
   margin-top: 10px;
-  font-family: "Arial", sans-serif;
+  font-family: "studyGood" !important;
 }
 
 /* 이미지 미리보기 컨테이너 */
@@ -115,4 +115,36 @@
   max-width: 100%;
   max-height: 300px; /* 이미지 최대 높이 제한 */
   border-radius: 8px;
+}
+
+/* 숨김 처리된 파일 입력 */
+.form-input-hidden {
+  display: none;
+}
+
+/* 커스텀 업로드 버튼 */
+.custom-upload-button {
+  display: inline-block;
+  padding: 10px 50px;
+  margin-left: 10px;
+  font-size: 30px !important;
+  font-weight: bold;
+  color: white !important;
+  background-color: #ff6f61;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  text-align: center;
+  transition: background-color 0.3s ease;
+}
+
+.custom-upload-button:hover {
+  background-color: #ff9f80;
+}
+
+/* 선택된 파일 이름 */
+.file-name {
+  margin-top: 10px;
+  font-size: 14px;
+  color: #333;
 }
