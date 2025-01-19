@@ -5,7 +5,7 @@ import { fetchPosts, deletePost } from "../../api/admin";
 const AdminBoardList = () => {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [error, setError] =useState(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [sortKey, setSortKey] = useState("created_at");
@@ -50,6 +50,13 @@ const AdminBoardList = () => {
     }
   };
 
+  // 게시물 통계 계산
+  const totalPosts = posts.length;
+  const totalLikes = posts.reduce((sum, post) => sum + post.like_count, 0);
+  const totalViews = posts.reduce((sum, post) => sum + post.view_count, 0);
+  const deletedPosts = posts.filter((post) => post.is_deleted).length;
+  const activePosts = totalPosts - deletedPosts;
+
   const filteredPosts = posts
     .filter(
       (post) =>
@@ -73,6 +80,52 @@ const AdminBoardList = () => {
       <AdminNavbar />
       <div style={{ marginLeft: "250px", padding: "20px", width: "100%" }}>
         <h1>Admin Board List</h1>
+
+        {/* 게시물 통계 섹션 */}
+        <div
+          className="statistics"
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            backgroundColor: "#f9f9f9",
+            padding: "20px",
+            borderRadius: "8px",
+            marginBottom: "20px",
+          }}
+        >
+          <div style={{ textAlign: "center", flex: 1 }}>
+            <p style={{ fontSize: "20px", margin: "0" }}>
+              <strong>{totalPosts}</strong>
+            </p>
+            <span>Total Posts</span>
+          </div>
+          <div style={{ textAlign: "center", flex: 1 }}>
+            <p style={{ fontSize: "20px", margin: "0" }}>
+              <strong>{activePosts}</strong>
+            </p>
+            <span>Active Posts</span>
+          </div>
+          <div style={{ textAlign: "center", flex: 1 }}>
+            <p style={{ fontSize: "20px", margin: "0" }}>
+              <strong>{deletedPosts}</strong>
+            </p>
+            <span>Deleted Posts</span>
+          </div>
+          <div style={{ textAlign: "center", flex: 1 }}>
+            <p style={{ fontSize: "20px", margin: "0" }}>
+              <strong>{totalLikes}</strong>
+            </p>
+            <span>Total Likes</span>
+          </div>
+          <div style={{ textAlign: "center", flex: 1 }}>
+            <p style={{ fontSize: "20px", margin: "0" }}>
+              <strong>{totalViews}</strong>
+            </p>
+            <span>Total Views</span>
+          </div>
+        </div>
+
         <div style={{ marginBottom: "20px" }}>
           <input
             type="text"

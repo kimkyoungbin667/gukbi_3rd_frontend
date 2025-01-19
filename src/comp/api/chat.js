@@ -22,3 +22,14 @@ export const getChatRoomMsg = (param) => {
     });
 }
 
+
+/**
+ * 유저 닉네임 불러오기
+ * @param {} obj 
+ * @returns 
+ */
+export const getUserNickname = (param) => {
+    return api.get('/chat/getUserNickname', { 
+        params: param
+    });
+}

@@ -1,6 +1,7 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { sendVerificationCode, verifyCode, registerUser } from "../../api/user";
+import AlertBox from "../general/alertbox"; // AlertBox 컴포넌트 추가
 import "../../css/user/RegisterEmail.css"; // 스타일 파일
 
 export default function RegisterEmail() {
@@ -20,6 +21,8 @@ export default function RegisterEmail() {
     const [passwordMatch, setPasswordMatch] = useState(true); // 비밀번호 일치 여부
     const [isEmailValid, setIsEmailValid] = useState(true); // 이메일 유효성 검사 상태
     const [isEmailDuplicate, setIsEmailDuplicate] = useState(false); // 이메일 중복 상태
+    const [alertMessage, setAlertMessage] = useState(null); // AlertBox 메시지 상태
+
     const navigate = useNavigate();
 
     // 이메일 유효성 검사 함수
@@ -57,21 +60,22 @@ export default function RegisterEmail() {
 
     const handleSendCode = () => {
         if (!isValidEmail(formData.userEmail)) {
-            alert("유효한 이메일 주소를 입력해주세요.");
+            setAlertMessage("유효한 이메일 주소를 입력해주세요.");
             return;
         }
 
         sendVerificationCode(formData.userEmail)
             .then(() => {
-                alert("인증 코드가 발송되었습니다.");
+                setAlertMessage("인증 코드가 발송되었습니다.");
                 setCodeSent(true);
                 setIsEmailDuplicate(false); // 중복 상태 초기화
             })
             .catch((error) => {
                 if (error.response && error.response.status === 409) {
                     setIsEmailDuplicate(true); // 이메일 중복 상태 설정
+                    setAlertMessage("이미 사용 중인 이메일입니다.");
                 } else {
-                    alert("인증 코드 발송에 실패했습니다. 이메일을 확인하세요.");
+                    setAlertMessage("인증 코드 발송에 실패했습니다. 이메일을 확인하세요.");
                 }
             });
     };
@@ -79,11 +83,11 @@ export default function RegisterEmail() {
     const handleVerifyCode = () => {
         verifyCode(formData.userEmail, verificationCode)
             .then(() => {
-                alert("이메일 인증이 완료되었습니다.");
+                setAlertMessage("이메일 인증이 완료되었습니다.");
                 setIsEmailVerified(true);
             })
             .catch(() => {
-                alert("인증 코드가 올바르지 않습니다.");
+                setAlertMessage("인증 코드가 올바르지 않습니다.");
             });
     };
 
@@ -91,33 +95,32 @@ export default function RegisterEmail() {
         e.preventDefault();
 
         if (!isEmailVerified) {
-            alert("이메일 인증을 완료해주세요.");
+            setAlertMessage("이메일 인증을 완료해주세요.");
             return;
         }
 
         if (!passwordMatch) {
-            alert("비밀번호가 일치하지 않습니다.");
+            setAlertMessage("비밀번호가 일치하지 않습니다.");
             return;
         }
 
         registerUser(formData)
             .then((res) => {
-                console.log("서버 응답:", res);
                 if (res.status === 200) {
-                    alert(res.data || "회원가입 성공!");
+                    setAlertMessage(res.data || "회원가입 성공!");
                     navigate("/login");
                 } else {
-                    alert("회원가입 실패");
+                    setAlertMessage("회원가입 실패");
                 }
             })
             .catch((err) => {
-                console.error("오류:", err);
-                alert("회원가입 중 오류가 발생했습니다.");
+                setAlertMessage("회원가입 중 오류가 발생했습니다.");
             });
     };
 
     return (
         <div className="register-container">
+            {alertMessage && <AlertBox message={alertMessage} onClose={() => setAlertMessage(null)} />}
             <h2 className="register-title">이메일 회원가입</h2>
             <form onSubmit={handleSubmit} className="register-form">
                 <div className="form-group">

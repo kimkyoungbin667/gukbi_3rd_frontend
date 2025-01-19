@@ -69,6 +69,7 @@ function Router() {
       <Route path="/login" element={<Login />} />
       <Route path="/profile" element={<Profile />} />
       <Route path="/profilesetup" element={<ProfileSetup />} />
+      
       <Route path="profilenavigation/*" element={<ProfileNavigation />}>
         <Route path="profile" element={<Profile />} />
         <Route path="change-password" element={<PasswordChange />} />

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { getChatRoomList, getChatRoomMsg } from "../../api/chat.js";
+import { getChatRoomList, getChatRoomMsg, getUserNickname } from "../../api/chat.js";
 import "../../css/chat/chat.css";
 import SockJS from "sockjs-client";
 import { Client } from "@stomp/stompjs";
@@ -23,16 +23,22 @@ export default function Chat() {
     const [personName, setPersonName] = useState('');
     const [selectedImage, setSelectedImage] = useState('');
     const chunkSize = 10000;  // ✅ 청크 크기 (10KB)
-    const [showNotification, setShowNotification] = useState(false); // 알림 표시 상태
-    const [alarmMessage, setAlarmMessage] = useState('');
-    const [notifications, setNotifications] = useState([]); // 알림 리스트 상태 추가
+    const [nowUserNickname, setNowUserNickname] = useState('');
+    const [sendType, setSendType] = useState('');
+    const [uploadFile, setUploadFile] = useState('');
 
+    const [notifications, setNotifications] = useState([]); // 알림 리스트 상태 추가
 
     const token = localStorage.getItem("token");
     const decodedToken = jwtDecode(token);
     const userIdx = decodedToken.sub;
 
     useEffect(() => {
+
+        getUserNickname({ userIdx })
+            .then((res) => {
+                setNowUserNickname(res.data.data);
+            })
 
         const socket = new SockJS(`http://58.74.46.219:33334/ws?token=${token}`);
         const client = new Client({
@@ -52,12 +58,19 @@ export default function Chat() {
 
         getChatRoomList({ token })
             .then((res) => {
-                if (res.data.code === "200") setChatRoomList(res.data.data);
+                if (res.data.code === "200")
+                    console.log(res.data);
+                setChatRoomList(res.data.data);
             })
             .catch((err) => console.error("Error fetching chat room list:", err));
 
         return () => client.deactivate();
     }, []);
+
+    useEffect(() => {
+        console.log(nowUserNickname);
+
+    }, [nowUserNickname])
 
     const handleTyping = () => {
         if (stompClient && stompClient.connected) {
@@ -89,26 +102,42 @@ export default function Chat() {
         }
     };
 
-    // 알람 리스트 설정
     const handleNewMessage = (receivedMessage) => {
+        console.log("수신된 메시지:", receivedMessage); // 메시지 확인용 로그
+
+        // 자신이 보낸 메시지일 경우 알림 표시하지 않음
+        if (receivedMessage.senderToken === token) {
+            console.log("자신이 보낸 메시지이므로 알림을 생성하지 않습니다.");
+            return;
+        }
+
+        // 알림 최대 5개 유지
         const now = new Date();
         const sendTime = formatTime2(now);
 
-        // 알림 최대 5개 유지
         setNotifications((prevNotifications) => {
             if (prevNotifications.length >= 5) {
-                prevNotifications.shift(); // 가장 오래된 알림을 삭제
+                prevNotifications.shift(); // 오래된 알림 삭제
             }
-            return [...prevNotifications, { message: receivedMessage.message, time: sendTime }]; // 메시지와 시간을 함께 추가
+            return [
+                ...prevNotifications,
+                {
+                    message: receivedMessage.message || "사진을 보냈습니다.",
+                    time: sendTime,
+                },
+            ];
         });
 
-        // 3초 후 알림을 삭제
+        // 3초 후 알림 삭제
         setTimeout(() => {
             setNotifications((prevNotifications) =>
-                prevNotifications.filter((_, index) => index !== 0) // 첫 번째 알림 삭제
+                prevNotifications.filter((_, index) => index !== 0)
             );
         }, 3000);
     };
+
+
+
 
 
     // 알림 시간 설정
@@ -128,7 +157,7 @@ export default function Chat() {
         if (!stompClient || !stompClient.connected) return;
 
         setSelectedRoomIdx(roomIdx);
-        setPersonName(chatRoomList[index].opponentName);
+        setPersonName(chatRoomList[index].opponentNickname);
         setOpponentProfileUrl(opponentProfileUrl);
 
         // ✅ 기존 구독 해제 (메시지, 타이핑, 이미지)
@@ -157,7 +186,6 @@ export default function Chat() {
             setChatRoomMsg((prev) => [...prev, receivedMessage]);
         });
 
-
         const newTypingSubscription = stompClient.subscribe(`/topic/room/${roomIdx}/typing`, (msg) => {
             const typingStatus = JSON.parse(msg.body);
             if (typingStatus.senderIdx != userIdx) {
@@ -169,13 +197,30 @@ export default function Chat() {
             const receivedImage = JSON.parse(msg.body);
             console.log("🖼️ 수신된 이미지:", receivedImage);
 
-            // 이미지 데이터를 확인하고 chatRoomMsg에 추가
+
+            // 이미지 메시지 추가
             if (receivedImage && receivedImage.image) {
                 setChatRoomMsg((prev) => [...prev, receivedImage]);
             } else {
                 console.error("이미지 데이터가 없습니다.");
             }
+
+            // 발송자가 자신일 경우 알림 생성하지 않음
+            if (receivedImage.senderToken === token || receivedImage.senderIdx == userIdx) {
+                console.log("자신이 보낸 이미지이므로 알림을 생성하지 않습니다.");
+                return;
+            }
+
+            // 알림 생성
+            handleNewMessage({
+                senderToken: receivedImage.senderToken,
+                message: null,
+                image: receivedImage.image,
+            });
+
         });
+
+
 
 
         // ✅ 구독 상태 저장
@@ -239,9 +284,8 @@ export default function Chat() {
         });
     };
 
-
-
     const sendImageInChunks = async (file) => {
+
         if (!stompClient || !stompClient.connected) {
             console.error("❌ WebSocket 연결이 되어있지 않습니다.");
             return;
@@ -253,44 +297,33 @@ export default function Chat() {
         }
 
         try {
-            // ✅ 이미지 리사이징 및 압축
             const resizedImage = await resizeImage(file);
-
-            // ✅ Base64 인코딩 데이터에서 헤더 제거
             const base64Data = resizedImage.replace(/^data:image\/\w+;base64,/, '');
-            console.log("📦 전송할 이미지 데이터 (Base64):", base64Data);  // 데이터 확인
-
             const totalChunks = Math.ceil(base64Data.length / chunkSize);
-            console.log(`📦 총 ${totalChunks}개의 청크로 나누어 전송합니다.`);
 
-            // ✅ 청크 전송
             for (let i = 0; i < totalChunks; i++) {
                 const chunkData = base64Data.slice(i * chunkSize, (i + 1) * chunkSize);
-                console.log(`📨 청크 ${i + 1}/${totalChunks} 전송 시작`);
 
                 stompClient.publish({
                     destination: `/app/room/${selectedRoomIdx}/sendImageChunk`,
                     body: JSON.stringify({
                         senderIdx: userIdx,
+                        senderToken: token,
                         chunk: chunkData,
                         chunkIndex: i,
                         totalChunks: totalChunks,
                         type: "IMAGE",
                         sentAt: Date.now(),
-                        isLastChunk: i === totalChunks - 1,  // 마지막 청크 여부
+                        isLastChunk: i === totalChunks - 1,
                         roomIdx: selectedRoomIdx,
                     }),
                 });
-
-                console.log(`📨 청크 ${i + 1}/${totalChunks} 전송 완료`);
             }
-
-            console.log("✅ 모든 청크 전송 완료");
-
         } catch (error) {
             console.error("❌ 이미지 청크 전송 실패:", error);
         }
     };
+
 
 
 
@@ -324,6 +357,9 @@ export default function Chat() {
 
     // 메시지 전송
     const sendMessage = () => {
+
+        setSendType("message");
+
         if (stompClient && message.trim() !== "") {
             const now = new Date();
             const koreaTime = new Date(now.getTime() + 9 * 60 * 60 * 1000);  // KST로 변환
@@ -339,9 +375,19 @@ export default function Chat() {
             });
             setMessage("");
             stopTyping();
+
         }
     };
 
+    useEffect(() => {
+
+        if (sendType === "image") {
+            sendImageInChunks(uploadFile);
+        } else if (sendType === "message") {
+            sendMessage();
+        }
+
+    }, [sendType])
 
     useEffect(() => {
         if (messagesEndRef.current) {
@@ -357,7 +403,6 @@ export default function Chat() {
         }
     };
 
-
     return (
         <div className="chat-container">
             <div className="chat-list">
@@ -369,7 +414,7 @@ export default function Chat() {
                         onClick={() => handleRoomClick(room.roomIdx, index, room.opponentProfileUrl)}
                     >
                         <img src={`http://58.74.46.219:33334${room.opponentProfileUrl}`} alt="프로필" className="profile-image" />
-                        <div className="opponent-name">{room.opponentName} 님과의 대화</div>
+                        <div className="opponent-name">{room.opponentNickname} 님과의 대화</div>
                     </div>
                 ))}
             </div>
@@ -404,21 +449,31 @@ export default function Chat() {
                                                         </>
                                                     )}
 
-
                                                     {/* ✅ 상대 메시지: 말풍선 → 시간 */}
                                                     {!isMine && (
                                                         <>
                                                             {!isMine && (
-
-                                                                <img src={`http://58.74.46.219:33334${item.senderProfile}`} alt="프로필" className="profile-image" />
+                                                                <>
+                                                                    {/* 상대방 프로필 이미지 표시 */}
+                                                                    <img
+                                                                        src={`http://58.74.46.219:33334${item.senderProfile || opponentProfileUrl}`}
+                                                                        alt="프로필"
+                                                                        className="profile-image"
+                                                                    />
+                                                                    {item.type === "IMAGE" || item.message == null ? (
+                                                                        <img
+                                                                            src={`http://58.74.46.219:33334${item.image}`}
+                                                                            alt="이미지 메시지"
+                                                                            className="chat-image"
+                                                                            onLoad={handleImageLoad}
+                                                                        />
+                                                                    ) : (
+                                                                        <div className="message-content">{item.message}</div>
+                                                                    )}
+                                                                    <p className="message-time-right">{formatTime(item.sentAt)}</p>
+                                                                </>
                                                             )}
-                                                            {item.type === "IMAGE" || item.message == null ? (
-                                                                <img src={`http://58.74.46.219:33334${item.image}`} alt="이미지 메시지" className="chat-image" onLoad={handleImageLoad} />
 
-                                                            ) : (
-                                                                <div className="message-content">{item.message}</div>
-                                                            )}
-                                                            <p className="message-time-right">{formatTime(item.sentAt)}</p>
                                                         </>
                                                     )}
                                                 </div>
@@ -428,11 +483,16 @@ export default function Chat() {
                                 </div>
                             ))}
 
-
                             {/* ✅ 상대방 입력 중일 때 점 애니메이션 */}
                             {isTyping && (
                                 <div className="message-left">
-                                    <img src={opponentProfileUrl} alt="프로필" className="profile-image" />
+
+                                    <img
+                                        src={`http://58.74.46.219:33334${opponentProfileUrl}`}
+                                        alt="프로필"
+                                        className="profile-image"
+                                    />
+
                                     <div className="message-content typing-indicator">
                                         <span></span>
                                         <span></span>
@@ -447,17 +507,19 @@ export default function Chat() {
 
                         {/* 알림 표시 */}
                         <div className="notification-container">
-                            {notifications.map((notification, index) => (
-                                <Notification
-                                    key={index}
-                                    message={notification.message}
-                                    time={notification.time}  // 시간 전달
-                                    onClose={() => handleCloseNotification(index)}  // 알림 닫기
-                                />
-                            ))}
+
+                            {
+                                notifications.map((notification, index) => (
+
+                                    <Notification
+                                        key={index}
+                                        message={notification.message}
+                                        time={notification.time}
+                                        senderNickname={personName}
+                                        onClose={() => handleCloseNotification(index)}  // 알림 닫기
+                                    />
+                                ))}
                         </div>
-
-
 
                         <div className="chat-room-input">
 
@@ -472,6 +534,7 @@ export default function Chat() {
                                     handleTyping();  // ✅ 입력 중 상태 전송
                                     if (e.key === "Enter" && !e.shiftKey) {
                                         e.preventDefault();  // ✅ 줄바꿈 방지
+                                        setSendType('message');
                                         sendMessage();       // ✅ Enter로 전송
                                     }
                                 }}
@@ -500,7 +563,10 @@ export default function Chat() {
                                         const file = e.target.files[0];
                                         if (file) {
                                             console.log("📁 선택한 파일:", file);
-                                            sendImageInChunks(file);  // ✅ 청크 전송 함수 호출
+                                            setUploadFile(file);
+                                            setSendType("image");
+
+
                                         } else {
                                             console.error("❌ 파일이 선택되지 않았습니다.");
                                         }

@@ -10,7 +10,6 @@
   gap: 15px;  /* 알림 간 간격 설정 */
 }
 
-/* 알림박스 */
 .notification-box {
   background-color: #ffffff;
   padding: 20px;
@@ -18,11 +17,16 @@
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   text-align: center;
-  width: 320px;
+  width: 400px; /* 너비 */
+  height: 200px; /* 고정 높이 */
   max-width: 100%;
-  font-family: 'Arial', sans-serif;  /* 세련된 폰트 */
   position: relative;
-  animation: fadeIn 0.5s ease-in-out;  /* 알림 등장 애니메이션 */
+  animation: fadeIn 0.5s ease-in-out; /* 알림 등장 애니메이션 */
+  display: flex;
+  flex-direction: column; /* 세로로 배치 */
+  justify-content: space-between; /* 요소 간 간격 분배 */
+  box-sizing: border-box; /* 패딩 포함한 박스 크기 계산 */
+  overflow: hidden; /* 요소가 박스 밖으로 나가지 않도록 설정 */
 }
 
 /* 알림창 헤더 */
@@ -36,7 +40,8 @@
 /* 알림 제목 */
 .notification-header h3 {
   margin: 0;
-  font-size: 35px;  /* 제목 폰트 크기 */
+  font-size: 35px; /* 제목 폰트 크기 */
+  font-weight: bold;
   font-family: 'studyGood'; /* 사용자 지정 폰트 */
   color: #000;
 }
@@ -45,53 +50,72 @@
 .close-btn {
   background: none;
   border: none;
-  font-size: 20px;
+  font-size: 30px;
   cursor: pointer;
-  color: #888;
+  font-weight: bold;
+  color: #000;
   transition: color 0.3s;
 }
 
 .close-btn:hover {
-  color: #333;  /* 마우스 오버 시 색상 변화 */
+  color: #333; /* 마우스 오버 시 색상 변화 */
 }
 
 /* 알림 본문 */
 .notification-body {
-  font-size: 30px;
-  font-family: 'studyGood'; /* 사용자 지정 폰트 */
-  color: #000; 
+  flex-grow: 1; /* 본문 영역을 유연하게 늘림 */
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* 본문 내용 수직 가운데 정렬 */
+  align-items: center; /* 본문 내용 수평 가운데 정렬 */
+  margin: 0;
+  padding: 0 10px;
 }
 
-/* 알림 등장 애니메이션 */
-@keyframes fadeIn {
-  0% {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
+/* 알림 메시지 */
+.alarm-message {
+  font-family: 'studyGood';
+  color: #000;
+  font-size: 40px;
+  line-height: 1.5;
+  text-align: center; /* 텍스트 가운데 정렬 */
+  word-break: break-word; /* 긴 단어가 줄바꿈 되도록 */
+  max-width: 100%;
+}
+
+/* 보낸 시간 스타일 */
+.message-time {
+  font-size: 20px;
+  color: #000;
+  font-family: 'studyGood';
+  margin-top: 50px;
+  text-align: right; /* 시간 오른쪽 정렬 */
 }
 
 /* 알림 아이콘 스타일 */
 .notification-icon {
   width: 70px;  
   height: 70px;
-  margin-left: 10px;
-  margin-top: 10px;
-  vertical-align: middle;  /* 텍스트와 수평 정렬 */
+  margin-right: 10px;
+  vertical-align: middle; /* 텍스트와 수평 정렬 */
 }
+
 
 /* 보낸 시간 스타일 */
 .message-time {
-  font-size: 35px;
+  font-size: 20px;
   color: #000;
-  margin-top: 5px;
   font-family: 'studyGood';
+  margin: 0;
+  text-align: right; /* 시간 오른쪽 정렬 */
+  position: absolute;
+  bottom: 10px; /* 박스 하단에서 10px 간격 */
+  right: 20px; /* 박스 오른쪽에서 20px 간격 */
 }
 
 .alarm-message {
   font-family: 'studyGood';
-  color: red;
+  color: #000; 
+  font-size: 40px; 
+  line-height: 1.5; 
 }
