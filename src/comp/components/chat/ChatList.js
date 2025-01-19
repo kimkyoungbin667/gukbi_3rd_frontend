@@ -102,29 +102,42 @@ export default function Chat() {
         }
     };
 
-    // 알람 리스트 설정
     const handleNewMessage = (receivedMessage) => {
+        console.log("수신된 메시지:", receivedMessage); // 메시지 확인용 로그
+
+        // 자신이 보낸 메시지일 경우 알림 표시하지 않음
+        if (receivedMessage.senderToken === token) {
+            console.log("자신이 보낸 메시지이므로 알림을 생성하지 않습니다.");
+            return;
+        }
+
+        // 알림 최대 5개 유지
         const now = new Date();
         const sendTime = formatTime2(now);
 
-        console.log(receivedMessage);
-        // 알림 최대 5개 유지
         setNotifications((prevNotifications) => {
             if (prevNotifications.length >= 5) {
-                prevNotifications.shift(); // 가장 오래된 알림을 삭제
+                prevNotifications.shift(); // 오래된 알림 삭제
             }
-            return [...prevNotifications, {
-                message: receivedMessage !== "image" ? receivedMessage.message : "사진을 보냈습니다.", time: sendTime
-            }];
+            return [
+                ...prevNotifications,
+                {
+                    message: receivedMessage.message || "사진을 보냈습니다.",
+                    time: sendTime,
+                },
+            ];
         });
 
-        // 3초 후 알림을 삭제
+        // 3초 후 알림 삭제
         setTimeout(() => {
             setNotifications((prevNotifications) =>
-                prevNotifications.filter((_, index) => index !== 0) // 첫 번째 알림 삭제
+                prevNotifications.filter((_, index) => index !== 0)
             );
         }, 3000);
     };
+
+
+
 
 
     // 알림 시간 설정
@@ -173,7 +186,6 @@ export default function Chat() {
             setChatRoomMsg((prev) => [...prev, receivedMessage]);
         });
 
-
         const newTypingSubscription = stompClient.subscribe(`/topic/room/${roomIdx}/typing`, (msg) => {
             const typingStatus = JSON.parse(msg.body);
             if (typingStatus.senderIdx != userIdx) {
@@ -184,15 +196,31 @@ export default function Chat() {
         const newImageSubscription = stompClient.subscribe(`/topic/room/${roomIdx}/image`, (msg) => {
             const receivedImage = JSON.parse(msg.body);
             console.log("🖼️ 수신된 이미지:", receivedImage);
-            handleNewMessage("image");  // 알림 처리 함수 호출
-            
-            // 이미지 데이터를 확인하고 chatRoomMsg에 추가
+
+
+            // 이미지 메시지 추가
             if (receivedImage && receivedImage.image) {
                 setChatRoomMsg((prev) => [...prev, receivedImage]);
             } else {
                 console.error("이미지 데이터가 없습니다.");
             }
+
+            // 발송자가 자신일 경우 알림 생성하지 않음
+            if (receivedImage.senderToken === token || receivedImage.senderIdx == userIdx) {
+                console.log("자신이 보낸 이미지이므로 알림을 생성하지 않습니다.");
+                return;
+            }
+
+            // 알림 생성
+            handleNewMessage({
+                senderToken: receivedImage.senderToken,
+                message: null,
+                image: receivedImage.image,
+            });
+
         });
+
+
 
 
         // ✅ 구독 상태 저장
@@ -258,7 +286,6 @@ export default function Chat() {
 
     const sendImageInChunks = async (file) => {
 
-
         if (!stompClient || !stompClient.connected) {
             console.error("❌ WebSocket 연결이 되어있지 않습니다.");
             return;
@@ -270,15 +297,10 @@ export default function Chat() {
         }
 
         try {
-            // ✅ 이미지 리사이징 및 압축
             const resizedImage = await resizeImage(file);
-
-            // ✅ Base64 인코딩 데이터에서 헤더 제거
             const base64Data = resizedImage.replace(/^data:image\/\w+;base64,/, '');
-
             const totalChunks = Math.ceil(base64Data.length / chunkSize);
 
-            // ✅ 청크 전송
             for (let i = 0; i < totalChunks; i++) {
                 const chunkData = base64Data.slice(i * chunkSize, (i + 1) * chunkSize);
 
@@ -286,12 +308,13 @@ export default function Chat() {
                     destination: `/app/room/${selectedRoomIdx}/sendImageChunk`,
                     body: JSON.stringify({
                         senderIdx: userIdx,
+                        senderToken: token,
                         chunk: chunkData,
                         chunkIndex: i,
                         totalChunks: totalChunks,
                         type: "IMAGE",
                         sentAt: Date.now(),
-                        isLastChunk: i === totalChunks - 1,  // 마지막 청크 여부
+                        isLastChunk: i === totalChunks - 1,
                         roomIdx: selectedRoomIdx,
                     }),
                 });
@@ -299,9 +322,8 @@ export default function Chat() {
         } catch (error) {
             console.error("❌ 이미지 청크 전송 실패:", error);
         }
-
-
     };
+
 
 
 
@@ -431,16 +453,27 @@ export default function Chat() {
                                                     {!isMine && (
                                                         <>
                                                             {!isMine && (
-
-                                                                <img src={`http://58.74.46.219:33334${item.senderProfile}`} alt="프로필" className="profile-image" />
+                                                                <>
+                                                                    {/* 상대방 프로필 이미지 표시 */}
+                                                                    <img
+                                                                        src={`http://58.74.46.219:33334${item.senderProfile || opponentProfileUrl}`}
+                                                                        alt="프로필"
+                                                                        className="profile-image"
+                                                                    />
+                                                                    {item.type === "IMAGE" || item.message == null ? (
+                                                                        <img
+                                                                            src={`http://58.74.46.219:33334${item.image}`}
+                                                                            alt="이미지 메시지"
+                                                                            className="chat-image"
+                                                                            onLoad={handleImageLoad}
+                                                                        />
+                                                                    ) : (
+                                                                        <div className="message-content">{item.message}</div>
+                                                                    )}
+                                                                    <p className="message-time-right">{formatTime(item.sentAt)}</p>
+                                                                </>
                                                             )}
-                                                            {item.type === "IMAGE" || item.message == null ? (
-                                                                <img src={`http://58.74.46.219:33334${item.image}`} alt="이미지 메시지" className="chat-image" onLoad={handleImageLoad} />
 
-                                                            ) : (
-                                                                <div className="message-content">{item.message}</div>
-                                                            )}
-                                                            <p className="message-time-right">{formatTime(item.sentAt)}</p>
                                                         </>
                                                     )}
                                                 </div>
@@ -453,7 +486,13 @@ export default function Chat() {
                             {/* ✅ 상대방 입력 중일 때 점 애니메이션 */}
                             {isTyping && (
                                 <div className="message-left">
-                                    <img src={opponentProfileUrl} alt="프로필" className="profile-image" />
+
+                                    <img
+                                        src={`http://58.74.46.219:33334${opponentProfileUrl}`}
+                                        alt="프로필"
+                                        className="profile-image"
+                                    />
+
                                     <div className="message-content typing-indicator">
                                         <span></span>
                                         <span></span>

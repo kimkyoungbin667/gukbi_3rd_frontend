@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import '../../css/chat/chatalarm.css';
 
-const ChatAlarm = ({ message, time, senderNickname, sendType, onClose }) => {
+const ChatAlarm = ({ message, time, senderNickname, onClose }) => {
 
 
     return (

@@ -212,6 +212,12 @@
     /* 입력 영역 높이 고정 */
 }
 
+.select-title {
+    font-family: 'studyGood' !important;
+    font-size: 40px !important;
+}
+
+
 .chat-room-input input {
     flex: 1;
     padding: 10px;
@@ -220,6 +226,27 @@
     font-size: 14px;
     box-sizing: border-box;
 }
+.notification-box {
+    background-color: #ffffff;
+    padding: 15px; /* 기존 padding 값 줄이기 */
+    font-family: 'studyGood';
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    width: 320px;
+    max-width: 100%;
+    position: relative;
+    animation: fadeIn 0.5s ease-in-out;
+  }
+
+  .alarm-message {
+    font-family: 'studyGood';
+    color: #000;
+    font-size: 30px;
+    margin: 0; /* 메시지 상하 여백 제거 */
+    line-height: 1.2; /* 줄 간격 조정 */
+  }
+  
 
 .chat-room-input button {
     padding: 10px 20px;
@@ -235,6 +262,19 @@
 .chat-room-input button:hover {
     background-color: #0056b3;
 }
+
+
+.notification-body {
+    font-size: 30px;
+    font-family: 'studyGood'; /* 사용자 지정 폰트 */
+    color: #000;
+    margin: 0; /* 기존 마진 제거 */
+    padding: 10px 0; /* 상단 여백 조정 */
+    display: flex;
+    flex-direction: column; /* 수직 방향 정렬 */
+    justify-content: flex-start; /* 내용물을 위쪽으로 정렬 */
+  }
+  
 
 /* 반응형 디자인 */
 @media screen and (max-width: 768px) {
