@@ -1,11 +1,14 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function MapLeftBar(props) {
     const [hoveredIndex, setHoveredIndex] = useState(null);
-    const [selectedType, setSelectedType] = useState();
+
+    const [currentPage, setCurrentPage] = useState(1); // 현재 페이지
+    const itemsPerPage = 14; // 페이지당 항목 수
+    const [pageGroup, setPageGroup] = useState(1);
 
 
-
+    const selectedType = props.selectedType;
     const asd = props.searchResults;
     const pagination = props.pagination;
     const categories = props.categories;
@@ -13,7 +16,7 @@ export default function MapLeftBar(props) {
 
     const accompanyListForType = props.accompanyListForType;
     const contentTypes = props.contentTypes;
-    const [currentPage, setCurrentPage] = useState(1);
+
 
 
     const favoriteList = ["카테고리", "동반가능"];
@@ -37,6 +40,7 @@ export default function MapLeftBar(props) {
         const colors = ['#FFB6B6', '#FFBB7F', '#FFF7A0', '#A4E1B5', '#91CFFF', '#B39DFF', '#D8A7DF'];
         return colors[index % colors.length];
     };
+
 
     if (props.menu === '카테고리') {
         return (
@@ -109,50 +113,62 @@ export default function MapLeftBar(props) {
                                         <p>검색 결과가 없습니다.</p>
                                     )}
                             </div>
-                            {Array.from({ length: pagination.last }, (_, index) => {
-                                const page = index + 1;
-                                return (
-                                    <a
-                                        key={page}
-                                        href="#"
-                                        onClick={(e) => {
-                                            e.preventDefault();
-                                            props.handlePageChange(page);
-                                        }}
-                                        style={{
-                                            fontWeight: page === pagination.current ? 'bold' : 'normal',
-                                            marginRight: '5px',
-                                        }}
-                                    >
-                                        {page}
-                                    </a>
-                                );
-                            })}
+
+
                         </div>
+
                     )
                     }
 
 
                 </div >
+                <div className="pagination">
+                    {Array.from({ length: pagination.last }, (_, index) => {
+                        const page = index + 1;
+                        return (
+                            <button
+                                key={page}
+
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    props.handlePageChange(page);
+                                }}
+                                className="page-button"
+                            >
+                                {page}
+                            </button>
+                        );
+                    })}
+                </div>
             </>
         );
     } else if (props.menu === '동반가능') {
+        // 현재 페이지 그룹
+        const pagesPerGroup = 5; // 한 번에 보여줄 페이지 버튼 개수
+        const totalPages = Math.ceil(accompanyListForType.length / itemsPerPage);
+        const startPage = (pageGroup - 1) * pagesPerGroup + 1;
+        const endPage = Math.min(startPage + pagesPerGroup - 1, totalPages);
 
-        const itemsPerPage = 7;
-
-        // 페이지 네이션을 위해 현재 페이지 상태 관리
-
-
-        // 현재 페이지에 해당하는 데이터만 필터링
         const indexOfLastItem = currentPage * itemsPerPage;
         const indexOfFirstItem = indexOfLastItem - itemsPerPage;
         const currentItems = accompanyListForType.slice(indexOfFirstItem, indexOfLastItem);
 
-        // 페이지 번호 계산
-        const pageNumbers = [];
-        for (let i = 1; i <= Math.ceil(accompanyListForType.length / itemsPerPage); i++) {
-            pageNumbers.push(i);
-        }
+
+        const pageNumbers = Array.from(
+            { length: endPage - startPage + 1 },
+            (_, i) => startPage + i
+        );
+        const handlePreviousGroup = () => {
+            if (pageGroup > 1) {
+                setPageGroup(pageGroup - 1);
+            }
+        };
+
+        const handleNextGroup = () => {
+            if (endPage < totalPages) {
+                setPageGroup(pageGroup + 1);
+            }
+        };
 
         return (
             <>
@@ -160,11 +176,13 @@ export default function MapLeftBar(props) {
                     {Object.entries(contentTypes).map(([contentTypeCode, contentType]) => (
                         <div
                             key={contentTypeCode}
-                            className={`category-item ${selectedType === contentTypeCode ? "selected" : ""
+                            className={`category-item ${props.selectedType === contentTypeCode ? "selected" : ""
                                 }`}
                             onClick={() => {
-                                setSelectedType(contentTypeCode);
+                                props.setSelectedType(contentTypeCode);
                                 props.filterByContentTypeId(contentTypeCode);
+                                setCurrentPage(1);
+                                setPageGroup(1);
                             }}
                         >
                             {contentType}
@@ -216,23 +234,39 @@ export default function MapLeftBar(props) {
                                         <p>검색 결과가 없습니다.</p>
                                     )}
                             </div>
-                            <div className="pagination">
-                                {pageNumbers.map(number => (
-                                    <span
-                                        key={number}
-                                        className={`page-number ${currentPage === number ? "selected" : ""}`}
-                                        onClick={() => setCurrentPage(number)}
-                                    >
-                                        {number}
-                                    </span>
-                                ))}
-                            </div>
+
                         </div>
                     )
                     }
 
 
                 </div >
+                <div className="pagination">
+                    {/* 이전 그룹 화살표 */}
+                    {startPage > 1 && (
+                        <button className="page-button" onClick={handlePreviousGroup}>
+                            &lt;
+                        </button>
+                    )}
+
+                    {/* 현재 그룹의 페이지 번호 */}
+                    {pageNumbers.map((number) => (
+                        <button
+                            key={number}
+                            className={`page-button ${currentPage === number ? "active" : ""}`}
+                            onClick={() => setCurrentPage(number)}
+                        >
+                            {number}
+                        </button>
+                    ))}
+
+                    {/* 다음 그룹 화살표 */}
+                    {endPage < totalPages && (
+                        <button className="page-button" onClick={handleNextGroup}>
+                            &gt;
+                        </button>
+                    )}
+                </div>
             </>
 
         );
@@ -459,7 +493,7 @@ export default function MapLeftBar(props) {
                                                     >
                                                         {item.dog_name}
                                                     </div>
-                                                    <div>추가 정보</div>
+                                                    <div style={{ marginLeft: "20px" }}>믹스견</div>
                                                 </div>
                                             </div>
                                         </div>
