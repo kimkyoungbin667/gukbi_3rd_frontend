@@ -37,20 +37,28 @@
     margin: 0 auto;
 }
 
-/* 카드 영역 */
 .ai-solution-card {
-    position: absolute;
+    position: relative;  /* 카드 내 위치 조정 */
     width: 550px;
     height: 800px;
-    z-index: 2;
-    box-shadow: none;
+    background-color: #fff;  /* 배경색 추가 */
+    border-radius: 15px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;  /* 이미지 아래에 텍스트 배치 */
+    align-items: center;
+    padding: 20px;
+    overflow: hidden;
+
 }
 
-/* 카드 배경 이미지 */
 .ai-solution-background {
-    width: 500px;
-    height: 1000px;
-    object-fit: cover;
+    width: 100%;
+    height: 200px;
+    border-radius: 10px;
+    object-fit: cover;  /* 비율에 맞게 잘라서 이미지 채우기 */
+    margin-bottom: 15px;
 }
 
 /* Board 안쪽 안내 문구 */
@@ -79,13 +87,13 @@
 
 .animal-info {
     position: absolute;
-    top: 52%;
+    top: 60%;
     left: 50%;
     transform: translate(-50%, -50%);
     color: black;
     font-family: "catFont";
     text-align: center;
-    border-radius: 15px;
+    border-radius: 20px;
 
     /* Flexbox 추가 */
     display: flex;
@@ -94,28 +102,23 @@
     /* 수평 가운데 정렬 */
     justify-content: center;
     /* 수직 가운데 정렬 */
-    gap: 10px;
     z-index: 3;
 }
 
 .my-animal-picture {
-    width: 200px;
-    height: 200px;
-    border-radius: 25px;
-    margin: 0 0;
-    margin-top: 70px;
+    width: 250px;
+    height: 250px;
+    object-fit: cover;  /* 이미지 비율 맞추기 */
+    border-radius: 10px;
+    margin-bottom: 20px;
 }
 
-.my-animal-name {
-    font-size: 40px;
-    font-weight: bold;
-    margin: 2px 0;
-}
-
-.my-animal-age,
+.my-animal-name,
 .my-animal-kind {
-    font-size: 30px;
-    margin: 0 0;
+    font-size: 32px;
+    font-weight: bold;
+    text-align: center;
+    margin: 20px 0;
 }
 
 /* 버튼 기본 스타일 */
@@ -137,6 +140,17 @@ button.start-ai-solution {
     cursor: pointer;
     margin: 0 auto;
 }
+
+.start-ai-solution {
+    font-size: 18px;
+    color: white;
+    background-color: #8EB486;
+    padding: 10px 20px;
+    border-radius: 10px;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
 
 /* 3D 눌림 효과 */
 button.start-ai-solution:hover {
@@ -173,12 +187,15 @@ button.start-ai-solution:hover {
 
 
 .animal-list-board {
-    width: 1500px;
-    height: 2000px;
-    /* ✅ 강제로 높이 고정 */
-    object-fit: fill;
-    /* 비율 무시하고 꽉 채움 */
-    border-radius: 15px;
+    display: flex;
+    flex-wrap: wrap;  /* 여러 줄로 카드가 배열되도록 설정 */
+    justify-content: space-evenly;  /* 카드 간의 균등한 간격을 유지 */
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .ai-resulttitle {
@@ -187,25 +204,20 @@ button.start-ai-solution:hover {
 }
 
 
-/* Board 안쪽 안내 문구 */
 .ai-solution-choice-inside {
-    position: absolute;
-    top: 100px;
-    /* Board 안쪽에서 20px 떨어짐 */
-    left: 50%;
-    /* 가로 중앙 */
-    transform: translateX(-50%);
+    position: relative;  /* 상대적 위치로 설정 */
+    top: 20px;  /* 문장을 위에서 조금 내려서 배치 */
     font-family: "catFont";
-    font-size: 35px;
+    font-size: 30px;
     color: #333;
-    background-color: rgba(255, 255, 255, 0.8);
-    /* 반투명 배경 */
-    padding: 0 15px;
+    background-color: rgba(255, 255, 255, 0.8); /* 반투명 배경 */
+    padding: 10px 20px;
     border-radius: 10px;
-    /* 둥근 모서리 */
     z-index: 2;
-    /* Board 이미지보다 위로 */
+    margin-top: 30px;  /* 위쪽에 여백을 추가 */
+    text-align: center;  /* 문장 중앙 정렬 */
 }
+
 
 /* 🟢 솔루션 모달 전체 배경 */
 .solution-modal-overlay {
@@ -221,6 +233,8 @@ button.start-ai-solution:hover {
     z-index: 2000;
 }
 
+
+
 /* 🟢 솔루션 모달 콘텐츠 */
 .solution-modal-content {
     background-color: #fff;
@@ -232,6 +246,86 @@ button.start-ai-solution:hover {
     box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
     animation: fadeIn 0.3s ease-in-out;
 }
+
+.animal-list-board {
+    width: 100%;
+    max-width: 1200px;  /* 최대 너비 설정 (필요 시 조정) */
+    height: auto;
+    border: 2px solid #ddd;  /* 얇은 회색 테두리 */
+    border-radius: 10px;  /* 둥근 모서리 */
+    padding: 20px;  /* 안쪽 여백 */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);  /* 가벼운 그림자 효과 */
+    margin: 20px auto;  /* 위아래 여백, 가로 중앙 정렬 */
+    background-color: #fff;  /* 배경색을 흰색으로 설정 */
+}
+
+.animal-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+    padding: 15px;
+    border: 1px solid #eee;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+}
+
+.animal-card img {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+
+.animal-card p {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+}
+
+.animal-card button {
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.animal-card button:hover {
+    background-color: #45a049;
+}
+
+
+
+/* 솔루션 준비 중 화면을 어두운 배경으로 감싸기 */
+.loading-overlay {
+    position: fixed; /* 화면 전체를 덮도록 설정 */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* 어두운 반투명 배경 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; /* 다른 요소보다 위에 오도록 설정 */
+}
+
+/* "솔루션 준비중..." 텍스트 스타일 */
+.loading-message {
+    font-size: 24px;
+    color: #fff;
+    font-family: 'Pretendard', sans-serif;
+    text-align: center;
+    font-weight: bold;
+    background-color: rgba(0, 0, 0, 0.7); /* 반투명 검정 배경 */
+    padding: 20px;
+    border-radius: 10px;
+}
+
+
 
 /* 🟢 닫기 버튼 */
 .solution-close-button {
@@ -309,7 +403,6 @@ button.start-ai-solution:hover {
     display: flex;
     justify-content: flex-end;
     /* ✅ 오른쪽 정렬 */
-    gap: 20px;
     align-items: center;
     /* ✅ 수직 가운데 정렬 */
     font-size: 35px;

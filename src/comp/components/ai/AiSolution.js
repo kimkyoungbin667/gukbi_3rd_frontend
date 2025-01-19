@@ -99,13 +99,11 @@ function AiSolution() {
 
         {/* Board 배경 */}
         <div className="ai-solution-board">
-          <img src={animalBoard} className="animal-board-background" alt="Animal Board" />
 
           <div className="ai-solution-choice-inside">
             <p>👉 솔루션할 반려동물을 선택해주세요</p>
           </div>
 
-          {/* 모달 */}
           {isModalOpen && (
             <div className="modal-overlay">
               <div className="modal-content">
@@ -139,31 +137,45 @@ function AiSolution() {
             </div>
           )}
 
+
           {/* 반려동물 카드 */}
-          {animalData.map((animal, index) => (
-            <div
-              className="ai-solution-card"
-              key={index}
-              style={{ top: `${index * 40 + 10}%`, left: `${(index % 2) * 40 + 13}%` }}
-            >
-              <img src={animalPost} className="ai-solution-background" alt="Animal Card" />
-              <div className="animal-info">
-                <img src={`http://58.74.46.219:33334/upload/${animal.profileUrl}`} alt="반려동물 사진" className="my-animal-picture" />
-                <p className="my-animal-name">{animal.dogName}</p>
-                <p className="my-animal-kind">{animal.kindName}</p>
-                <button
-                  type="button"
-                  className="start-ai-solution btnPush btnLightBlue"
-                  onClick={() => imsi(animal.petId)}
-                >
-                  솔루션 시작
-                </button>
+          <div className="animal-list-board">
+            {animalData.map((animal, index) => (
+              <div
+                className="ai-solution-card"
+                key={index}
+              >
+                <img src={animalPost} className="ai-solution-background" alt="Animal Card" />
+                <div className="animal-info">
+                  <img
+                    src={`http://58.74.46.219:33334/upload/${animal.profileUrl}`}
+                    alt="반려동물 사진"
+                    className="my-animal-picture"
+                  />
+                  <p className="my-animal-name">{animal.dogName}</p>
+                  <p className="my-animal-kind">{animal.kindName}</p>
+                  <button
+                    type="button"
+                    className="start-ai-solution"
+                    onClick={() => imsi(animal.petId)}
+                  >
+                    솔루션 시작
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+
+
+
+          {/* 로딩 상태 표시 - 모달로 변경 */}
+          {loading && (
+            <div className="loading-overlay">
+              <div className="loading-message">
+                ⏳ 솔루션을 준비 중입니다...
               </div>
             </div>
-          ))}
-
-          {/* 로딩 상태 표시 */}
-          {loading && <p>⏳ 솔루션을 준비 중입니다...</p>}
+          )}
 
           {/* 솔루션 영역 */}
           {isSolutionModalOpen && solutionResult && (
@@ -181,7 +193,7 @@ function AiSolution() {
                       </div>
                     </div>
                   ) : (
-                    <p>반려동물 정보를 불러오는 중입니다...</p>
+                    <p>솔루션 중...</p>
                   )}
                 </section> <br />
 
@@ -199,10 +211,18 @@ function AiSolution() {
                         unit="km"
                         name={solutionResult.animalInfo.name}
                         breed={solutionResult.animalInfo.breed}
-                      />) : (
-                      <p>솔루션 중...</p>
+                      />
+                    ) : (
+                      <div className="loading-overlay">
+                        <div className="loading-message">
+                          솔루션 준비중...
+                        </div>
+                      </div>
                     )}
                   </div>
+
+
+
 
                   {/* 운동 시간 비교 */}
                   <div className="chart-box">
