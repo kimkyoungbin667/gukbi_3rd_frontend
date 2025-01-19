@@ -47,7 +47,7 @@ export default function MapLeftBar(props) {
                             key={index}
                             className={`category-item ${props.searchKeyword === category ? "selected" : ""
                                 }`}
-                            onClick={() => props.setSearchKeyword(category)}
+                            onClick={() => { props.setSearchKeyword(category) }}
                         >
                             {category}
                         </div>
@@ -387,32 +387,33 @@ export default function MapLeftBar(props) {
                                 {/* 산책 경로를 지도 또는 리스트로 표시 */}
                                 <div>
 
-                                    {walks.map((item, index) => (
-                                        <div key={index} className="search-result-list"
-                                            style={{
-                                                backgroundColor:
-                                                    hoveredIndex === index
-                                                        ? getHoverBackgroundColor(index) // 마우스가 올라갔을 때 배경색
-                                                        : getBackgroundColor(index),
-                                            }}
-                                            onClick={(e) => {
-                                                e.preventDefault();
-                                                props.setMapData(
-                                                    {
-                                                        level: 3,
-                                                        position: {
-                                                            lat: item.paths[0].latitude,
-                                                            lng: item.paths[0].longitude
-                                                        }
-                                                    });
-                                            }}
-                                            onMouseEnter={() => setHoveredIndex(index)}  // 마우스 올리기
-                                            onMouseLeave={() => setHoveredIndex(null)}
-                                        >
-                                            <div className="search-result-title">{item.walkName}</div>
-                                            <div className="search-result-content">{item.walkDate}</div>
-                                        </div>
-                                    ))}
+                                    {walks.filter((walk) => walk.petId === selectedPet.pet_id).
+                                        map((item, index) => (
+                                            <div key={index} className="search-result-list"
+                                                style={{
+                                                    backgroundColor:
+                                                        hoveredIndex === index
+                                                            ? getHoverBackgroundColor(index) // 마우스가 올라갔을 때 배경색
+                                                            : getBackgroundColor(index),
+                                                }}
+                                                onClick={(e) => {
+                                                    e.preventDefault();
+                                                    props.setMapData(
+                                                        {
+                                                            level: 3,
+                                                            position: {
+                                                                lat: item.paths[0].latitude,
+                                                                lng: item.paths[0].longitude
+                                                            }
+                                                        });
+                                                }}
+                                                onMouseEnter={() => setHoveredIndex(index)}  // 마우스 올리기
+                                                onMouseLeave={() => setHoveredIndex(null)}
+                                            >
+                                                <div className="search-result-title">{item.walkName}</div>
+                                                <div className="search-result-content">{item.walkDate}</div>
+                                            </div>
+                                        ))}
                                 </div>
                             </div>
 
@@ -420,10 +421,10 @@ export default function MapLeftBar(props) {
                             // 동물 선택 화면
                             <div>
                                 <div className="search-result-count">
-                                    검색 결과 {props.myPets ? props.myPets.length : 0} 건
+                                    검색 결과 {myPets ? myPets.length : 0} 건
                                 </div>
-                                {props.myPets && props.myPets.length > 0 ? (
-                                    props.myPets.map((item, index) => (
+                                {myPets && myPets.length > 0 ? (
+                                    myPets.map((item, index) => (
                                         <div
                                             key={index}
                                             className="search-result-list"
