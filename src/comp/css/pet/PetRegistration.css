@@ -1,4 +1,4 @@
-.registration-container {
+.pet-registration-container {
     max-width: 600px;
     margin: 50px auto;
     padding: 30px;
@@ -7,139 +7,58 @@
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2), 0 6px 6px rgba(0, 0, 0, 0.1);
     font-family: "Roboto", Arial, sans-serif;
     animation: fadeIn 0.5s ease-in-out;
-}
-
-.registration-title {
+  }
+  
+  .pet-registration-title {
     text-align: center;
     font-size: 30px;
     font-weight: bold;
     font-family: "studyGood" !important;
     margin-bottom: 25px;
     color: #333;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-}
-
-.registration-form .form-group {
+  }
+  
+  .pet-registration-form .pet-registration-form-group {
     margin-bottom: 20px;
-}
-
-.registration-form label {
+  }
+  
+  .pet-registration-form label {
     font-size: 14px;
     font-weight: bold;
     display: block;
     margin-bottom: 8px;
     color: #555;
-    letter-spacing: 0.5px;
-}
-
-.registration-form input {
+  }
+  
+  .pet-registration-form input {
     width: 100%;
     padding: 12px 15px;
-    font-size: 15px;
     border: 1px solid #ccc;
     border-radius: 8px;
     background-color: #fdfdfd;
-    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
-}
-
-.registration-form input:focus {
-    border-color: #4caf50;
-    box-shadow: 0 0 6px rgba(76, 175, 80, 0.4);
-    outline: none;
-}
-
-.submit-button {
+  }
+  
+  .pet-registration-submit-button {
     width: 100%;
     padding: 15px;
     font-size: 18px;
     color: white;
-    background-color: #ff6f61; /* 버튼 색상 */
+    background-color: #ff6f61;
     border: none;
     border-radius: 10px;
     cursor: pointer;
-    font-weight: bold;
-    text-transform: uppercase;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-    transition: background-color 0.3s ease, transform 0.2s ease;
-}
-
-.submit-button:hover {
-    background-color: #45a049;
-    transform: scale(1.05);
-}
-
-.results-container {
+  }
+  
+  .pet-registration-results-container {
     margin-top: 30px;
     padding: 25px;
-    border: 1px solid #ddd;
-    font-family: "studyGood" !important;
     border-radius: 15px;
     background-color: #fefefe;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.results-title {
-  font-family: "studyGood" !important;
-    text-align: center;
-    font-size: 22px;
-    font-weight: bold;
-    margin-bottom: 20px;
-    color: #333;
-    letter-spacing: 0.5px;
-}
-
-.button-group {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 20px;
-}
-
-.save-button,
-.cancel-button {
+  }
+  
+  .pet-registration-button-group button {
     flex: 1;
     padding: 12px;
     font-size: 15px;
-    font-weight: bold;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-    font-family: "studyGood" !important;
-    text-transform: uppercase;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    transition: transform 0.2s ease, background-color 0.3s ease;
-}
-
-.save-button {
-    margin-right: 15px;
-    background-color: #4caf50;
-    color: white;
-}
-
-.save-button:hover {
-    background-color: #45a049;
-    transform: scale(1.05);
-}
-
-.cancel-button {
-    background-color: #f44336;
-    color: white;
-}
-
-.cancel-button:hover {
-    background-color: #e53935;
-    transform: scale(1.05);
-}
-
-/* 애니메이션 */
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(-20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
+  }
+  

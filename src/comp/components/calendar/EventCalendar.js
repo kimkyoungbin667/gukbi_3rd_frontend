@@ -222,8 +222,8 @@ const EventCalendar = () => {
   };
 
   return (
-    <div className="calendar-container">
-      <div className="calendar-panel">
+    <div className="event-calendar-container">
+      <div className="event-calendar-panel">
         <div style={{ marginBottom: "20px" }}>
           <label>
             <strong>펫 선택:</strong>{" "}
@@ -243,19 +243,19 @@ const EventCalendar = () => {
         <Calendar
           value={selectedDate}
           onClickDay={handleDateClick}
-          className="react-calendar"
+          className="event-calendar"
           locale="en-US"
           tileContent={({ date }) => {
             const dayEvents = filteredEvents.filter(
               (event) => new Date(event.eventDate).toDateString() === date.toDateString()
             );
-          
+  
             return (
               <div style={{ position: "relative", height: "100%" }}>
                 <abbr>{date.getDate()}</abbr>
                 {dayEvents.length > 0 && (
                   <div
-                    className="calendar-events"
+                    className="event-calendar-events"
                     style={{
                       position: "absolute",
                       top: "50px",
@@ -270,7 +270,7 @@ const EventCalendar = () => {
                     {dayEvents.map((event) => (
                       <div
                         key={event.eventId}
-                        className="calendar-event"
+                        className="event-calendar-event"
                         onClick={() => handleEventClick(event)}
                         style={{
                           padding: "4px 8px",
@@ -293,8 +293,8 @@ const EventCalendar = () => {
         />
       </div>
       {isModalOpen && (
-        <div className="modal-overlay">
-          <div className="modal-content">
+        <div className="event-calendar-modal-overlay">
+          <div className="event-calendar-modal-content">
             <h3>일정 추가</h3>
             <label>
               제목:
@@ -331,7 +331,7 @@ const EventCalendar = () => {
                 }
               />
             </label>
-
+  
             <label>
               시간:
               <input
@@ -361,9 +361,9 @@ const EventCalendar = () => {
           </div>
         </div>
       )}
-
+  
       {isEditPanelOpen && (
-        <div className="edit-panel">
+        <div className="event-calendar-edit-panel">
           <h3>일정 수정</h3>
           <label>
             제목:

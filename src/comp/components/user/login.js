@@ -115,10 +115,10 @@ export default function Login() {
   };
 
   return (
-    <div className="login-container">
-      <h2 className="login-title">로그인</h2>
-      <form className="login-form" onSubmit={handleLogin}>
-        <div className="form-group">
+    <div className="user-login-container">
+      <h2 className="user-login-title">로그인</h2>
+      <form className="user-login-form" onSubmit={handleLogin}>
+        <div className="user-form-group">
           <label htmlFor="email">이메일</label>
           <input
             type="email"
@@ -129,7 +129,7 @@ export default function Login() {
             required
           />
         </div>
-        <div className="form-group">
+        <div className="user-form-group">
           <label htmlFor="password">비밀번호</label>
           <input
             type="password"
@@ -140,34 +140,31 @@ export default function Login() {
             required
           />
         </div>
-        <button type="submit" className="login-button">
+        <button type="submit" className="user-login-button">
           로그인
         </button>
         <button
           type="button"
-          className="register-button"
+          className="user-register-button"
           onClick={() => navigate("/registerbutton")}
         >
           회원가입
         </button>
       </form>
 
-      {/* 구분선 추가 */}
-      <div className="divider">
-        <span className="divider-text">또는</span>
+      <div className="user-divider">
+        <span className="user-divider-text">또는</span>
       </div>
 
-      <div className="kakao-login-container">
+      <div className="user-kakao-login-container">
         <img
           src={require("../../../assets/img/kakao_login_medium_wide.png")}
           alt="카카오 로그인"
-          className="kakao-login-image"
+          className="user-kakao-login-image"
           onClick={handleKakaoLogin}
-          style={{ cursor: "pointer" }}
         />
       </div>
 
-      {/* AlertBox 컴포넌트 */}
       {alertMessage && (
         <AlertBox message={alertMessage} onClose={() => setAlertMessage("")} />
       )}

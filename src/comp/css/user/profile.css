@@ -1,81 +1,68 @@
-.user-profile-container {
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 20px;
-    font-family: Arial, sans-serif;
-    text-align: center;
-  }
-  
-  .profile-image, .profile-preview {
-    width: 150px;
-    height: 150px;
-    border-radius: 50%;
-    object-fit: cover;
-    margin: 20px auto;
-  }
-  
-  h1, h2 {
-    font-size: 24px;
-    margin-bottom: 20px;
-  }
-  
-  .form-group {
-    margin-bottom: 15px;
-    text-align: left;
-  }
-  
-  label {
-    display: block;
-    font-weight: bold;
-    margin-bottom: 5px;
-  }
-  
-  input[type="text"], input[type="file"] {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-  }
-  
-  .button-group {
-    margin-top: 20px;
-  }
-  
-  button {
-    padding: 10px 20px;
-    margin: 5px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  .edit-button {
-    background-color: #007BFF;
-    color: white;
-  }
-  
-  .save-button {
-    background-color: #28a745;
-    color: white;
-  }
-  
-  .cancel-button {
-    background-color: #dc3545;
-    color: white;
-  }
-  
-  button:hover {
-    opacity: 0.9;
-  }
-  
-  .error-text {
-    color: red;
-    font-size: 14px;
-  }
-  
-  .message {
-    margin-top: 10px;
-    font-size: 14px;
-    color: green;
-  }
-  
+.user-profile-page-container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: "Roboto", Arial, sans-serif;
+  text-align: center;
+}
+
+.user-profile-image, .user-profile-preview {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin: 20px auto;
+}
+
+.user-form-group {
+  margin-bottom: 15px;
+  text-align: left;
+}
+
+.user-form-group label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.user-form-group input[type="text"],
+.user-form-group input[type="file"] {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.user-button-group {
+  margin-top: 20px;
+}
+
+.user-edit-button {
+  background-color: #007BFF;
+  color: white;
+}
+
+.user-save-button {
+  background-color: #28a745;
+  color: white;
+}
+
+.user-cancel-button {
+  background-color: #dc3545;
+  color: white;
+}
+
+button:hover {
+  opacity: 0.9;
+}
+
+.user-error-text {
+  color: red;
+  font-size: 14px;
+}
+
+.user-message {
+  margin-top: 10px;
+  font-size: 14px;
+  color: green;
+}

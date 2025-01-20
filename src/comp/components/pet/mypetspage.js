@@ -18,7 +18,6 @@ function MyPetsPage() {
   const [activeTab, setActiveTab] = useState({});
   const navigate = useNavigate();
 
-  // 펫 목록을 서버에서 가져오는 함수
   const fetchPets = async () => {
     setLoading(true);
     try {
@@ -77,7 +76,7 @@ function MyPetsPage() {
 
       if (response.url) {
         setMessage("이미지가 성공적으로 업로드되었습니다.");
-        window.location.reload(); // 새로고침 유지
+        window.location.reload();
       }
     } catch (error) {
       console.error("이미지 업로드 실패:", error.message);
@@ -115,28 +114,27 @@ function MyPetsPage() {
   };
 
   const cancelEdit = () => {
-    setSelectedImage(null); // 선택된 이미지 초기화
-    setEditingPetId(null); // 수정 상태 초기화
-    window.location.reload(); // 새로고침 유지
+    setSelectedImage(null);
+    setEditingPetId(null);
+    window.location.reload();
   };
 
   const handleAddPet = () => {
-    navigate("/petregistration"); // 원하는 경로로 이동
+    navigate("/petregistration");
   };
 
-
-  if (loading) return <p className="loading">로딩 중...</p>;
+  if (loading) return <p className="mypets-page-loading">로딩 중...</p>;
 
   return (
-    <div className="pets-container">
-      <h1 className="title">내 반려동물 목록</h1>
-      <button className="add-pet-button" onClick={handleAddPet}>
-          동물 등록하기
-        </button>
-      <div className="pets-list">
+    <div className="mypets-page-container">
+      <h1 className="mypets-page-title">내 반려동물 목록</h1>
+      <button className="mypets-page-add-pet-button" onClick={handleAddPet}>
+        동물 등록하기
+      </button>
+      <div className="mypets-page-list">
         {pets.map((pet) => (
-          <div key={pet.pet_id} className="pet-card">
-            <div className="pet-info">
+          <div key={pet.pet_id} className="mypets-page-card">
+            <div className="mypets-page-info">
               <img
                 key={editingPetId === pet.pet_id ? selectedImage?.previewUrl || pet.profile_url : pet.profile_url}
                 src={
@@ -145,70 +143,81 @@ function MyPetsPage() {
                     : `http://localhost:8080${pet.profile_url}`
                 }
                 alt={pet.dog_name}
-                className="pet-image"
+                className="mypets-page-image"
               />
-              <div className="pet-details">
+              <div className="mypets-page-details">
                 <p>이름: {pet.dog_name}</p>
                 <p>품종: {pet.kind_name}</p>
                 <p>성별: {pet.sex}</p>
                 <p>중성화 여부: {pet.neuter_status}</p>
                 {editingPetId === pet.pet_id ? (
                   <div>
-                    <label htmlFor={`file-input-${pet.pet_id}`} className="custom-file-label">
+                    <label htmlFor={`file-input-${pet.pet_id}`} className="mypets-page-custom-file-label">
                       파일 선택
                     </label>
                     <input
                       id={`file-input-${pet.pet_id}`}
                       type="file"
-                      className="custom-file-input"
+                      className="mypets-page-custom-file-input"
                       onChange={handleImageChange}
                     />
                     {!isValidImage && <p style={{ color: "red" }}>유효하지 않은 이미지입니다.</p>}
-                    <button className="button upload" onClick={handleImageUpload}>
+                    <button className="mypets-page-button upload" onClick={handleImageUpload}>
                       업로드
                     </button>
-                    <button className="button cancel" onClick={cancelEdit}>
+                    <button className="mypets-page-button cancel" onClick={cancelEdit}>
                       취소
                     </button>
                   </div>
                 ) : (
-                  <button className="button edit" onClick={() => setEditingPetId(pet.pet_id)}>
+                  <button
+                    className="mypets-page-button edit"
+                    onClick={() => setEditingPetId(pet.pet_id)}
+                  >
                     수정
                   </button>
                 )}
 
-                <button className="button delete" onClick={() => handleDelete(pet.pet_id)}>
+                <button className="mypets-page-button delete" onClick={() => handleDelete(pet.pet_id)}>
                   삭제
                 </button>
-                <button className="button toggle" onClick={() => toggleDetails(pet.pet_id)}>
+                <button className="mypets-page-button toggle" onClick={() => toggleDetails(pet.pet_id)}>
                   {expandedPetId === pet.pet_id ? "▲" : "▼"}
                 </button>
               </div>
             </div>
 
             {expandedPetId === pet.pet_id && (
-              <div className="pet-extra-details">
-                <div className="tabs">
+              <div className="mypets-page-extra-details">
+                <div className="mypets-page-tabs">
                   <button
-                    className={`tab ${activeTab[pet.pet_id] === "details" ? "active" : ""}`}
+                    className={`mypets-page-tab ${
+                      activeTab[pet.pet_id] === "details" ? "active" : ""
+                    }`}
                     onClick={() => changeTab(pet.pet_id, "details")}
                   >
                     상세 정보
                   </button>
                   <button
-                    className={`tab ${activeTab[pet.pet_id] === "weeklyGraph" ? "active" : ""}`}
+                    className={`mypets-page-tab ${
+                      activeTab[pet.pet_id] === "weeklyGraph" ? "active" : ""
+                    }`}
                     onClick={() => changeTab(pet.pet_id, "weeklyGraph")}
                   >
                     주간 그래프
                   </button>
                   <button
-                    className={`tab ${activeTab[pet.pet_id] === "dailyRecord" ? "active" : ""}`}
+                    className={`mypets-page-tab ${
+                      activeTab[pet.pet_id] === "dailyRecord" ? "active" : ""
+                    }`}
                     onClick={() => changeTab(pet.pet_id, "dailyRecord")}
                   >
                     오늘의 기록
                   </button>
                   <button
-                    className={`tab ${activeTab[pet.pet_id] === "medicalHistory" ? "active" : ""}`}
+                    className={`mypets-page-tab ${
+                      activeTab[pet.pet_id] === "medicalHistory" ? "active" : ""
+                    }`}
                     onClick={() => changeTab(pet.pet_id, "medicalHistory")}
                   >
                     의료 기록
@@ -223,7 +232,7 @@ function MyPetsPage() {
           </div>
         ))}
       </div>
-      {message && <p className="success-message">{message}</p>}
+      {message && <p className="mypets-page-success-message">{message}</p>}
     </div>
   );
 }

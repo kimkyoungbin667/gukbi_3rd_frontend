@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { getUserProfile, updateUserProfile, uploadProfileImage } from "../../api/user";
-import "../../css/user/profile.css";
+import "../../css/user/profile.css"; // 고유화된 CSS 파일
 
 export default function UserProfile() {
   const [user, setUser] = useState(null);
@@ -86,14 +86,14 @@ export default function UserProfile() {
     setMessage("");
   };
 
-  if (!user) return <div className="loading">Loading...</div>;
+  if (!user) return <div className="user-profile-loading">Loading...</div>;
 
   return (
-    <div className="user-profile-container">
+    <div className="user-profile-page-container">
       {isEditing ? (
-        <div className="edit-profile">
+        <div className="user-profile-edit-section">
           <h2>프로필 수정</h2>
-          <div className="form-group">
+          <div className="user-form-group">
             <label>닉네임</label>
             <input
               type="text"
@@ -102,37 +102,37 @@ export default function UserProfile() {
               onChange={handleInputChange}
             />
           </div>
-          <div className="form-group">
+          <div className="user-form-group">
             <label>프로필 이미지 업로드</label>
             <input type="file" accept="image/*" onChange={handleFileUpload} />
             {selectedImage && (
               <img
                 src={selectedImage}
                 alt="프로필 미리보기"
-                className="profile-preview"
+                className="user-profile-preview"
               />
             )}
           </div>
-          {!isValidImage && <p className="error-text">유효하지 않은 이미지입니다.</p>}
-          <div className="button-group">
-            <button onClick={handleSaveClick} className="save-button">저장</button>
-            <button onClick={handleCancelClick} className="cancel-button">취소</button>
+          {!isValidImage && <p className="user-error-text">유효하지 않은 이미지입니다.</p>}
+          <div className="user-button-group">
+            <button onClick={handleSaveClick} className="user-save-button">저장</button>
+            <button onClick={handleCancelClick} className="user-cancel-button">취소</button>
           </div>
-          {message && <p className="message">{message}</p>}
+          {message && <p className="user-message">{message}</p>}
         </div>
       ) : (
-        <div className="view-profile">
+        <div className="user-profile-view-section">
           <img
             src={user.userProfileUrl}
             alt={`${user.userName}님의 프로필`}
-            className="profile-image"
+            className="user-profile-image"
           />
           <h1>{user.userName}님</h1>
           <p>이메일: {user.userEmail}</p>
           <p>닉네임: {user.userNickname}</p>
           <p>생년월일: {user.userBirth}</p>
           <p>소셜 타입: {user.socialType}</p>
-          <button onClick={handleEditClick} className="edit-button">수정</button>
+          <button onClick={handleEditClick} className="user-edit-button">수정</button>
         </div>
       )}
     </div>
