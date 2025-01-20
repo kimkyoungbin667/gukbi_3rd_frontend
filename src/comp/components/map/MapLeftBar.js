@@ -30,7 +30,6 @@ export default function MapLeftBar(props) {
     const [selectedPet, setSelectedPet] = useState(null);
 
 
-
     const getBackgroundColor = (index) => {
         const colors = ['#FFC1C1', '#FFD8B1', '#FFFACD', '#DFFFD6', '#B3E5FC', '#BDB3FF', '#E1BEE7']
         return colors[index % colors.length];

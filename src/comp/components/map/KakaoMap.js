@@ -3,7 +3,7 @@ import { Map, MapInfoWindow, MapMarker, MapTypeControl, Polyline, useKakaoLoader
 
 import '../../css/map/map.css'
 import MapLeftBar from './MapLeftBar';
-import { getAcommpanyDetails, getWalks, getAccompanyFav, getCategoryFav, getPetLists } from '../../api/map';
+import { getAcommpanyDetails, getWalks, getAccompanyFav, getCategoryFav, getPetLists, addAccompanyFav, addCategoryFav, deleteAccompanyFav, deleteCategoryFav } from '../../api/map';
 import MapSearchMarker from './MapSearchMarker';
 import MapWalkPolyline from './MapWalkPolyline';
 
@@ -71,11 +71,17 @@ function KakaoMap() {
     //즐겨찾기 가져오기기
     function getCategoryFavorite() {
         const obj = {
-            userIdx: 1
+            userIdx: 6
         }
         getCategoryFav(obj).then(res => {
             console.log(res.data);
-            setMyCategoryFav(res.data.data);
+
+            const updatedFavorites = res.data.data.map(item => ({
+                ...item,
+                isFavorite: true // 모든 항목에 isFavorite을 true로 추가
+            }));
+            setMyCategoryFav(updatedFavorites);
+
         }).catch(err => {
 
         })
@@ -83,19 +89,96 @@ function KakaoMap() {
 
     function getAccompanyFavorite() {
         const obj = {
-            userIdx: 1
+            userIdx: 6
         }
 
         getAccompanyFav(obj).then(res => {
             console.log(res.data);
-            setMyAccompanyFav(res.data.data);
+            const updatedFavorites = res.data.data.map(item => ({
+                ...item,
+                isFavorite: true // 모든 항목에 isFavorite을 true로 추가
+            }));
+
+            setMyAccompanyFav(updatedFavorites);
+
         }).catch(err => {
 
         })
     }
 
     //즐겨찾기 추가
-    function addCategoryFavorite() {
+    function addCategoryFavorite(place) {
+        const obj = {
+            userIdx: 6,
+            addressName: place.address_name,
+            id: place.id,
+            phone: place.phone,
+            placeName: place.place_name,
+            placeUrl: place.place_url,
+            roadAddressName: place.road_address_name,
+            x: place.x,
+            y: place.y
+        }
+
+        addCategoryFav(obj).then(res => {
+            return getCategoryFavorite();
+        })
+
+    }
+
+    function addCategoryFavorite1(place) {
+        const obj = {
+            userIdx: 6,
+            addressName: place.addressName,
+            id: place.id,
+            phone: place.phone,
+            placeName: place.placeName,
+            placeUrl: place.placeUrl,
+            roadAddressName: place.roadAddressName,
+            x: place.x,
+            y: place.y
+        }
+
+        addCategoryFav(obj).then(res => {
+            return getCategoryFavorite();
+        })
+
+    }
+
+
+    function addAccompanyFavorite(contentId) {
+        const obj = {
+            userIdx: 6,
+            contentId: contentId
+        }
+
+        addAccompanyFav(obj).then(res => {
+            return getAccompanyFavorite();
+        })
+
+    }
+
+    function deleteCategoryFavorite(id) {
+        const obj = {
+            userIdx: 6,
+            id: id
+        }
+
+        deleteCategoryFav(obj).then(res => {
+            return getCategoryFavorite();
+        })
+
+    }
+
+    function deleteAccompanyFavorite(contentId) {
+        const obj = {
+            userIdx: 6,
+            contentId: contentId
+        }
+
+        deleteAccompanyFav(obj).then(res => {
+            return getAccompanyFavorite();
+        })
 
     }
 
@@ -107,12 +190,21 @@ function KakaoMap() {
     function getAcommpanyList() {
         getAcommpanyDetails().then(res => {
             console.log(res.data)
-            setAccompanyList(res.data.data);
+            const updatedList = res.data.data.map(item => {
+                const isFavorite = myAccompanyFav.some(fav => fav.contentId === item.contentId);
+                return {
+                    ...item,
+                    isFavorite,
+                };
+            });
+
+            setAccompanyList(updatedList);
 
         }).catch(err => {
 
         })
     }
+
     //동반가능리스트 항목선택택
     function filterByContentTypeId(contentTypeId) {
         setAccompanyListForType(accompanyList.filter(item => item.contenttypeid === contentTypeId));
@@ -129,7 +221,22 @@ function KakaoMap() {
                 console.log(pagination.totalCount);
                 console.log(pagination);
                 console.log(data);
-                setSearchResult(data);
+
+                const updatedSearchResult = data.map(place => {
+                    const isFavorite = myCategoryFav.some(fav => fav.id === place.id);
+                    return {
+                        ...place,
+                        isFavorite,
+                    };
+                });
+                console.log(updatedSearchResult);
+
+
+
+
+
+
+                setSearchResult(updatedSearchResult);
                 setPagination({
                     totalCount: pagination.totalCount,
                     current: pagination.current,
@@ -205,9 +312,9 @@ function KakaoMap() {
         //     alert("이 브라우저는 Geolocation을 지원하지 않습니다.");
         // }
         getWalkss();
-        getAcommpanyList();
         getAccompanyFavorite();
         getCategoryFavorite();
+        getAcommpanyList();
         getPetList();
     }, []);
 
@@ -315,7 +422,8 @@ function KakaoMap() {
 
                 <MapSearchMarker result={searchResult} menu={activeMenu} accompanyListForType={accompanyListForType}
                     selectedFavType={selectedFavType} myCategoryFav={myCategoryFav} myAccompanyFav={myAccompanyFav}
-
+                    addAccompanyFavorite={addAccompanyFavorite} addCategoryFavorite={addCategoryFavorite} addCategoryFavorite1={addCategoryFavorite1}
+                    deleteAccompanyFavorite={deleteAccompanyFavorite} deleteCategoryFavorite={deleteCategoryFavorite}
                 />
                 <MapWalkPolyline walks={myWalks} category={activeMenu} />
 

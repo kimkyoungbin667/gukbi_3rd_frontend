@@ -74,7 +74,6 @@ function Router() {
         <Route path="profile" element={<Profile />} />
         <Route path="change-password" element={<PasswordChange />} />
         <Route path="delete-account" element={<AccountDeactivation />} />
-        <Route path="petgraph" element={<PetGraph />} />
       </Route>
 
       {/* map */}
