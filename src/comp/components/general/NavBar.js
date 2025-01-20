@@ -60,6 +60,7 @@ const Navbar = () => {
             aiChat: "†",
             aiSolution: "†",
             mypage: "†",
+            profile: "†"
         };
         setMenuText((prev) => ({ ...prev, [key]: hoverTexts[key] }));
     };
@@ -72,6 +73,7 @@ const Navbar = () => {
             aiChat: "♧",
             aiSolution: "♧",
             mypage: "♧",
+            profile: "♧"
         };
         setMenuText((prev) => ({ ...prev, [key]: defaultTexts[key] }));
     };
@@ -132,9 +134,9 @@ const Navbar = () => {
 
                     {isLoggedIn && (
                         <li className="navbar__item dropdown" onClick={() => moveTo("/profilenavigation/profile")}
-                            onMouseEnter={() => handleMouseEnter("mypage")}
-                            onMouseLeave={() => handleMouseLeave("mypage")}>
-                            <div className="navbar__link">{location.pathname === "/profilenavigation/profile" ? " † " : menuText.mypage}</div>
+                            onMouseEnter={() => handleMouseEnter("profile")}
+                            onMouseLeave={() => handleMouseLeave("profile")}>
+                            <div className="navbar__link">{location.pathname === "/profilenavigation/profile" ? " † " : menuText.profile}</div>
                             <p className="navbar-text">내 프로필</p>
                         </li>
                     )}

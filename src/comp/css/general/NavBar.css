@@ -49,15 +49,23 @@ a {
     gap: 50px;
 }
 
+.navbar__item img {
+    position: absolute;
+    left: 50%;  /* 가로 중앙 정렬 */
+    transform: translateX(-50%); /* 정확히 가운데 정렬 */
+}
+
 .navbar__item {
-    position: relative;
+    display: flex; /* 아이콘과 텍스트를 플렉스로 배치 */
+    flex-direction: column; /* 아이콘과 텍스트가 세로로 배치되게 함 */
+    align-items: center; /* 수직 중앙 정렬 */
+    justify-content: center; /* 수평 중앙 정렬 */
     padding: 10px 15px;
-    margin-top:10px;
+    margin-top: 40px;
     cursor: pointer;
     color: white;
     font-weight: bold;
     user-select: none;
-    /* 텍스트 선택 방지 */
     font-size: 50px;
 }
 
@@ -79,6 +87,7 @@ a {
 }
 
 .navbar-text {
+    text-align: center; /* 텍스트 수평 중앙 정렬 */
     margin-top: 20px;
 }
 
@@ -105,10 +114,12 @@ a {
     color: teal;
     display: flex;
     margin: 0;
+    
 }
 
 .navbar__links li {
     padding: 8px 12px;
+    
 }
 
 .navbar__links li a {
@@ -116,4 +127,5 @@ a {
     font-size: 20px;
     cursor: pointer;
 }
+
 
