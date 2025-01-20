@@ -577,12 +577,10 @@ export default function Chat() {
 
                             </div>
 
-
-
                         </div>
                     </>
                 ) : (
-                    <h2>채팅방을 선택하세요</h2>
+                    <p className="select-title">채팅방을 선택하세요</p>
                 )}
             </div>
         </div>
