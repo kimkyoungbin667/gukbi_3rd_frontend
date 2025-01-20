@@ -1,21 +1,22 @@
 /* 프로필 설정 전체 컨테이너 스타일 */
 .profile-setup-container {
-  margin: 30px auto;
-  padding: 30px;
-  border: 1px solid #f0e68c;
-  border-radius: 10px;
-  background-color: #fffaf0;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  max-width: 80%;
+  margin: 50px auto;
+  padding: 40px;
+  border: 2px solid #d4af37; /* 고유 금빛 테두리 */
+  border-radius: 20px; /* 더 둥글게 변경 */
+  background-color: #fefbe9; /* 부드러운 베이지 배경 */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  max-width: 800px; /* 넓이 조정 */
   text-align: center;
 }
 
 /* 제목 스타일 */
 .profile-setup-title {
-  font-size: 50px;
-  font-family: "studyGood";
-  color: #333;
-  margin-bottom: 20px;
+  font-size: 40px;
+  font-family: "studyGood", sans-serif;
+  color: #3b3b3b;
+  margin-bottom: 30px;
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 /* 폼 스타일 */
@@ -27,16 +28,16 @@
 
 /* 폼 그룹 스타일 */
 .form-group {
-  margin-bottom: 20px;
+  margin-bottom: 25px;
   width: 100%;
-  max-width: 500px;
+  max-width: 600px;
 }
 
 /* 라벨 스타일 */
 .form-label {
-  font-size: 30px;
+  font-size: 22px;
   font-family: "studyGood";
-  color: #333;
+  color: #555;
   margin-bottom: 10px;
   display: block;
   text-align: left;
@@ -45,106 +46,144 @@
 /* 입력 필드 스타일 */
 .form-input {
   width: 100%;
-  padding: 12px;
-  font-size: 20px;
-  border: 1px solid #f0e68c;
-  border-radius: 10px;
-  background-color: #fffaf0;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 14px;
+  font-size: 18px;
+  border: 1px solid #d4af37;
+  border-radius: 12px;
+  background-color: #fffdf7;
+  box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.05);
   font-family: "Arial", sans-serif;
 }
 
 /* 입력 필드 포커스 스타일 */
 .form-input:focus {
   outline: none;
-  border-color: #f8d7da;
-  box-shadow: 0 0 8px rgba(255, 180, 170, 0.5);
+  border-color: #ffd700;
+  box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
 }
 
 /* 버튼 스타일 */
 .profile-setup-button {
-  background-color: #ff6f61;
-  color: white;
+  background-color: #f1c232; /* 따뜻한 금색 */
+  color: #fff;
   border: none;
-  border-radius: 20px;
-  padding: 12px 30px;
+  border-radius: 25px;
+  padding: 15px 40px;
   font-family: "studyGood";
-  font-size: 30px;
+  font-size: 24px;
   cursor: pointer;
-  margin-top: 20px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin-top: 25px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
   transition: all 0.3s ease;
 }
 
 /* 버튼 호버 효과 */
 .profile-setup-button:hover {
-  background-color: #ff9f80;
-  transform: scale(1.05);
+  background-color: #e8af1d;
+  transform: scale(1.08);
 }
 
 /* 에러 메시지 텍스트 스타일 */
 .error-text {
-  color: #ff4f50;
-  font-size: 18px;
+  color: #e63946;
+  font-size: 16px;
   margin-top: 10px;
-  font-family: "studyGood" !important;
+  font-family: "studyGood", sans-serif;
 }
 
 /* 성공 메시지 텍스트 스타일 */
 .success-text {
-  color: #28a745;
-  font-size: 18px;
+  color: #4caf50;
+  font-size: 16px;
   margin-top: 10px;
-  font-family: "studyGood" !important;
-}
-
-/* 이미지 미리보기 컨테이너 */
-.image-preview {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 10px;
-  padding: 10px;
-  border: 2px dashed #ddd; /* 대시 테두리 */
-  border-radius: 10px;
-  background-color: #f9f9f9; /* 배경색 */
+  font-family: "studyGood", sans-serif;
 }
 
 /* 미리보기 이미지 스타일 */
 .preview-image {
-  max-width: 100%;
-  max-height: 300px; /* 이미지 최대 높이 제한 */
-  border-radius: 8px;
+  max-width: 200px; /* 크기 제한 */
+  max-height: 200px; /* 크기 제한 */
+  border-radius: 50%; /* 원형으로 변경 */
+  border: 2px solid #d4af37; /* 테두리 추가 */
+  object-fit: cover; /* 이미지 비율 유지 */
 }
+
 
 /* 숨김 처리된 파일 입력 */
 .form-input-hidden {
   display: none;
 }
 
-/* 커스텀 업로드 버튼 */
+.custom-file-upload {
+  display: flex;
+  align-items: center;
+  background-color: transparent; /* 배경 투명 처리 */
+  border: none; /* 불필요한 테두리 제거 */
+  padding: 0; /* 불필요한 여백 제거 */
+  margin: 0; /* 추가적으로 여백 제거 */
+}
+
 .custom-upload-button {
   display: inline-block;
-  padding: 10px 50px;
-  margin-left: 10px;
-  font-size: 30px !important;
+  padding: 10px 30px; /* 버튼 크기 조정 */
+  font-family: "StudyGood";
+  font-size: 18px; /* 텍스트 크기 조정 */
+  margin-left: 20px; /* 버튼 간격 조정 */
   font-weight: bold;
-  color: white !important;
-  background-color: #ff6f61;
+  color: #333; /* 텍스트 색상 */
+  background-color: #ffd700; /* 따뜻한 금색 */
   border: none;
-  border-radius: 5px;
+  border-radius: 8px; /* 버튼 모서리 둥글게 */
   cursor: pointer;
   text-align: center;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 그림자 추가 */
 }
 
 .custom-upload-button:hover {
-  background-color: #ff9f80;
+  background-color: #e8af1d; /* 호버 시 더 진한 금색 */
+  transform: scale(1.05); /* 살짝 확대 */
 }
 
-/* 선택된 파일 이름 */
+.form-group {
+  margin-bottom: 20px; /* 폼 그룹 간격 조정 */
+}
+
 .file-name {
+  display: none; /* 파일 선택 후 파일명을 표시하지 않음 */
   margin-top: 10px;
   font-size: 14px;
-  color: #333;
+  color: #444;
+}
+
+/* 기본 스타일 */
+.default-image-button {
+  display: inline-block;
+  padding: 20px 30px; /* 버튼 크기 조정 */
+  font-family: "StudyGood";
+  font-size: 18px; /* 텍스트 크기 */
+  font-weight: bold; /* 텍스트 굵기 */
+  color: #333; /* 텍스트 색상 */
+  background-color: #ffd700; /* 따뜻한 금색 */
+  border: none;
+  border-radius: 8px; /* 모서리 둥글게 */
+  cursor: pointer;
+  text-align: center;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 그림자 추가 */
+  margin-left: 10px; /* 다른 버튼과 간격 */
+}
+
+/* 호버 스타일 */
+.default-image-button:hover {
+  background-color: #e8af1d; /* 호버 시 더 짙은 금색 */
+  transform: scale(1.05); /* 살짝 확대 */
+}
+
+/* 비활성화 상태 */
+.default-image-button:disabled {
+  background-color: #ccc; /* 비활성화 시 회색 */
+  color: #777; /* 텍스트 색상 변경 */
+  cursor: not-allowed; /* 커서 모양 변경 */
+  box-shadow: none; /* 그림자 제거 */
 }

@@ -290,3 +290,30 @@
   flex-direction: column;
   gap: 10px;
 }
+
+.event-calendar-container .pet-select-label {
+  font-family: 'StudyGood';
+  font-size: 1.4rem;
+  font-weight: bold;
+  margin-left: 1800px;
+  color: #4CAF50; /* 초록색으로 강조 */
+  margin-bottom: 12px;
+  text-transform: uppercase; /* 텍스트 대문자 */
+  letter-spacing: 1px; /* 글자 간격 추가 */
+  position: relative; /* 위치 조정을 위한 상대 포지션 */
+  top: 100px; /* 라벨을 위로 10px 이동 */
+}
+
+
+.event-calendar-container .pet-select-dropdown {
+  width: 100%;
+  max-width: 360px;
+  padding: 14px 16px;
+  font-size: 1.2rem;
+  font-family: 'StudyGood';
+  background-color: #f9f9f9;
+  border: 3px solid #4CAF50;
+  border-radius: 12px;
+  outline: none;
+  appearance: none;
+}

@@ -49,6 +49,7 @@ const Navbar = () => {
         aiChat: "♧",
         aiSolution: "♧",
         mypage: "♧",
+        calendar: "♧", // 캘린더 메뉴 추가
     });
 
     // 호버 될때
@@ -60,6 +61,7 @@ const Navbar = () => {
             aiChat: "†",
             aiSolution: "†",
             mypage: "†",
+            calendar: "†", // 캘린더 호버 텍스트 추가
         };
         setMenuText((prev) => ({ ...prev, [key]: hoverTexts[key] }));
     };
@@ -72,6 +74,7 @@ const Navbar = () => {
             aiChat: "♧",
             aiSolution: "♧",
             mypage: "♧",
+            calendar: "♧", // 캘린더 기본 텍스트 추가
         };
         setMenuText((prev) => ({ ...prev, [key]: defaultTexts[key] }));
     };
@@ -138,6 +141,14 @@ const Navbar = () => {
                             <p className="navbar-text">내 프로필</p>
                         </li>
                     )}
+
+                    {/* 캘린더 메뉴 */}
+                    <li className="navbar__item dropdown" onClick={() => moveTo("/eventcaledar")}
+                        onMouseEnter={() => handleMouseEnter("calendar")}
+                        onMouseLeave={() => handleMouseLeave("calendar")}>
+                        <div className="navbar__link">{location.pathname === "/eventcaledar" ? " † " : menuText.calendar}</div>
+                        <p className="navbar-text">캘린더</p>
+                    </li>
                 </ul>
 
                 {/* 로그인/로그아웃 */}
