@@ -16,13 +16,9 @@ function PetDailyRecord({ petId }) {
   const [records, setRecords] = useState([]); // 저장된 데이터를 관리
 
   useEffect(() => {
-    // 활성화된 섹션의 데이터를 가져옵니다.
     const fetchRecords = async () => {
       try {
         const data = await getDailyRecordsBySection(petId, activeSection);
-        console.log("Fetched Data:", data); // 데이터 확인
-
-        // 오늘 날짜 필터링
         const today = new Date().toISOString().split("T")[0];
         const todayRecords = data.filter(
           (record) => record.activity_date === today
@@ -35,7 +31,7 @@ function PetDailyRecord({ petId }) {
     };
 
     fetchRecords();
-  }, [petId, activeSection]); // 섹션이 변경될 때마다 실행
+  }, [petId, activeSection]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -91,21 +87,21 @@ function PetDailyRecord({ petId }) {
   return (
     <div className="daily-record-container">
       <h3 className="daily-record-header">오늘의 기록</h3>
-      <div className="section-buttons">
+      <div className="daily-record-section-buttons">
         <button
-          className={activeSection === "meal" ? "active" : ""}
+          className={activeSection === "meal" ? "daily-record-active" : ""}
           onClick={() => setActiveSection("meal")}
         >
           식사량
         </button>
         <button
-          className={activeSection === "exercise" ? "active" : ""}
+          className={activeSection === "exercise" ? "daily-record-active" : ""}
           onClick={() => setActiveSection("exercise")}
         >
           운동
         </button>
         <button
-          className={activeSection === "weight" ? "active" : ""}
+          className={activeSection === "weight" ? "daily-record-active" : ""}
           onClick={() => setActiveSection("weight")}
         >
           몸무게
@@ -113,7 +109,7 @@ function PetDailyRecord({ petId }) {
       </div>
 
       <form onSubmit={handleSubmit}>
-        <div className="form-section">
+        <div className="daily-record-form-section">
           {activeSection === "meal" && (
             <>
               <label>식사량 (g):</label>
@@ -168,12 +164,12 @@ function PetDailyRecord({ petId }) {
             </>
           )}
         </div>
-        <button type="submit" className="daily-submit-button">
+        <button type="submit" className="daily-record-submit-button">
           저장
         </button>
       </form>
 
-      <div className="records-list">
+      <div className="daily-record-list">
         <h4>오늘 저장된 기록</h4>
         <ul>
           {records.map((record) => (
@@ -196,10 +192,15 @@ function PetDailyRecord({ petId }) {
                   <span>특이 사항: {record.notes || "없음"}</span>
                 </>
               )}
+              <button
+                onClick={() => handleDelete(record.daily_id)}
+                className="daily-record-delete-button"
+              >
+                삭제
+              </button>
             </li>
           ))}
         </ul>
-
       </div>
     </div>
   );

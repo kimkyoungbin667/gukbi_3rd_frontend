@@ -54,13 +54,13 @@ function PetDetails({ petId }) {
     }
   };
 
-  if (loading) return <p className="loading">로딩 중...</p>;
+  if (loading) return <p className="pet-details-loading">로딩 중...</p>;
 
   return (
-    <div className="details-container">
-      <h2 className="details-title">상세 정보</h2>
-      <form onSubmit={handleSubmit} className="details-grid">
-        <div className="form-group">
+    <div className="pet-details-container">
+      <h2 className="pet-details-title">상세 정보</h2>
+      <form onSubmit={handleSubmit} className="pet-details-grid">
+        <div className="pet-details-form-group">
           <label>생년월일:</label>
           <input
             type="date"
@@ -70,7 +70,7 @@ function PetDetails({ petId }) {
             required
           />
         </div>
-        <div className="form-group">
+        <div className="pet-details-form-group">
           <label>건강 상태:</label>
           <input
             type="text"
@@ -79,7 +79,7 @@ function PetDetails({ petId }) {
             onChange={handleChange}
           />
         </div>
-        <div className="form-group">
+        <div className="pet-details-form-group">
           <label>식단 요구사항:</label>
           <textarea
             name="dietary_requirements"
@@ -87,7 +87,7 @@ function PetDetails({ petId }) {
             onChange={handleChange}
           />
         </div>
-        <div className="form-group">
+        <div className="pet-details-form-group">
           <label>알레르기 정보:</label>
           <textarea
             name="allergies"
@@ -95,7 +95,7 @@ function PetDetails({ petId }) {
             onChange={handleChange}
           />
         </div>
-        <div className="form-group wide">
+        <div className="pet-details-form-group pet-details-wide">
           <label>특이 사항:</label>
           <textarea
             name="notes"
@@ -103,7 +103,7 @@ function PetDetails({ petId }) {
             onChange={handleChange}
           />
         </div>
-        <button type="submit" className="details-submit">
+        <button type="submit" className="pet-details-submit">
           저장
         </button>
       </form>

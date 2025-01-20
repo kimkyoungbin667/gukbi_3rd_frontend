@@ -91,52 +91,54 @@ const Navbar = () => {
                     <li className="navbar__item dropdown" onClick={() => moveTo("/boardList")}
                         onMouseEnter={() => handleMouseEnter("board")}
                         onMouseLeave={() => handleMouseLeave("board")}>
-                        <div className="navbar__link">{location.pathname == "/boardList" ? " † " : menuText.board}</div>
+                        <div className="navbar__link">{location.pathname === "/boardList" ? " † " : menuText.board}</div>
                         <p className="navbar-text">게시판</p>
                     </li>
 
                     <li className="navbar__item dropdown" onClick={() => moveTo("/chatList")}
                         onMouseEnter={() => handleMouseEnter("chat")}
                         onMouseLeave={() => handleMouseLeave("chat")}>
-                        <div className="navbar__link">{location.pathname == "/chatList" ? " † " : menuText.chat}</div>
+                        <div className="navbar__link">{location.pathname === "/chatList" ? " † " : menuText.chat}</div>
                         <p className="navbar-text">채팅</p>
                     </li>
 
                     <li className="navbar__item dropdown" onClick={() => moveTo("/map")}
                         onMouseEnter={() => handleMouseEnter("map")}
                         onMouseLeave={() => handleMouseLeave("map")}>
-                        <div className="navbar__link">{location.pathname == "/map" ? " † " : menuText.map}</div>
+                        <div className="navbar__link">{location.pathname === "/map" ? " † " : menuText.map}</div>
                         <p className="navbar-text">지도</p>
                     </li>
 
                     <li className="navbar__item dropdown" onClick={() => moveTo("/aiChat")}
                         onMouseEnter={() => handleMouseEnter("aiChat")}
                         onMouseLeave={() => handleMouseLeave("aiChat")}>
-                        <div className="navbar__link">{location.pathname == "/aiChat" ? " † " : menuText.aiChat}</div>
+                        <div className="navbar__link">{location.pathname === "/aiChat" ? " † " : menuText.aiChat}</div>
                         <p className="navbar-text">AI 채팅</p>
                     </li>
 
                     <li className="navbar__item dropdown" onClick={() => moveTo("/aiSolution")}
                         onMouseEnter={() => handleMouseEnter("aiSolution")}
                         onMouseLeave={() => handleMouseLeave("aiSolution")}>
-                        <div className="navbar__link">{location.pathname == "/aiSolution" ? " † " : menuText.mypage}</div>
+                        <div className="navbar__link">{location.pathname === "/aiSolution" ? " † " : menuText.aiSolution}</div>
                         <p className="navbar-text">솔루션</p>
                     </li>
 
-                    {/* /admin/users */}
-                    {/* /profilenavigation/profile */}
-                    {/* /eventcaledar */}
-                    {/* /mypetspage */}
-                    {/* /petregistration */}
-                    <li className="navbar__item dropdown" onClick={() => moveTo("/mypetspage ")}
+                    <li className="navbar__item dropdown" onClick={() => moveTo("/mypetspage")}
                         onMouseEnter={() => handleMouseEnter("mypage")}
                         onMouseLeave={() => handleMouseLeave("mypage")}>
-                        <div className="navbar__link">{location.pathname == "/567" ? " † " : menuText.mypage}</div>
-                        <p className="navbar-text">기술스택</p>
+                        <div className="navbar__link">{location.pathname === "/mypetspage" ? " † " : menuText.mypage}</div>
+                        <p className="navbar-text">내 애완동물</p>
                     </li>
+
+                    {isLoggedIn && (
+                        <li className="navbar__item dropdown" onClick={() => moveTo("/profilenavigation/profile")}
+                            onMouseEnter={() => handleMouseEnter("mypage")}
+                            onMouseLeave={() => handleMouseLeave("mypage")}>
+                            <div className="navbar__link">{location.pathname === "/profilenavigation/profile" ? " † " : menuText.mypage}</div>
+                            <p className="navbar-text">내 프로필</p>
+                        </li>
+                    )}
                 </ul>
-
-
 
                 {/* 로그인/로그아웃 */}
                 <ul className="navbar__item">
@@ -147,7 +149,6 @@ const Navbar = () => {
                     )}
                 </ul>
             </nav>
-
 
         </div>
     );

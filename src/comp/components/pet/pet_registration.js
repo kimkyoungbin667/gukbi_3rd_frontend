@@ -18,7 +18,6 @@ function PetRegistration() {
     const fetchUserId = async () => {
       try {
         const response = await getUserProfile();
-        console.log("User Profile Response:", response.data);
         setUserIdx(response.data.userIdx); // 사용자 ID 설정
       } catch (error) {
         console.error("사용자 정보 가져오기 실패:", error.message);
@@ -69,7 +68,6 @@ function PetRegistration() {
         ...results.response.body.item,
         user_idx: userIdx, // 저장 시 사용자 ID 추가
       };
-      console.log("Saving Pet Data:", petData); // 데이터 확인
       await savePetInfo(petData);
       alert("데이터가 성공적으로 저장되었습니다.");
     } catch (error) {
@@ -81,10 +79,10 @@ function PetRegistration() {
   };
 
   return (
-    <div className="registration-container">
-      <h1 className="registration-title">반려동물 정보 조회</h1>
-      <form className="registration-form" onSubmit={handleSubmit}>
-        <div className="form-group">
+    <div className="pet-registration-container">
+      <h1 className="pet-registration-title">반려동물 정보 조회</h1>
+      <form className="pet-registration-form" onSubmit={handleSubmit}>
+        <div className="pet-registration-form-group">
           <label>동물등록번호:</label>
           <input
             type="text"
@@ -94,7 +92,7 @@ function PetRegistration() {
             required
           />
         </div>
-        <div className="form-group">
+        <div className="pet-registration-form-group">
           <label>RFID 코드:</label>
           <input
             type="text"
@@ -103,7 +101,7 @@ function PetRegistration() {
             onChange={(e) => setRfidCd(e.target.value)}
           />
         </div>
-        <div className="form-group">
+        <div className="pet-registration-form-group">
           <label>소유자 성명:</label>
           <input
             type="text"
@@ -113,7 +111,7 @@ function PetRegistration() {
             required
           />
         </div>
-        <div className="form-group">
+        <div className="pet-registration-form-group">
           <label>소유자 생년월일 (주민등록번호 앞자리):</label>
           <input
             type="text"
@@ -122,14 +120,14 @@ function PetRegistration() {
             onChange={(e) => setOwnerBirth(e.target.value)}
           />
         </div>
-        <button type="submit" className="submit-button" disabled={loading}>
+        <button type="submit" className="pet-registration-submit-button" disabled={loading}>
           {loading ? "조회 중..." : "조회하기"}
         </button>
       </form>
 
       {results && results.response && results.response.body && results.response.body.item && (
-        <div className="results-container">
-          <h2 className="results-title">조회 결과</h2>
+        <div className="pet-registration-results-container">
+          <h2 className="pet-registration-results-title">조회 결과</h2>
           <p><strong>이름:</strong> {results.response.body.item.dogNm}</p>
           <p><strong>성별:</strong> {results.response.body.item.sexNm}</p>
           <p><strong>품종:</strong> {results.response.body.item.kindNm}</p>
@@ -138,11 +136,11 @@ function PetRegistration() {
           <p><strong>등록 기관 전화번호:</strong> {results.response.body.item.officeTel}</p>
           <p><strong>승인 상태:</strong> {results.response.body.item.aprGbNm}</p>
 
-          <div className="button-group">
-            <button className="save-button" onClick={handleSave} disabled={saving}>
+          <div className="pet-registration-button-group">
+            <button className="pet-registration-save-button" onClick={handleSave} disabled={saving}>
               {saving ? "저장 중..." : "저장"}
             </button>
-            <button className="cancel-button" onClick={() => setResults(null)}>취소</button>
+            <button className="pet-registration-cancel-button" onClick={() => setResults(null)}>취소</button>
           </div>
         </div>
       )}
