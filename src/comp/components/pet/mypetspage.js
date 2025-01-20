@@ -127,7 +127,7 @@ function MyPetsPage() {
 
   return (
     <div className="mypets-page-container">
-      <h1 className="mypets-page-title">내 반려동물 목록</h1>
+      <h1 className="mypets-page-title">🐶내 반려동물 목록😺</h1>
       <button className="mypets-page-add-pet-button" onClick={handleAddPet}>
         동물 등록하기
       </button>
