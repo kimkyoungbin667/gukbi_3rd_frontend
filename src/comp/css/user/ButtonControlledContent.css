@@ -1,5 +1,5 @@
 /* 컨테이너 스타일 */
-.button-controlled-container {
+.user-content-switch-container {
     margin: 100px auto;
     padding: 40px;
     border: 1px solid #f0e68c;
@@ -11,7 +11,7 @@
 }
 
 /* 제목 스타일 */
-.content-title {
+.user-content-switch-title {
     font-size: 32px;
     font-family: "studyGood";
     font-weight: bold;
@@ -20,7 +20,7 @@
 }
 
 /* 버튼 바 스타일 */
-.button-bar {
+.user-content-button-bar {
     margin-bottom: 20px;
     display: flex;
     justify-content: center;
@@ -28,7 +28,7 @@
 }
 
 /* 버튼 스타일 */
-.content-button {
+.user-content-switch-button {
     padding: 12px 30px;
     font-size: 18px;
     font-family: "studyGood";
@@ -42,7 +42,7 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.content-button.active {
+.user-content-switch-button.active {
     background-color: #ff6f61;
     color: white;
     border: 2px solid #ff6f61;
@@ -50,7 +50,11 @@
     box-shadow: 0 4px 6px rgba(255, 111, 97, 0.3);
 }
 
-.content-button:hover:not(.active) {
+.user-content-switch-button:hover:not(.active) {
     background-color: #ffe4e6;
 }
 
+/* 콘텐츠 영역 */
+.user-content-area {
+    margin-top: 20px;
+}
