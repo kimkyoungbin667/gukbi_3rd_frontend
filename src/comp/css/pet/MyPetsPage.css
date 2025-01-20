@@ -88,12 +88,12 @@
 }
 
 .mypets-page-button.edit {
-  background-color: #1d72b8;
+  background-color: #5CA0E6;
   color: white;
 }
 
 .mypets-page-button.delete {
-  background-color: #e63946;
+  background-color: #E67770;
   color: white;
 }
 
@@ -232,4 +232,33 @@
 .mypets-page-card:hover .mypets-page-button.toggle {
   visibility: visible; /* 버튼 보이기 */
   opacity: 1; /* 투명도 설정 */
+}
+
+.mypets-page-add-pet-button {
+  display: inline-block;
+  padding: 15px 30px; /* 버튼 크기 조정 */
+  font-size: 18px; /* 텍스트 크기 */
+  font-weight: bold; /* 텍스트 굵기 */
+  font-family: "studyGood" !important; /* 폰트 설정 */
+  color: white; /* 텍스트 색상 */
+  background: linear-gradient(135deg, #ff6f61, #ff3d3d); /* 버튼 배경 그라데이션 */
+  border: none; /* 테두리 제거 */
+  border-radius: 25px; /* 둥근 모서리 */
+  cursor: pointer; /* 클릭 가능한 커서 */
+  text-align: center; /* 텍스트 가운데 정렬 */
+  transition: all 0.3s ease; /* 애니메이션 */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* 그림자 추가 */
+  margin: 20px auto; /* 상하 간격 조정 */
+}
+
+.mypets-page-add-pet-button:hover {
+  background: linear-gradient(135deg, #ff3d3d, #ff6f61); /* 호버 시 색상 반전 */
+  transform: scale(1.1); /* 약간 확대 */
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3); /* 호버 시 그림자 강조 */
+}
+
+.mypets-page-add-pet-button:active {
+  background: #e63946; /* 클릭 시 색상 변경 */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* 클릭 시 그림자 줄임 */
+  transform: scale(0.95); /* 약간 축소 */
 }

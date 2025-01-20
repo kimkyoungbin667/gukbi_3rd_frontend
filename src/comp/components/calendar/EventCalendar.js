@@ -44,7 +44,7 @@ const EventCalendar = () => {
         const petsData = await getMyPets();
         console.log("펫 데이터:", petsData);
         setPets(petsData);
-  
+
         // 펫 ID별 색상 생성
         const colors = petsData.reduce((acc, pet, index) => {
           acc[pet.pet_id] = `hsl(${(index * 60) % 360}, 70%, 80%)`; // 고유 색상 생성
@@ -101,7 +101,7 @@ const EventCalendar = () => {
     setNewEvent((prev) => ({ ...prev, date })); // 선택한 날짜를 newEvent.date로 설정
     setIsModalOpen(true); // 모달 열기
   };
-  
+
 
   const openModal = () => {
     setNewEvent({
@@ -126,6 +126,14 @@ const EventCalendar = () => {
   const filteredEvents = selectedPetId
     ? events.filter((event) => event.petId === Number(selectedPetId)) // petId를 숫자로 변환
     : events;
+
+  useEffect(() => {
+  console.log("로그인된 사용자 ID:", userId);
+  console.log("펫 데이터:", pets);
+  console.log("이벤트 데이터:", events);
+}, [userId, pets, events]);
+  
+
 
   const handleEventSubmit = async () => {
     if (!userId) {
@@ -225,16 +233,18 @@ const EventCalendar = () => {
     <div className="event-calendar-container">
       <div className="event-calendar-panel">
         <div style={{ marginBottom: "20px" }}>
-          <label>
-            <strong>펫 선택:</strong>{" "}
+          <label className="pet-select-label">
+            펫 선택:
             <select
+              name="selectedPetId"
               value={selectedPetId}
-              onChange={(e) => setSelectedPetId(e.target.value)} // 선택된 펫 상태 업데이트
+              onChange={(e) => setSelectedPetId(e.target.value)} // selectedPetId 업데이트
+              className="pet-select-dropdown"
             >
-              <option value="">모두 보기</option> {/* 기본값: 모두 보기 */}
+              <option value="">모두 보기</option>
               {pets.map((pet) => (
                 <option key={pet.pet_id} value={pet.pet_id}>
-                  {pet.dog_name} {/* 펫 이름 표시 */}
+                  {pet.dog_name}
                 </option>
               ))}
             </select>
@@ -249,7 +259,7 @@ const EventCalendar = () => {
             const dayEvents = filteredEvents.filter(
               (event) => new Date(event.eventDate).toDateString() === date.toDateString()
             );
-  
+
             return (
               <div style={{ position: "relative", height: "100%" }}>
                 <abbr>{date.getDate()}</abbr>
@@ -331,7 +341,7 @@ const EventCalendar = () => {
                 }
               />
             </label>
-  
+
             <label>
               시간:
               <input
@@ -341,12 +351,14 @@ const EventCalendar = () => {
                 onChange={handleInputChange}
               />
             </label>
-            <label>
+
+            <label className="pet-select-label">
               펫 선택:
               <select
                 name="petId"
                 value={newEvent.petId}
                 onChange={handleInputChange}
+                className="pet-select-dropdown"
               >
                 <option value="">선택</option>
                 {pets.map((pet) => (
@@ -356,12 +368,13 @@ const EventCalendar = () => {
                 ))}
               </select>
             </label>
+
             <button onClick={handleEventSubmit}>저장</button>
             <button onClick={closeModal}>닫기</button>
           </div>
         </div>
       )}
-  
+
       {isEditPanelOpen && (
         <div className="event-calendar-edit-panel">
           <h3>일정 수정</h3>
