@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import AdminNavbar from "./AdminNavBar";
 import { fetchPosts, deletePost } from "../../api/admin";
+import "../../css/admin/AdminBoardList.css";
 
 const AdminBoardList = () => {
   const [posts, setPosts] = useState([]);
@@ -76,7 +77,7 @@ const AdminBoardList = () => {
   const totalPages = Math.ceil(filteredPosts.length / itemsPerPage);
 
   return (
-    <div style={{ display: "flex" }}>
+    <div className="admin-board-list-container" style={{ display: "flex" }}>
       <AdminNavbar />
       <div style={{ marginLeft: "250px", padding: "20px", width: "100%" }}>
         <h1>Admin Board List</h1>

@@ -154,7 +154,7 @@ const AdminDashboard = () => {
   };
 
   return (
-    <div style={{ display: "flex" }}>
+    <div className="admin-dashboard-container" style={{ display: "flex" }}>
       <AdminNavbar />
       <div style={{ marginLeft: "250px", padding: "20px", width: "100%" }}>
         <h1>Admin Dashboard</h1>
