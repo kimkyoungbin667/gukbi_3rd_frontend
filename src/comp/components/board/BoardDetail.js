@@ -190,11 +190,20 @@ function BoardDetail() {
         </button>
       </div>
 
-      <div>
+      <div className="goToboardList-btn-container">
         <button className="goToboardList-btn" onClick={handleGoToList}>
           목록으로
         </button>
       </div>
+
+      {Number(userIdx) !== Number(boardContents.createdByUserIdx) && (
+        <div className="board-detail-actions">
+          <button className="chat-button">
+            채팅 시작하기
+          </button>
+        </div>
+      )}
+
 
       {boardIdx && <CommentArea boardIdx={boardIdx} />}
 

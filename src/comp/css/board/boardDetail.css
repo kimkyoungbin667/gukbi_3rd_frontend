@@ -66,6 +66,12 @@
   padding: 10px 0;
 }
 
+.goToboardList-btn-container {
+  display: flex;
+  justify-content: center; /* 목록 버튼을 중앙 정렬 */
+  margin-top: 20px;
+}
+
 .board-detail-actions button {
   color: white;
   border: none;

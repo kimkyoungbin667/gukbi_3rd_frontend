@@ -185,7 +185,7 @@ function CommentArea({ boardIdx }) {
                         {/* 프로필과 작성자 이름 */}
                         <div className="user-info">
                             <img
-                                src={comment.authorProfileUrl}
+                                src={`http://58.74.46.219:33334${comment.authorProfileUrl}`}
                                 alt="프로필"
                                 className="profile-image"
                             />

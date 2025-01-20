@@ -140,7 +140,7 @@ function MyPetsPage() {
                 src={
                   editingPetId === pet.pet_id && selectedImage?.previewUrl
                     ? selectedImage.previewUrl
-                    : `http://localhost:8080${pet.profile_url}`
+                    : `http://58.74.46.219:33334/upload/${pet.profile_url}`
                 }
                 alt={pet.dog_name}
                 className="mypets-page-image"
