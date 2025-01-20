@@ -47,7 +47,18 @@ export default function MapSearchMarker(props) {
                                 <div className="title">
                                     <div className="">{searchInfoWindow.place_name}</div>
                                     {/* 즐겨찾기 별 버튼 */}
-                                    <button className={`favorite-btn ${isFavorite ? 'filled' : ''}`} onClick={toggleFavorite}>
+                                    <button className={`favorite-btn ${searchInfoWindow.isFavorite ? 'filled' : ''}`} onClick={() => {
+                                        if (searchInfoWindow.isFavorite) {
+                                            props.deleteCategoryFavorite(searchInfoWindow.id);
+                                            searchInfoWindow.isFavorite = !searchInfoWindow.isFavorite;
+                                        } else {
+
+                                            props.addCategoryFavorite(searchInfoWindow);
+                                            searchInfoWindow.isFavorite = !searchInfoWindow.isFavorite;
+                                        }
+
+
+                                    }}>
                                         ★
                                     </button>
 
@@ -76,7 +87,11 @@ export default function MapSearchMarker(props) {
         return (
             <div>
                 {menu === "동반가능" && accompanyListForType.map((place, index) => (
-                    <MapMarker key={index} position={{ lat: place.mapy, lng: place.mapx }} clickable onClick={() => { setSearchInfoWindow(place); console.log(place); console.log(searchInfoWindow) }}>
+                    <MapMarker key={index} position={{ lat: place.mapy, lng: place.mapx }} clickable onClick={() => {
+                        setSearchInfoWindow(place);
+                        console.log(place);
+                        console.log(searchInfoWindow);
+                    }}>
                     </MapMarker>
                 )
                 )
@@ -91,7 +106,18 @@ export default function MapSearchMarker(props) {
                                 <div className="title">
                                     <div className="">{searchInfoWindow.title}</div>
                                     {/* 즐겨찾기 별 버튼 */}
-                                    <button className={`favorite-btn ${isFavorite ? 'filled' : ''}`} onClick={toggleFavorite}>
+                                    <button className={`favorite-btn ${searchInfoWindow.isFavorite ? 'filled' : ''}`} onClick={() => {
+
+                                        if (searchInfoWindow.isFavorite) {
+                                            props.deleteAccompanyFavorite(searchInfoWindow.contentid);
+                                            searchInfoWindow.isFavorite = !searchInfoWindow.isFavorite;
+                                        } else {
+
+                                            props.addAccompanyFavorite(searchInfoWindow.contentid);
+                                            searchInfoWindow.isFavorite = !searchInfoWindow.isFavorite;
+                                        }
+
+                                    }}>
                                         ★
                                     </button>
 
@@ -136,7 +162,16 @@ export default function MapSearchMarker(props) {
                                 <div className="title">
                                     <div className="">{searchInfoWindow.placeName}</div>
                                     {/* 즐겨찾기 별 버튼 */}
-                                    <button className={`favorite-btn ${isFavorite ? 'filled' : ''}`} onClick={toggleFavorite}>
+                                    <button className={`favorite-btn ${searchInfoWindow.isFavorite ? 'filled' : ''}`} onClick={() => {
+                                        if (searchInfoWindow.isFavorite) {
+                                            props.deleteCategoryFavorite(searchInfoWindow.id);
+                                            searchInfoWindow.isFavorite = !searchInfoWindow.isFavorite;
+                                        } else {
+
+                                            props.addCategoryFavorite1(searchInfoWindow);
+                                            searchInfoWindow.isFavorite = !searchInfoWindow.isFavorite;
+                                        }
+                                    }}>
                                         ★
                                     </button>
 
@@ -176,7 +211,16 @@ export default function MapSearchMarker(props) {
                                 <div className="title">
                                     <div className="">{searchInfoWindow.title}</div>
                                     {/* 즐겨찾기 별 버튼 */}
-                                    <button className={`favorite-btn ${isFavorite ? 'filled' : ''}`} onClick={toggleFavorite}>
+                                    <button className={`favorite-btn ${searchInfoWindow.isFavorite ? 'filled' : ''}`} onClick={() => {
+                                        if (searchInfoWindow.isFavorite) {
+                                            props.deleteAccompanyFavorite(searchInfoWindow.contentid);
+                                            searchInfoWindow.isFavorite = !searchInfoWindow.isFavorite;
+                                        } else {
+
+                                            props.addAccompanyFavorite(searchInfoWindow.contentid);
+                                            searchInfoWindow.isFavorite = !searchInfoWindow.isFavorite;
+                                        }
+                                    }}>
                                         ★
                                     </button>
 
