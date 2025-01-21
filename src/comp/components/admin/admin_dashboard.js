@@ -14,9 +14,10 @@ const AdminDashboard = () => {
   const [activeFilter, setActiveFilter] = useState("ALL");
   const [selectedUserActivity, setSelectedUserActivity] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const itemsPerPage = 5;
+  const itemsPerPage = 10;
 
   useEffect(() => {
+    Modal.setAppElement("#root"); // Modal 세팅
     const loadUsers = async () => {
       try {
         const response = await fetchUsers();
@@ -31,7 +32,7 @@ const AdminDashboard = () => {
     loadUsers();
   }, []);
 
-  // User statistics
+  // 사용자 통계
   const totalUsers = users.length;
   const activeUsers = users.filter((user) => user.is_active).length;
   const inactiveUsers = users.filter((user) => !user.is_active).length;
@@ -55,7 +56,7 @@ const AdminDashboard = () => {
       await toggleUserStatus(userId, !currentStatus);
       setUsers(users.map((user) => (user.user_idx === userId ? { ...user, is_active: !currentStatus } : user)));
     } catch (err) {
-      alert("Failed to toggle user status");
+      alert("사용자 상태 변경에 실패했습니다.");
     }
   };
 
@@ -63,9 +64,9 @@ const AdminDashboard = () => {
     try {
       const response = await fetchUserActivity(userId);
       setSelectedUserActivity(response.data);
-      setIsModalOpen(true);
+      setIsModalOpen(true); // 모달 열기
     } catch (err) {
-      alert("Failed to fetch user activity.");
+      alert("사용자 활동을 불러오는 데 실패했습니다.");
     }
   };
 
@@ -99,12 +100,12 @@ const AdminDashboard = () => {
           <thead>
             <tr>
               <th>ID</th>
-              <th>Name</th>
-              <th>Nickname</th>
-              <th>Email</th>
-              <th>Social Type</th>
-              <th>Active</th>
-              <th>Actions</th>
+              <th>이름</th>
+              <th>닉네임</th>
+              <th>이메일</th>
+              <th>소셜 타입</th>
+              <th>활성화 상태</th>
+              <th>작업</th>
             </tr>
           </thead>
           <tbody>
@@ -118,13 +119,10 @@ const AdminDashboard = () => {
                 <td>{user.is_active ? "Yes" : "No"}</td>
                 <td>
                   <button onClick={() => handleToggleStatus(user.user_idx, user.is_active)}>
-                    {user.is_active ? "Deactivate" : "Activate"}
+                    {user.is_active ? "비활성화" : "활성화"}
                   </button>
-                  <button
-                    onClick={() => handleViewActivity(user.user_idx)}
-                    style={{ marginLeft: "10px" }}
-                  >
-                    View Activity
+                  <button onClick={() => handleViewActivity(user.user_idx)} style={{ marginLeft: "10px" }}>
+                    활동 보기
                   </button>
                 </td>
               </tr>
@@ -139,9 +137,9 @@ const AdminDashboard = () => {
               style={{
                 margin: "0 5px",
                 padding: "5px 10px",
-                backgroundColor: currentPage === page ? "#007BFF" : "#FFF",
+                backgroundColor: currentPage === page ? "#ffa726" : "#FFF",
                 color: currentPage === page ? "#FFF" : "#000",
-                border: "1px solid #007BFF",
+                border: "1px solid #ffa726",
                 cursor: "pointer",
               }}
             >
@@ -157,120 +155,115 @@ const AdminDashboard = () => {
     <div className="admin-dashboard-container" style={{ display: "flex" }}>
       <AdminNavbar />
       <div style={{ marginLeft: "250px", padding: "20px", width: "100%" }}>
-        <h1>Admin Dashboard</h1>
+        <h1>관리자 대시보드</h1>
 
-        {/* User Statistics Section */}
+        {/* 사용자 통계 섹션 */}
         <div
           className="statistics"
           style={{
             display: "flex",
-            justifyContent: "space-between",
             alignItems: "center",
-            backgroundColor: "#f9f9f9",
+            backgroundColor: "#ffffff",
             padding: "20px",
             borderRadius: "8px",
             marginBottom: "20px",
+            width: "100%",  
           }}
+
         >
           <div style={{ textAlign: "center", flex: 1 }}>
             <p style={{ fontSize: "20px", margin: "0" }}>
               <strong>{totalUsers}</strong>
             </p>
-            <span>Total Users</span>
+            <span>총 사용자</span>
           </div>
           <div style={{ textAlign: "center", flex: 1 }}>
             <p style={{ fontSize: "20px", margin: "0" }}>
               <strong>{activeUsers}</strong>
             </p>
-            <span>Active Users</span>
+            <span>활성 사용자</span>
           </div>
           <div style={{ textAlign: "center", flex: 1 }}>
             <p style={{ fontSize: "20px", margin: "0" }}>
               <strong>{inactiveUsers}</strong>
             </p>
-            <span>Inactive Users</span>
+            <span>비활성 사용자</span>
           </div>
           <div style={{ textAlign: "center", flex: 1 }}>
             <p style={{ fontSize: "20px", margin: "0" }}>
               <strong>{kakaoUsersCount}</strong>
             </p>
-            <span>Kakao Users</span>
+            <span>카카오 사용자</span>
           </div>
           <div style={{ textAlign: "center", flex: 1 }}>
             <p style={{ fontSize: "20px", margin: "0" }}>
               <strong>{generalUsersCount}</strong>
             </p>
-            <span>General Users</span>
+            <span>일반 사용자</span>
           </div>
         </div>
 
         <div style={{ marginBottom: "20px" }}>
           <input
             type="text"
-            placeholder="Search by name or email"
+            placeholder="이름 또는 이메일로 검색"
             value={searchTerm}
             onChange={handleSearch}
             style={{ marginRight: "10px", padding: "10px", width: "300px" }}
           />
-          <select
-            value={activeFilter}
-            onChange={(e) => handleFilterChange(e.target.value)}
-            style={{ padding: "10px" }}
-          >
-            <option value="ALL">All Users</option>
-            <option value="ACTIVE">Active Users</option>
-            <option value="INACTIVE">Inactive Users</option>
+          <select value={activeFilter} onChange={(e) => handleFilterChange(e.target.value)} style={{ padding: "10px" }}>
+            <option value="ALL">전체 사용자</option>
+            <option value="ACTIVE">활성 사용자</option>
+            <option value="INACTIVE">비활성 사용자</option>
           </select>
         </div>
+
         {loading ? (
-          <p>Loading...</p>
+          <p>로딩 중...</p>
         ) : error ? (
-          <p style={{ color: "red" }}>Error: {error}</p>
+          <p style={{ color: "red" }}>오류: {error}</p>
         ) : (
           <>
-            <h2>Kakao Users</h2>
+            <h2>카카오 사용자</h2>
             {renderTable(kakaoUsers, currentKakaoPage, setCurrentKakaoPage)}
-            <h2>General Users</h2>
+            <h2>일반 사용자</h2>
             {renderTable(generalUsers, currentGeneralPage, setCurrentGeneralPage)}
           </>
         )}
-        {/* Activity Modal */}
+        {/* 활동 모달 */}
         <Modal
           isOpen={isModalOpen}
           onRequestClose={() => setIsModalOpen(false)}
-          contentLabel="User Activity"
-          overlayClassName="ReactModal__Overlay"
-          className="ReactModal__Content"
+          contentLabel="사용자 활동"
+          overlayClassName="customModalOverlay"
+          className="customModalContent"
         >
-          <h2>User Activity</h2>
-          <button onClick={() => setIsModalOpen(false)} style={{ float: "right" }}>
-            Close
+          <h2>사용자 활동</h2>
+          <button onClick={() => setIsModalOpen(false)} className="customCloseButton">
+            닫기
           </button>
-          <div style={{ marginTop: "20px" }}>
+          <div>
             {selectedUserActivity ? (
               <>
-                <h3>Posts:</h3>
+                <h3>게시글:</h3>
                 <ul>
                   {selectedUserActivity.posts.map((post) => (
-                    <li key={post.board_idx}>
-                      {post.title} (Created At: {new Date(post.created_at).toLocaleDateString()})
-                    </li>
+                    <li key={post.board_idx}>{post.title}</li>
                   ))}
                 </ul>
-                <h3>Comments:</h3>
+                <h3>댓글:</h3>
                 <ul>
                   {selectedUserActivity.comments.map((comment) => (
-                    <li key={comment.comment_idx}>
-                      {comment.content} (On Post ID: {comment.board_idx})
-                    </li>
+                    <li key={comment.comment_idx}>{comment.content}</li>
                   ))}
                 </ul>
               </>
             ) : (
-              <p>No activity found.</p>
+              <p>활동이 없습니다.</p>
             )}
           </div>
         </Modal>
+
       </div>
     </div>
   );

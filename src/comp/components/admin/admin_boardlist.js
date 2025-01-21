@@ -6,12 +6,12 @@ import "../../css/admin/AdminBoardList.css";
 const AdminBoardList = () => {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] =useState(null);
+  const [error, setError] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [sortKey, setSortKey] = useState("created_at");
   const [sortOrder, setSortOrder] = useState("asc");
-  const itemsPerPage = 5;
+  const itemsPerPage = 10;
 
   useEffect(() => {
     const loadPosts = async () => {
@@ -33,13 +33,13 @@ const AdminBoardList = () => {
       await deletePost(postId);
       setPosts(posts.filter((post) => post.board_idx !== postId));
     } catch (err) {
-      alert("Failed to delete the post.");
+      alert("게시물을 삭제하는 데 실패했습니다.");
     }
   };
 
   const handleSearch = (event) => {
     setSearchTerm(event.target.value.toLowerCase());
-    setCurrentPage(1);
+    setCurrentPage(1); // 검색 시 페이지는 1로 초기화
   };
 
   const handleSort = (key) => {
@@ -80,7 +80,7 @@ const AdminBoardList = () => {
     <div className="admin-board-list-container" style={{ display: "flex" }}>
       <AdminNavbar />
       <div style={{ marginLeft: "250px", padding: "20px", width: "100%" }}>
-        <h1>Admin Board List</h1>
+        <h1>관리자 게시판 목록</h1>
 
         {/* 게시물 통계 섹션 */}
         <div
@@ -99,61 +99,61 @@ const AdminBoardList = () => {
             <p style={{ fontSize: "20px", margin: "0" }}>
               <strong>{totalPosts}</strong>
             </p>
-            <span>Total Posts</span>
+            <span>전체 게시물</span>
           </div>
           <div style={{ textAlign: "center", flex: 1 }}>
             <p style={{ fontSize: "20px", margin: "0" }}>
               <strong>{activePosts}</strong>
             </p>
-            <span>Active Posts</span>
+            <span>활성 게시물</span>
           </div>
           <div style={{ textAlign: "center", flex: 1 }}>
             <p style={{ fontSize: "20px", margin: "0" }}>
               <strong>{deletedPosts}</strong>
             </p>
-            <span>Deleted Posts</span>
+            <span>삭제된 게시물</span>
           </div>
           <div style={{ textAlign: "center", flex: 1 }}>
             <p style={{ fontSize: "20px", margin: "0" }}>
               <strong>{totalLikes}</strong>
             </p>
-            <span>Total Likes</span>
+            <span>총 좋아요</span>
           </div>
           <div style={{ textAlign: "center", flex: 1 }}>
             <p style={{ fontSize: "20px", margin: "0" }}>
               <strong>{totalViews}</strong>
             </p>
-            <span>Total Views</span>
+            <span>총 조회수</span>
           </div>
         </div>
 
         <div style={{ marginBottom: "20px" }}>
           <input
             type="text"
-            placeholder="Search by title or content"
+            placeholder="제목 또는 내용을 검색"
             value={searchTerm}
             onChange={handleSearch}
             style={{ padding: "10px", width: "300px", marginRight: "10px" }}
           />
         </div>
         {loading ? (
-          <p>Loading...</p>
+          <p>로딩 중...</p>
         ) : error ? (
-          <p style={{ color: "red" }}>Error: {error}</p>
+          <p style={{ color: "red" }}>오류: {error}</p>
         ) : (
           <>
             <table border="1" style={{ width: "100%", textAlign: "left" }}>
               <thead>
                 <tr>
                   <th onClick={() => handleSort("board_idx")}>ID</th>
-                  <th onClick={() => handleSort("title")}>Title</th>
-                  <th>Content</th>
-                  <th onClick={() => handleSort("like_count")}>Likes</th>
-                  <th onClick={() => handleSort("view_count")}>Views</th>
-                  <th onClick={() => handleSort("created_at")}>Created At</th>
-                  <th>Author</th>
-                  <th>Status</th>
-                  <th>Actions</th>
+                  <th onClick={() => handleSort("title")}>제목</th>
+                  <th>내용</th>
+                  <th onClick={() => handleSort("like_count")}>좋아요</th>
+                  <th onClick={() => handleSort("view_count")}>조회수</th>
+                  <th onClick={() => handleSort("created_at")}>작성일</th>
+                  <th>작성자</th>
+                  <th>상태</th>
+                  <th>작업</th>
                 </tr>
               </thead>
               <tbody>
@@ -169,13 +169,12 @@ const AdminBoardList = () => {
                       {post.author_name} <br />
                       ({post.author_email})
                     </td>
-                    <td>{post.is_deleted ? "Deleted" : "Active"}</td>
+                    <td>{post.is_deleted ? "삭제됨" : "활성"}</td>
                     <td>
                       <button
                         onClick={() => handleDelete(post.board_idx)}
-                        style={{ color: "red" }}
                       >
-                        Delete
+                        삭제
                       </button>
                     </td>
                   </tr>
@@ -190,9 +189,9 @@ const AdminBoardList = () => {
                   style={{
                     margin: "0 5px",
                     padding: "5px 10px",
-                    backgroundColor: currentPage === page ? "#007BFF" : "#FFF",
+                    backgroundColor: currentPage === page ? "#ffa726" : "#FFF",
                     color: currentPage === page ? "#FFF" : "#000",
-                    border: "1px solid #007BFF",
+                    border: "1px solid #ffa726",
                   }}
                 >
                   {page}

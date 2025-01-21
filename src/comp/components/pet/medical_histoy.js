@@ -89,51 +89,57 @@ function MedicalHistory({ petId }) {
   if (loading) return <p className="loading">의료 기록 로딩 중...</p>;
 
   return (
-    <div className="medical-history-container">
-      <h3 className="medical-history-header">의료 기록</h3>
-      
+    <div className="medical-history-wrapper">
+      <h3 className="medical-history-title">의료 기록</h3>
+
       {/* 검색창 */}
       <div className="search-bar">
         <input
           type="text"
-          placeholder="내용, 병원 이름, 날짜로 검색..."
+          placeholder="내용, 병원 이름으로 검색..."
           value={searchTerm}
           onChange={handleSearch}
         />
       </div>
 
-      <div className="medical-history-grid">
+      <div className="medical-history-layout">
         {/* 의료 기록 추가 폼 */}
-        <form onSubmit={handleSubmit} className="medical-form">
+        <form onSubmit={handleSubmit} className="medical-form-container">
           <h4 className="form-title">새 기록 추가</h4>
-          <div className="form-group">
+          <div className="medical-form-field">
             <label>기록 유형:</label>
             <select name="record_type" value={form.record_type} onChange={handleChange}>
               <option value="vaccination">예방접종</option>
               <option value="treatment">치료</option>
             </select>
           </div>
-          <div className="form-group">
+          <div className="medical-form-field">
             <label>기록 날짜:</label>
-            <input type="date" name="record_date" value={form.record_date} onChange={handleChange} required />
+            <input
+              type="date"
+              name="record_date"
+              value={form.record_date}
+              onChange={handleChange}
+              required
+            />
           </div>
-          <div className="form-group">
+          <div className="medical-form-field">
             <label>내용:</label>
             <textarea name="description" value={form.description} onChange={handleChange} required />
           </div>
-          <div className="form-group">
-            <label>다음 접종 예정일:</label>
+          <div className="medical-form-field">
+            <label>다음 접종 예정일(없으면 당일 클릭):</label>
             <input type="date" name="next_due_date" value={form.next_due_date} onChange={handleChange} />
           </div>
-          <div className="form-group">
+          <div className="medical-form-field">
             <label>병원 이름:</label>
             <input type="text" name="clinic_name" value={form.clinic_name} onChange={handleChange} />
           </div>
-          <div className="form-group">
+          <div className="medical-form-field">
             <label>수의사 이름:</label>
             <input type="text" name="vet_name" value={form.vet_name} onChange={handleChange} />
           </div>
-          <div className="form-group">
+          <div className="medical-form-field">
             <label>특이 사항:</label>
             <textarea name="notes" value={form.notes} onChange={handleChange} />
           </div>
@@ -141,7 +147,7 @@ function MedicalHistory({ petId }) {
         </form>
 
         {/* 의료 기록 목록 */}
-        <div className="medical-records-list">
+        <div className="medical-records-container">
           <h4 className="list-title">기존 기록</h4>
           {filteredRecords.length === 0 ? (
             <p>검색 결과가 없습니다.</p>

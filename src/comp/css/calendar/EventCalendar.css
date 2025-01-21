@@ -81,22 +81,19 @@
   display: none; /* 안쪽 중복 abbr 태그 숨김 */
 }
 
-
-
 /* 타일 호버 효과 */
 .react-calendar__tile:enabled:hover::before {
-  background: #ffd700;
-  border-color: #ffa500;
+  background: #F0F8FF; /* 부드러운 하늘색 배경 */
+  border-color: #5ca7d4; /* 어두운 하늘색 테두리 */
 }
-
 .react-calendar__tile:enabled:hover > abbr {
   color: #000;
 }
 
 /* 선택된 타일 강조 */
 .react-calendar__tile--active::before {
-  background: #ffcc00;
-  border-color: #ff9900;
+  background: #d3d3d3; /* 밝은 회색 배경 */
+  border-color: #a9a9a9; /* 다소 어두운 회색 테두리 */
 }
 
 .react-calendar__tile--active > abbr {
@@ -295,13 +292,15 @@
   font-family: 'StudyGood';
   font-size: 1.4rem;
   font-weight: bold;
-  margin-left: 1800px;
+  left: 72%; 
+  transform: translateX(-50%); /* 정확하게 가로 가운데 정렬 */
   color: #4CAF50; /* 초록색으로 강조 */
   margin-bottom: 12px;
   text-transform: uppercase; /* 텍스트 대문자 */
   letter-spacing: 1px; /* 글자 간격 추가 */
-  position: relative; /* 위치 조정을 위한 상대 포지션 */
-  top: 100px; /* 라벨을 위로 10px 이동 */
+  position: sticky; /* 스크롤 시 해당 위치에서 고정 */
+  top: 400px; /* 화면 상단에서 400px 내려놓기 */
+  z-index: 100; /* 다른 요소들 위에 표시되도록 z-index 추가 */
 }
 
 
@@ -316,4 +315,185 @@
   border-radius: 12px;
   outline: none;
   appearance: none;
+}
+/* 모달 오버레이 */
+.event-calendar-modal-overlay {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1000;
+  animation: fadeIn 0.3s ease-in-out; /* 페이드 인 효과 */
+}
+
+/* 모달 콘텐츠 */
+.event-calendar-modal-content, .event-calendar-edit-panel {
+  background: linear-gradient(135deg, #fffaf0, #ffede0); /* 크림톤 그라데이션 배경 */
+  padding: 25px 35px;
+  border-radius: 20px; /* 둥근 모서리 */
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2); /* 부드러운 그림자 */
+  max-width: 400px;
+  width: 90%;
+  animation: slideIn 0.4s ease-out; /* 슬라이드 인 애니메이션 */
+  position: fixed; /* position fixed로 설정하여 항상 화면에 고정 */
+  top: 50%; /* 화면 중앙에 위치하도록 설정 */
+  left: 50%; /* 화면 중앙에 위치하도록 설정 */
+  transform: translate(-50%, -50%); /* 정확한 중앙 정렬 */
+  z-index: 1010; /* 오버레이와 수정 모달이 다른 요소들 위에 위치하도록 z-index 설정 */
+  font-family: "studyGood", sans-serif; /* 기존 스타일 폰트 */
+  border: 2px solid #f0e68c; /* 밝은 옐로우 테두리 */
+}
+
+/* 제목 스타일 */
+.event-calendar-modal-content h3, .event-calendar-edit-panel h3 {
+  text-align: center;
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: #ff6f61; /* 메인 테마 색상 */
+  font-weight: 800;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2); /* 제목 그림자 */
+}
+
+/* 버튼 스타일 */
+.event-calendar-modal-content button, .event-calendar-edit-panel button {
+  background: linear-gradient(135deg, #ff6f61, #ff3d3d); /* 메인 그라데이션 */
+  color: white;
+  border: none;
+  border-radius: 15px; /* 둥근 모서리 */
+  padding: 12px 25px;
+  font-size: 16px;
+  font-weight: bold;
+  font-family: "studyGood", sans-serif;
+  cursor: pointer;
+  margin: 10px 5px; /* 버튼 간격 */
+  transition: transform 0.3s ease, background-color 0.3s ease;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15); /* 버튼 그림자 */
+}
+
+.event-calendar-modal-content button:hover, .event-calendar-edit-panel button:hover {
+  background: linear-gradient(135deg, #ff3d3d, #ff6f61); /* 반전된 그라데이션 */
+  transform: scale(1.05); /* 확대 */
+}
+
+.event-calendar-modal-content button:active, .event-calendar-edit-panel button:active {
+  background: #e63946; /* 클릭 시 색상 */
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2); /* 그림자 줄임 */
+  transform: scale(0.95); /* 축소 */
+}
+
+/* 입력 필드 */
+.event-calendar-modal-content input,
+.event-calendar-modal-content select,
+.event-calendar-modal-content textarea,
+.event-calendar-edit-panel input,
+.event-calendar-edit-panel select,
+.event-calendar-edit-panel textarea {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 15px;
+  font-size: 16px;
+  border: 2px solid #ffdab9; /* 살구빛 테두리 */
+  border-radius: 12px; /* 둥근 입력 필드 */
+  background-color: #fffaf0; /* 밝은 크림 배경 */
+  box-shadow: inset 0px 2px 4px rgba(0, 0, 0, 0.1); /* 안쪽 그림자 */
+  outline: none;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.event-calendar-modal-content input:focus,
+.event-calendar-modal-content select:focus,
+.event-calendar-modal-content textarea:focus,
+.event-calendar-edit-panel input:focus,
+.event-calendar-edit-panel select:focus,
+.event-calendar-edit-panel textarea:focus {
+  border-color: #ff6f61; /* 포커스 색상 */
+  box-shadow: 0px 0px 8px rgba(255, 111, 97, 0.8); /* 포커스 효과 */
+}
+
+/* 라벨 스타일 */
+.event-calendar-modal-content label, .event-calendar-edit-panel label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #ff7f50; /* 밝은 오렌지 */
+}
+
+.event-calendar-modal-content .pet-select-label2, .event-calendar-edit-panel .pet-select-label2 {
+  font-family: 'StudyGood';
+  font-size: 1.4rem;
+  color: #ff7f50; /* 초록색으로 강조 */
+  margin-bottom: 12px;
+  text-transform: uppercase; /* 텍스트 대문자 */
+  letter-spacing: 1px; /* 글자 간격 추가 */
+  position: sticky; /* 스크롤 시 해당 위치에서 고정 */
+  z-index: 100; /* 다른 요소들 위에 표시되도록 z-index 추가 */
+}
+/* 버튼 컨테이너 */
+.button-container {
+  display: flex;
+  justify-content: flex-start; /* 왼쪽 정렬 */
+  gap: 10px; /* 버튼 간 간격 */
+  padding: 10px 0;
+  max-width: 100%; /* 최대 너비를 100%로 설정하여 화면에 맞게 크기 조정 */
+}
+
+/* 버튼 공통 스타일 */
+.button-container button {
+  background: linear-gradient(135deg, #ff6f61, #ff3d3d); /* 그라데이션 배경 */
+  color: white;
+  border: none;
+  border-radius: 15px; /* 둥근 모서리 */
+  padding: 12px 25px;
+  font-size: 16px;
+  font-weight: bold;
+  font-family: "StudyGood", sans-serif;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15); /* 버튼 그림자 */
+  transition: all 0.3s ease; /* 호버 시 부드럽게 변화 */
+  margin: 0; /* 버튼 간 간격은 CSS에서 gap을 사용하여 처리 */
+}
+
+/* 수정 버튼 스타일 */
+.button-container button:first-child {
+  background: linear-gradient(135deg, #4CAF50, #2e7d32); /* 초록색 수정 버튼 */
+}
+
+/* 수정 버튼 호버 효과 */
+.button-container button:first-child:hover {
+  background: linear-gradient(135deg, #2e7d32, #4CAF50); /* 반전된 그라데이션 */
+  transform: scale(1.05); /* 확대 효과 */
+}
+
+/* 삭제 버튼 스타일 */
+.button-container .delete-button {
+  background: linear-gradient(135deg, #e63946, #d62828); /* 빨간색 삭제 버튼 */
+}
+
+/* 삭제 버튼 호버 효과 */
+.button-container .delete-button:hover {
+  background: linear-gradient(135deg, #d62828, #e63946); /* 반전된 빨간색 */
+  transform: scale(1.05); /* 확대 효과 */
+}
+
+/* 닫기 버튼 스타일 */
+.button-container button:last-child {
+  background: linear-gradient(135deg, #bbb, #ccc); /* 회색 닫기 버튼 */
+  color: black;
+}
+
+/* 닫기 버튼 호버 효과 */
+.button-container button:last-child:hover {
+  background: linear-gradient(135deg, #ccc, #bbb); /* 반전된 회색 */
+  transform: scale(1.05); /* 확대 효과 */
+}
+
+/* 버튼 클릭 시 효과 */
+.button-container button:active {
+  transform: scale(0.95); /* 클릭 시 크기 축소 */
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2); /* 그림자 줄임 */
 }
