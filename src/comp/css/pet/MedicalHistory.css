@@ -1,77 +1,138 @@
-/* MedicalHistory 컴포넌트 전용 스타일 */
-.medical-history-container {
+/* 전체 컨테이너 */
+.medical-history-wrapper {
   max-width: 1200px;
   margin: 20px auto;
   padding: 40px;
-  background-color: #fef6e4; /* 부드러운 크림색 배경 */
-  border-radius: 16px;
-  border: 1px solid #fad4a2; /* 크림색과 어울리는 테두리 색상 */
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1); /* 부드러운 그림자 */
-  font-family: "Comic Sans MS", "Arial", sans-serif; /* 귀여운 폰트 */
+  background-color: #fef6e4;
+  border-radius: 20px;
+  border: 2px solid #fad4a2; /* 금색 느낌의 테두리 */
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  font-family: "StudyGood", Arial, sans-serif; /* studyGood 폰트 적용 */
 }
 
-.medical-history-container .medical-history-header {
+/* 제목 스타일 */
+.medical-history-title {
   text-align: center;
-  font-size: 28px;
+  font-size: 32px;
   font-weight: bold;
-  color: #f57c00; /* 진한 오렌지 색상 */
+  color: #f57c00;
   margin-bottom: 25px;
-  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2); /* 부드러운 텍스트 그림자 */
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+  font-family: "StudyGood", Arial, sans-serif;
 }
 
-.medical-history-container .medical-history-grid {
+/* 폼 및 목록 */
+.medical-history-layout {
   display: grid;
-  grid-template-columns: 1fr 1.5fr; /* 폼:기록 비율 변경 */
+  grid-template-columns: 1fr 1.5fr;
   gap: 20px;
 }
 
-.medical-history-container .medical-form {
-  background-color: #fffaf0; /* 더 부드러운 배경색 */
+/* 새로운 의료 기록 폼 */
+.medical-form-container {
+  background-color: #fffaf0;
   padding: 30px;
-  border: 1px solid #ffd580; /* 크림과 오렌지 조화 */
+  border: 1px solid #ffd580;
   border-radius: 12px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  font-family: "StudyGood", Arial, sans-serif;
 }
 
-.medical-history-container .medical-records-list {
+/* 각 폼 입력 필드 */
+.medical-form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.medical-form-field label {
+  font-size: 18px;
+  font-weight: 700;
+  color: #444;
+  font-family: "StudyGood", Arial, sans-serif;
+}
+
+.medical-form-field input,
+.medical-form-field select,
+.medical-form-field textarea {
+  width: 100%;
+  padding: 12px;
+  border-radius: 12px;
+  border: 2px solid #f4c542;
+  font-size: 16px;
+  background-color: #fff;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  font-family: "StudyGood", Arial, sans-serif;
+}
+
+/* 포커스 효과 */
+.medical-form-field input:focus,
+.medical-form-field select:focus,
+.medical-form-field textarea:focus {
+  border-color: #f57c00;
+  box-shadow: 0 0 8px rgba(255, 111, 97, 0.8);
+  font-family: "StudyGood", Arial, sans-serif;
+}
+
+/* 제출 버튼 */
+.submit-button {
+  width: 100%;
+  background-color: #ff6f61;
+  color: white;
+  margin-top: 50px;
+  padding: 15px 30px;
+  font-size: 18px;
+  font-weight: bold;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  font-family: "StudyGood", Arial, sans-serif;
+}
+
+.submit-button:hover {
+  background-color: #e63946;
+  transform: scale(1.05);
+}
+
+.submit-button:active {
+  background-color: #d62e2f;
+  transform: scale(0.95);
+}
+
+/* 기존 기록 목록 */
+.medical-records-container {
   background-color: #fffaf0;
   padding: 20px;
   border: 1px solid #ffd580;
   border-radius: 12px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  max-height: 1200px; /* 더 긴 높이 */
+  max-height: 1200px;
   overflow-y: auto;
-}
-
-.medical-history-container .medical-records-list h4 {
-  margin-bottom: 15px;
+  font-family: "StudyGood", Arial, sans-serif;
 }
 
 .medical-record-card {
-  background-color: #fff; /* 카드 배경색 */
+  background-color: #fff;
   padding: 20px;
   margin-bottom: 20px;
-  border: 1px solid #ffd580; /* 부드러운 테두리 색상 */
+  border: 1px solid #ffd580;
   border-radius: 12px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 카드 그림자 */
-  position: relative; /* 삭제 버튼을 위한 기준 */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  position: relative;
   transition: transform 0.2s ease, box-shadow 0.3s ease;
+  font-family: "StudyGood", Arial, sans-serif;
 }
 
 .medical-record-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* hover 효과 */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
 
 .medical-record-card p {
   margin: 8px 0;
   font-size: 16px;
   color: #444;
-}
-
-.medical-record-card p span {
-  font-weight: bold; /* 강조를 위한 폰트 굵기 */
-  color: #f57c00; /* 주요 색상 */
 }
 
 .medical-record-card .delete-button {
@@ -85,6 +146,7 @@
   border-radius: 8px;
   font-size: 14px;
   font-weight: bold;
+  font-family: "StudyGood", Arial, sans-serif;
   cursor: pointer;
   transition: background-color 0.3s ease, transform 0.2s ease;
 }
@@ -94,102 +156,21 @@
   transform: scale(1.05);
 }
 
-.medical-record-card .field-divider {
-  height: 1px;
-  background-color: #ddd;
-  margin: 10px 0;
-}
-
-.medical-record-card .highlight {
-  color: #e74c3c; /* 강조된 텍스트 색상 */
-  font-weight: bold;
-}
-
-.medical-record-card .icon {
-  margin-right: 8px;
-  font-size: 18px;
-  color: #f57c00;
-}
-
-
-.medical-records-list {
-  display: flex;
-  flex-direction: column;
-  gap: 20px; /* 카드 간격 */
-  padding: 20px;
-  background-color: #fffaf0;
-  border-radius: 12px;
-  border: 1px solid #ffd580;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  max-height: 800px; /* 최대 높이 */
-  overflow-y: auto; /* 스크롤 가능 */
-}
-
-.medical-records-list::-webkit-scrollbar {
-  width: 8px;
-}
-
-.medical-records-list::-webkit-scrollbar-thumb {
-  background-color: #ffd580;
-  border-radius: 4px;
-}
-
-.medical-records-list::-webkit-scrollbar-thumb:hover {
-  background-color: #ffc107;
-}
-
-.medical-records-list::-webkit-scrollbar-track {
-  background-color: #fffaf0;
-}
-
-.medical-history-container .delete-button {
-  background-color: #e63946;
-  color: white;
-  padding: 10px 15px;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease;
-}
-
-.medical-history-container .delete-button:hover {
-  background-color: #d32f2f;
-  transform: scale(1.05);
-}
-
-/* MedicalHistory 컴포넌트 전용 textarea 스타일 */
-.medical-history-container textarea[name="notes"] {
+/* 검색창 스타일 */
+.search-bar input {
   width: 100%;
-  min-height: 120px; /* 텍스트 영역 최소 높이 */
   padding: 12px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
+  border: 2px solid #f4c542; /* 노란색 테두리 */
+  border-radius: 12px; /* 둥근 모서리 */
   font-size: 16px;
-  background-color: #fff;
+  font-family: "StudyGood", Arial, sans-serif;
+  background-color: #fff; /* 하얀 배경 */
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-.medical-history-container textarea[name="notes"]:focus {
-  border-color: #ffc107;
-  box-shadow: 0 0 6px rgba(255, 193, 7, 0.5);
-  outline: none;
+/* 포커스 시 보더 색 변경 */
+.search-bar input:focus {
+  border-color: #f57c00; /* 진한 노란색 포커스 시 색상 */
+  box-shadow: 0 0 8px rgba(255, 111, 97, 0.8); /* 포커스 효과 */
+  outline: none; /* 포커스 시 외곽선 제거 */
 }
-
-
-.medical-history-container .medical-records-list::-webkit-scrollbar {
-  width: 8px;
-}
-
-.medical-history-container .medical-records-list::-webkit-scrollbar-thumb {
-  background-color: #ffd580;
-  border-radius: 4px;
-}
-
-.medical-history-container .medical-records-list::-webkit-scrollbar-thumb:hover {
-  background-color: #ffc107;
-}
-
-.medical-history-container .medical-records-list::-webkit-scrollbar-track {
-  background-color: #fffaf0;
-}
-

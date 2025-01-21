@@ -1,68 +1,348 @@
+/* 페이지 컨테이너 */
 .user-profile-page-container {
-  max-width: 600px;
-  margin: 0 auto;
-  padding: 20px;
-  font-family: "Roboto", Arial, sans-serif;
+  max-width: 1600px;
+  min-height: 1600px;
+  margin: 50px auto;
+  padding: 40px;
+  background: linear-gradient(135deg, #fff5e1, #fef6e4);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  font-family: "studyGood", "Roboto", sans-serif;
+  position: relative;
+}
+
+/* 프로필 정보 섹션 */
+.user-profile-info-container {
+  width: 25%;
+  height: 855px;
+  background-color: #fff;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  position: absolute;
+  top: 61px;
+  left: 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   text-align: center;
 }
 
-.user-profile-image, .user-profile-preview {
-  width: 150px;
-  height: 150px;
+/* 프로필 이미지 */
+.user-profile-image {
+  width: 200px;
+  height: 200px;
   border-radius: 50%;
   object-fit: cover;
-  margin: 20px auto;
+  margin-bottom: 20px;
+  border: 3px solid #f57c00;
+  /* 테두리 추가 */
 }
 
-.user-form-group {
-  margin-bottom: 15px;
-  text-align: left;
-}
-
-.user-form-group label {
-  display: block;
+/* 프로필 텍스트 */
+.user-profile-info-container h1 {
+  font-size: 40px;
   font-weight: bold;
-  margin-bottom: 5px;
+  color: #333;
+  margin-bottom: 10px;
 }
 
-.user-form-group input[type="text"],
-.user-form-group input[type="file"] {
-  width: 100%;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
+.user-profile-info-container p {
+  font-size: 25px;
+  color: #555;
+  margin-bottom: 10px;
 }
 
-.user-button-group {
+/* 수정 버튼 */
+.user-edit-button {
+  padding: 12px 30px;
+  background-color: #ff6f61;
+  color: white;
+  font-size: 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
   margin-top: 20px;
 }
 
-.user-edit-button {
-  background-color: #007BFF;
+.user-edit-button:hover {
+  background-color: #e63946;
+  transform: scale(1.1);
+  /* 버튼 크기 확대 */
+}
+
+/* 오른쪽 비밀번호 변경 및 회원 탈퇴 섹션 */
+.user-settings-section {
+  width: 45%;
+  position: absolute;
+  top: 0;
+  right: 0;
+  background-color: #fff;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  justify-content: flex-start;
+}
+
+/* 비밀번호 변경 섹션 */
+.password-change-section {
+  max-width: 1050px;
+  background-color: #fff;
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  position: relative;
+  top: 20px;
+  /* 위쪽 여백 */
+  left: 450px;
+}
+
+.password-change-section h2 {
+  font-size: 28px;
+  margin-bottom: 20px;
+  color: #f57c00;
+  text-align: center;
+}
+
+.password-change-section .form-group {
+  margin-bottom: 25px;
+}
+
+.password-change-section label {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.password-change-section input {
+  width: 100%;
+  padding: 15px;
+  border: 1px solid #f0e68c;
+  border-radius: 8px;
+  font-size: 18px;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.password-change-button {
+  padding: 12px 30px;
+  background-color: #ff6f61;
   color: white;
+  font-size: 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  width: 100%;
 }
 
-.user-save-button {
-  background-color: #28a745;
+.password-change-button:hover {
+  background-color: #e63946;
+  transform: scale(1.1);
+  /* 버튼 크기 확대 */
+}
+
+/* 회원 탈퇴 섹션 */
+.deactivate-account-section {
+  background-color: #fff;
+  max-width: 1050px;
+  padding: 40px;
+  margin-top: 30px;
+  border-radius: 12px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  position: relative;
+  top: 20px;
+  /* 위쪽 여백 */
+  left: 450px;
+}
+
+.deactivate-account-section h2 {
+  font-size: 28px;
+  margin-bottom: 20px;
+  color: #f57c00;
+  text-align: center;
+}
+
+.deactivate-button {
+  padding: 12px 30px;
+  background-color: #e67770;
   color: white;
+  font-size: 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  width: 100%;
 }
 
-.user-cancel-button {
-  background-color: #dc3545;
-  color: white;
+.deactivate-button:hover {
+  background-color: #e63946;
+  transform: scale(1.1);
+  /* 버튼 크기 확대 */
 }
 
-button:hover {
-  opacity: 0.9;
+.deactivate-button:active {
+  background-color: #d62e2f;
 }
 
-.user-error-text {
-  color: red;
-  font-size: 14px;
+/* 메시지 스타일 */
+.message {
+  text-align: center;
+  font-size: 16px;
+  color: #f57c00;
+  margin-top: 20px;
 }
 
-.user-message {
+/* 내가 한 활동 섹션 */
+.user-activities-section {
+  background-color: #fff;
+  padding: 40px;
+  max-width: 98%;
+  height: 700px;
+  margin-left: 10px;
+  margin-top: 50px;
+  border-radius: 12px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.user-activities-section h2 {
+  font-size: 28px;
+  margin-bottom: 20px;
+  color: #f57c00;
+  text-align: center;
+}
+
+.activity-list {
+  list-style: none;
+  padding: 0;
+}
+
+.activity-item {
+  font-size: 18px;
+  margin-bottom: 10px;
+  color: #555;
+}
+
+/* 모달 스타일 */
+.user-profile-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  /* 반투명 배경 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+}
+
+.modal-content {
+  background-color: #fff;
+  padding: 40px;
+  border-radius: 12px;
+  width: 400px;
+  /* 모달 너비 */
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+/* 내가 한 활동 섹션 */
+.user-activities-section {
+  background-color: #fff;
+  padding: 40px;
+  max-width: 98%;
+  height: 700px;
+  /* Set a max height */
+  margin-left: 10px;
+  margin-top: 50px;
+  border-radius: 12px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  overflow-y: auto;
+  /* Add vertical scrollbar when content exceeds max height */
+}
+
+.user-activities-section h2 {
+  font-size: 28px;
+  margin-bottom: 20px;
+  color: #f57c00;
+  text-align: center;
+}
+
+.activity-list {
+  list-style: none;
+  padding: 0;
+}
+
+/* 스크롤바 스타일 */
+.user-activities-section::-webkit-scrollbar {
+  width: 8px;
+}
+
+.user-activities-section::-webkit-scrollbar-thumb {
+  background-color: #888;
+  border-radius: 4px;
+}
+
+.user-activities-section::-webkit-scrollbar-thumb:hover {
+  background-color: #555;
+}
+
+/* 활동 항목 스타일 */
+.activity-item {
+  font-size: 18px;
+  margin-bottom: 10px;
+  color: #555;
+  cursor: pointer;
+  /* Optional: Adds a pointer cursor for interactivity */
+}
+
+.activity-item:hover {
+  background-color: #fff3e1;
+  /* hover 시 배경색 */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  /* hover 시 그림자 */
+}
+
+.activity-item h3 {
+  font-size: 22px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.activity-item p {
+  font-size: 18px;
+  color: #555;
+  margin-bottom: 10px;
+}
+
+.activity-item .activity-date {
+  font-size: 16px;
+  color: #888;
+  text-align: right;
   margin-top: 10px;
-  font-size: 14px;
-  color: green;
+}
+
+.user-save-button, .user-cancel-button {
+  font-size: 16px;   /* Adjust font size */
+  font-weight: 500;  /* Adjust font weight */
+  font-family: "studyGood" !important;  /* Change font family */
+}
+
+.password-change-button {
+  font-size: 18px;
+  font-weight: 700;  /* Make the font bold */
+  font-family: "studyGood";
+}
+
+.deactivate-button {
+  font-size: 16px;
+  font-weight: 400;
+  font-family: "studyGood";
 }
