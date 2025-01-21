@@ -7,6 +7,19 @@ export default function MapWalkPolyline(props) {
 
     const walks = props.walks;
     const category = props.category;
+
+    const formatDuration = (seconds) => {
+        const hours = Math.floor(seconds / 3600);  // 1시간 = 3600초
+        const minutes = Math.floor((seconds % 3600) / 60);  // 1분 = 60초
+        const remainingSeconds = seconds % 60;
+
+        if (hours > 0) {
+            return `${hours}시간 ${minutes.toString().padStart(2, '0')}분`; // 시:분
+        } else {
+            return `${minutes.toString().padStart(2, '0')}분 ${remainingSeconds.toString().padStart(2, '0')}초`; // 분:초
+        }
+    }
+
     return (
         <>
             {category === "산책기록" && walks.map((walk, index) => (
@@ -47,8 +60,8 @@ export default function MapWalkPolyline(props) {
 
                         <div className="content">{walkInfoWindow.startTime}</div>
                         <div className="content">{walkInfoWindow.endTime}</div>
-                        <div className="content">{walkInfoWindow.distance}Km</div>
-                        <div className="content">{walkInfoWindow.duration}분</div>
+                        <div className="content">{walkInfoWindow.distance}m</div>
+                        <div className="content">{formatDuration(walkInfoWindow.duration)}</div>
 
 
                     </div>
