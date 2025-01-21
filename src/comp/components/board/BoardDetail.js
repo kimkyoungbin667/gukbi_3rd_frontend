@@ -3,8 +3,10 @@ import { useLocation } from "react-router";
 import { useNavigate } from "react-router-dom";
 import CommentArea from "../board/CommentArea.js";
 import { jwtDecode } from "jwt-decode";
-import { getBoardDetail, increaseView, boardDelete, upBoardPostLike } from "../../api/board";
+import { getBoardDetail, increaseView, boardDelete, upBoardPostLike, getCategoryContentId, getAccompanyContentId } from "../../api/board";
 import '../../css/board/boardDetail.css';
+import { getWalks } from "../../api/map.js";
+import { CustomOverlayMap, Map, MapMarker, Polyline } from "react-kakao-maps-sdk";
 
 function BoardDetail() {
   const location = useLocation();
@@ -24,6 +26,8 @@ function BoardDetail() {
     content: '',
     createdByUserIdx: '',
     createdByUserNickname: '',
+    mapCategoryId: "0",
+    mapAccompanyId: "0",
     likeCount: 0,
     isLiked: '',
     title: '',
@@ -31,16 +35,84 @@ function BoardDetail() {
     imageFiles: []
   });
 
+  const [walkMap, setWalkMap] = useState();
+  const [mapPlace, setMapPlace] = useState({ placeType: "", place: {} });
+
+  function getWalkss() {
+    const obj = {
+      userIdx: 6
+    }
+    getWalks(obj).then(res => {
+      console.log(res.data.data);
+      const walkWithMatchingLogId = res.data.data.find(walk => walk.logId === boardContents.logId);
+
+      if (walkWithMatchingLogId) {
+        console.log(walkWithMatchingLogId);
+        setWalkMap(walkWithMatchingLogId);
+    }
+    }).catch(err => {
+
+    }) 
+  }
+
+  function getCategoryMap() {
+    const obj = {
+      contentId:boardContents.mapCategoryId,
+    }
+    console.log(obj.contentId+"1111111111111");
+    getCategoryContentId(obj).then(res => {
+      setMapPlace({placeType: "카테고리", place: res.data.data});
+      console.log(res.data.data);
+      console.log(walkMap);
+    }).catch(err => {
+    })
+
+  }
+
+  function getAccompanyMap() {
+    const obj = {
+      contentId: boardContents.mapAccompanyId,
+    }
+    getAccompanyContentId(obj).then(res => {
+      setMapPlace({placeType: "동반가능", place: res.data.data});
+      console.log(res.data.data);
+    }).catch(err => {
+    })
+  }
+
+
+
+
+
+
+
+
+
+  useEffect(() => {
+    
+    
+    getWalkss();
+    if(boardContents.mapCategoryId !== "0" && boardContents.mapCategoryId !== 0) {
+      getCategoryMap();
+
+    } else if (boardContents.mapAccompanyId !=="0" && boardContents.mapAccompanyId !==0) {
+      getAccompanyMap();
+    }
+  }, [boardContents]);
+
   useEffect(() => {
 
     if (state?.boardIdx) {
       setBoardIdx(state.boardIdx);
+      
     }
+    
   }, [state]);
 
   useEffect(() => {
     setIsLiked(boardContents.isLiked);
     console.log('dwdwdw', boardContents);
+    
   }, [boardContents.isLiked]);
 
   useEffect(() => {
@@ -50,8 +122,9 @@ function BoardDetail() {
     if (boardIdx !== null) {
       getBoardDetail({ boardIdx })
         .then(res => {
+          console.log("갖고옴 : ",res.data);
           if (res.data.code == '200') {
-            console.log(res.data);
+            
             setBoardContents(res.data.data);
           }
         })
@@ -72,7 +145,9 @@ function BoardDetail() {
             }));
           }
         })
+    
     }
+
   }, [boardIdx]);
 
   // 수정 버튼 클릭 이벤트
@@ -139,6 +214,104 @@ function BoardDetail() {
         <div className="board-detail-container">
           <h1 className="board-detail-title">{boardContents.title}</h1>
           <div className="board-detail-content">{boardContents.content}</div>
+          <div className="map-preview">
+                    {
+                      mapPlace.placeType === "카테고리" && mapPlace.place !== null? (
+                        <>
+                          <div style={{ fontSize: "36px" }}> 장소</div>
+                          <div style={{ width: "100%", height: "500px" }}>
+                            <Map style={{ width: "100%", height: "500px", border: "1px solid #000", borderRadius: "8px", boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)" }}
+            
+                              level={1}
+            
+            
+                              center={{ lat: mapPlace.place.y + 0.0003, lng: mapPlace.place.x }}
+                            >
+            
+                              <MapMarker
+                                position={{ lat: mapPlace.place.y, lng: mapPlace.place.x }}
+                              >
+                              </MapMarker>
+                              <CustomOverlayMap position={{ lat: mapPlace.place.y, lng: mapPlace.place.x }}>
+                                <div className="bubble">
+                                  <span className="left">{mapPlace.place.placeName}</span><br />
+            
+                                  <span className="center">주소: {mapPlace.place.addressName}</span><br />
+                                  <span className="center">도로명 주소: {mapPlace.place.roadAddressName}</span><br />
+                                  <span className="center">전화번호: {mapPlace.place.phone || "정보 없음"}</span><br />
+                                  <span className="center">
+                                    <a href={mapPlace.place.placeUrl} target="_blank" rel="noopener noreferrer">
+                                      상세보기 {mapPlace.place.category}
+                                    </a>
+                                  </span>
+                                </div>
+                              </CustomOverlayMap>
+            
+                            </Map></div>
+                        </>) : mapPlace.placeType === "동반가능" ? (
+                          <div style={{ width: "100%px", height: "500px" }}>
+                            <Map style={{ width: "100%px", height: "500px", border: "1px solid #000", borderRadius: "8px", boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)" }}
+            
+                              level={1}
+            
+            
+                              center={{ lat: mapPlace.place.mapy + 0.0003, lng: mapPlace.place.mapx }}
+                            >
+            
+                              <MapMarker
+                                position={{ lat: mapPlace.place.mapy, lng: mapPlace.place.mapx }}
+                              >
+                              </MapMarker>
+                              <CustomOverlayMap position={{ lat: mapPlace.place.mapy, lng: mapPlace.place.mapx }}>
+                                <div className="bubble">
+                                  <span className="left">{mapPlace.place.title}</span><br />
+            
+                                  <span className="center">주소: {mapPlace.place.addr1}</span><br />
+                                  <span className="center">도로명 주소: {mapPlace.place.roadAddressName}</span><br />
+                                  <span className="center">전화번호: {mapPlace.place.tel || "정보 없음"}</span><br />
+                                  <span className="center">
+                                    <a href={mapPlace.place.placeUrl} target="_blank" rel="noopener noreferrer">
+                                      상세보기 {mapPlace.place.category}
+                                    </a>
+                                  </span>
+                                </div>
+                              </CustomOverlayMap>
+            
+                            </Map></div>) : (<></>)
+                    }
+                    
+                    {walkMap && (
+                      <>
+                        <div style={{ marginTop: "50px", fontSize: "36px" }}>산책</div>
+                        <div style={{ width: "100%", height: "500px", }}>
+                          <Map style={{ width: "100%", height: "500px", border: "1px solid #000", borderRadius: "8px", boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)" }}
+            
+                            level={3}
+            
+            
+                            center={{ lat: walkMap.paths[0].latitude, lng: walkMap.paths[0].longitude }}
+                          >
+                            <Polyline path={[walkMap.paths.map((path, index) => (
+                              { lat: path.latitude, lng: path.longitude }
+                            ))
+                            ]}
+            
+                              strokeWeight={6}
+                              strokeColor="#FFAE00"
+                              strokeOpacity={1}
+                              strokeStyle="solid"
+                              endArrow
+            
+                            >
+            
+                            </Polyline>
+                          </Map>
+            
+                        </div>
+                      </>
+                    )
+                    }
+                  </div>
           <div className="board-detail-info">
             <div>
               <span>작성자:</span> <span>{boardContents.createdByUserNickname}</span>
@@ -153,6 +326,7 @@ function BoardDetail() {
             <div>
               <span>추천수:</span> <span>{boardContents.likeCount}</span>
             </div>
+            
           </div>
 
           {boardContents.imageFiles !== null && (

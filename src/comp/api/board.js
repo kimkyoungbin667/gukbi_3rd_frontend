@@ -128,12 +128,12 @@ export const getLikeLocation = (param) => {
     });
 };
 
-/**
- * 특정 산책경로 불러오기
- * @param {Object} obj
- * @param {number} obj.logId - 산책 경로 아이디
- * @return {Promise}
- */
-export const getMapByPath = (obj) => {
-    return api.post('/board/getMapByPath', JSON.stringify(obj))
+export const getCategoryContentId = (obj) => {
+    return api.post('/map/category/getContentId', JSON.stringify(obj))
 }
+
+
+export const getAccompanyContentId = (obj) => {
+    return api.post('/map/accompany/getContentId', JSON.stringify(obj))
+}
+

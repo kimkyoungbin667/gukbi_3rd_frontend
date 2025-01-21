@@ -42,6 +42,15 @@ function BoardWrite() {
     const formData = new FormData();
     formData.append("title", title);
     formData.append("content", content);
+    if(selectedPlace.placeType === "카테고리") {
+      formData.append("mapCategoryId", selectedPlace.place.id);
+      formData.append("mapAccompanyId", 0);
+    } else if (selectedPlace.placeType === "동반가능") {
+      formData.append("mapCategoryId", 0);
+      formData.append("mapAccompanyId", selectedPlace.place.contentid);
+    }
+    formData.append("logId",selectedWalks.logId)
+
 
     imageFiles.forEach((item) => {
       formData.append("images", item.file); // 파일 객체만 추가
@@ -120,44 +129,6 @@ function BoardWrite() {
     }
   };
 
-  // // 산책경로 불러오기
-  // const getLikeLocationAction = (kind) => {
-
-  //   getLikeLocation({ kind })
-  //     .then(res => {
-  //       console.log(res.data.data);
-  //       if (res.data.code === "200") {
-
-  //         // 줄겨찾기
-  //         if (kind === "location") {
-  //           setLikeLocation(res.data.data);
-  //         }
-
-  //         // 산책 경로
-  //         else {
-  //           setMyPath(res.data.data);
-  //         }
-
-
-  //       }
-  //     })
-  //     .catch(err => {
-  //       console.error(err);
-  //     });
-  // }
-
-  // // 특정 산책경로 지도 불러오기
-  // const getMapByPathAction = (logId) => {
-
-  //   getMapByPath({ lodId: logId })
-  //     .then(res => {
-  //       console.log(res);
-  //     })
-
-  //     .catch(err => {
-  //       console.log(err);
-  //     })
-  // }
 
   function getCategoryFavorite() {
     const obj = {
@@ -223,6 +194,7 @@ function BoardWrite() {
         <label htmlFor="title">제목</label>
         <input
           type="text"
+          className="titleinput-area"
           id="title"
           value={title}
           placeholder="제목을 입력하세요"
@@ -536,7 +508,7 @@ function BoardWrite() {
 
         {selectedWalks && (
           <>
-            <div style={{ marginTop: "50px", fontSize: "36px" }}>산책</div>
+            <div style={{ marginTop: "50px", fontSize: "36px" }}>산책asdasdasdads</div>
             <div style={{ width: "100%", height: "500px", }}>
               <Map style={{ width: "100%", height: "500px", border: "1px solid #000", borderRadius: "8px", boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)" }}
 

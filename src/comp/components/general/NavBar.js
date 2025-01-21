@@ -49,6 +49,7 @@ const Navbar = () => {
         aiChat: "♧",
         aiSolution: "♧",
         mypage: "♧",
+        profile: "♧",
         calendar: "♧", // 캘린더 메뉴 추가
     });
 
@@ -132,7 +133,7 @@ const Navbar = () => {
                         onMouseEnter={() => handleMouseEnter("mypage")}
                         onMouseLeave={() => handleMouseLeave("mypage")}>
                         <div className="navbar__link">{location.pathname === "/mypetspage" ? " † " : menuText.mypage}</div>
-                        <p className="navbar-text">내 애완동물</p>
+                        <p className="navbar-text">내 반려동물</p>
                     </li>
 
                     {isLoggedIn && (

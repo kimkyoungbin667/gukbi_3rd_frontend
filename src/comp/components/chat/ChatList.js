@@ -551,7 +551,7 @@ export default function Chat() {
                             <button onClick={sendMessage}>전송</button>
 
                             <div className="file-upload-container">
-                                <label htmlFor="file-upload" className="custom-file-upload">
+                                <label htmlFor="file-upload" className="custom-file-upload" style={{backgroundColor:"#007bff"}}> 
                                     이미지 전송 🖼️
                                 </label>
 
