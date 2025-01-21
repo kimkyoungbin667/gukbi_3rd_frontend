@@ -51,7 +51,7 @@ export default function ProfileNavigation() {
                                 회원 탈퇴
                             </Link>
                             <br />
-                        </li>
+                        </li>ㅊㅊ
                     </ul>
                 </nav>
 

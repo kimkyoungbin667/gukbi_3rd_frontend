@@ -72,7 +72,7 @@
 
 .mypets-page-button {
   margin-top: 15px;
-  padding: 12px 20px;
+  padding: 12px 30px;
   border: none;
   border-radius: 10px;
   cursor: pointer;
@@ -93,6 +93,7 @@
 }
 
 .mypets-page-button.delete {
+  margin-left: 10px;
   background-color: #E67770;
   color: white;
 }

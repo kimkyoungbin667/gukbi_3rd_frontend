@@ -1,150 +1,150 @@
 .admin-board-list-container {
-    font-family: "Roboto", Arial, sans-serif;
-    background-color: #fdf6e4;
-    color: #333;
-    margin: 0;
-    padding: 0;
-    line-height: 1.6;
-  }
-  
-  .admin-board-list-container .statistics {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #f9f9f9;
-    padding: 20px;
-    border-radius: 8px;
-    margin-bottom: 20px;
-  }
-  
-  .admin-board-list-container .statistics div {
-    text-align: center;
-    flex: 1;
-  }
-  
-  .admin-board-list-container .statistics div p {
-    font-size: 20px;
-    margin: 0;
-  }
-  
-  .admin-board-list-container input[type="text"] {
-    padding: 10px;
-    font-size: 16px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    background-color: #fffaf0;
-    transition: box-shadow 0.2s, border-color 0.2s;
-    width: 300px;
-    margin-right: 10px;
-  }
-  
-  .admin-board-list-container input[type="text"]:focus {
-    outline: none;
-    border-color: #ffa726;
-    box-shadow: 0 0 6px rgba(255, 167, 38, 0.3);
-  }
-  
-  .admin-board-list-container table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 20px;
-    background-color: white;
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  }
-  
+  font-family: "studyGood", "Roboto", Arial, sans-serif; /* "studyGood" 폰트를 첫 번째로 설정 */
+  color: #333;
+  max-width: 100%;
+  min-height: 1500px;
+  margin: 0;
+  padding: 0;
+  line-height: 1.6;
+}
+
+.admin-board-list-container .statistics {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #f9f9f9;
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.admin-board-list-container .statistics div {
+  text-align: center;
+  flex: 1;
+}
+
+.admin-board-list-container .statistics div p {
+  font-size: 20px;
+  margin: 0;
+}
+
+.admin-board-list-container input[type="text"] {
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #fffaf0;
+  transition: box-shadow 0.2s, border-color 0.2s;
+  width: 300px;
+  margin-right: 10px;
+}
+
+.admin-board-list-container input[type="text"]:focus {
+  outline: none;
+  border-color: #ffa726;
+  box-shadow: 0 0 6px rgba(255, 167, 38, 0.3);
+}
+
+.admin-board-list-container table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+  background-color: white;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.admin-board-list-container table th,
+.admin-board-list-container table td {
+  padding: 12px 15px;
+  border: 1px solid #ddd;
+  text-align: left;
+}
+
+.admin-board-list-container table th {
+  background-color: #ffa726;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.admin-board-list-container table th:hover {
+  background-color: #fb8c00;
+}
+
+.admin-board-list-container table tbody tr:nth-child(even) {
+  background-color: #fffaf0;
+}
+
+.admin-board-list-container table tbody tr:hover {
+  background-color: #ffe0b2;
+}
+
+.admin-board-list-container button {
+  padding: 8px 12px;
+  font-size: 14px;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  background-color: #ffa726;
+  color: white;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.admin-board-list-container button:hover {
+  background-color: #fb8c00;
+  transform: translateY(-2px);
+}
+
+.admin-board-list-container button:active {
+  transform: translateY(1px);
+}
+
+.admin-board-list-container button[style*="color: red"] {
+  background-color: #ff5a5a;
+  color: white;
+}
+
+.admin-board-list-container button[style*="color: red"]:hover {
+  background-color: #ff3030;
+}
+
+.admin-board-list-container .pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.admin-board-list-container .pagination button {
+  margin: 0 5px;
+  padding: 5px 10px;
+  background-color: #ffe0b2;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.admin-board-list-container .pagination button:hover {
+  background-color: #ffa726;
+  color: white;
+}
+
+.admin-board-list-container .pagination button {
+  background-color: #ffa726;
+  color: white;
+}
+
+@media (max-width: 768px) {
   .admin-board-list-container table th,
   .admin-board-list-container table td {
-    padding: 12px 15px;
-    border: 1px solid #ddd;
-    text-align: left;
-  }
-  
-  .admin-board-list-container table th {
-    background-color: #ffa726;
-    color: white;
-    font-size: 16px;
-    cursor: pointer;
-  }
-  
-  .admin-board-list-container table th:hover {
-    background-color: #fb8c00;
-  }
-  
-  .admin-board-list-container table tbody tr:nth-child(even) {
-    background-color: #fffaf0;
-  }
-  
-  .admin-board-list-container table tbody tr:hover {
-    background-color: #ffe0b2;
-  }
-  
-  .admin-board-list-container button {
-    padding: 8px 12px;
     font-size: 14px;
-    font-weight: bold;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    background-color: #ffa726;
-    color: white;
-    transition: background-color 0.3s, transform 0.2s;
   }
-  
-  .admin-board-list-container button:hover {
-    background-color: #fb8c00;
-    transform: translateY(-2px);
+
+  .admin-board-list-container button {
+    padding: 6px 8px;
+    font-size: 12px;
   }
-  
-  .admin-board-list-container button:active {
-    transform: translateY(1px);
-  }
-  
-  .admin-board-list-container button[style*="color: red"] {
-    background-color: #ff5a5a;
-    color: white;
-  }
-  
-  .admin-board-list-container button[style*="color: red"]:hover {
-    background-color: #ff3030;
-  }
-  
-  .admin-board-list-container .pagination {
-    display: flex;
-    justify-content: center;
-    margin-top: 20px;
-  }
-  
-  .admin-board-list-container .pagination button {
-    margin: 0 5px;
-    padding: 5px 10px;
-    background-color: #ffe0b2;
-    border: 1px solid #ddd;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-  }
-  
-  .admin-board-list-container .pagination button:hover {
-    background-color: #ffa726;
-    color: white;
-  }
-  
-  .admin-board-list-container .pagination button[style*="background-color: #007BFF"] {
-    background-color: #007BFF;
-    color: white;
-  }
-  
-  @media (max-width: 768px) {
-    .admin-board-list-container table th,
-    .admin-board-list-container table td {
-      font-size: 14px;
-    }
-  
-    .admin-board-list-container button {
-      padding: 6px 8px;
-      font-size: 12px;
-    }
-  }
-  
+}
