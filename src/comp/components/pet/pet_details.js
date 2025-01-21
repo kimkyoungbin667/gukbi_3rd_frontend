@@ -14,6 +14,7 @@ function PetDetails({ petId }) {
   });
 
   useEffect(() => {
+    console.log("Pet ID:", petId); // petId 값 확인
     const fetchDetails = async () => {
       try {
         const data = await getPetDetails(petId);
@@ -103,7 +104,7 @@ function PetDetails({ petId }) {
             onChange={handleChange}
           />
         </div>
-        <button type="submit" className="pet-details-submit">
+        <button type="submit" className="details-submit">
           저장
         </button>
       </form>

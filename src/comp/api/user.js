@@ -147,6 +147,8 @@ export const checkNicknameAvailability = async (nickname) => {
     }
 };
 
-
-
+export const getUserPosts = (userId) => {
+    return api.get(`user/posts/${userId}`);
+  };
+  
 export default api;
