@@ -63,9 +63,16 @@ function KakaoMap() {
 
 
 
+    //즐겨찾기 관련련
     const [selectedFavType, setSelectedFavType] = useState('카테고리');
     const [myCategoryFav, setMyCategoryFav] = useState([]);
     const [myAccompanyFav, setMyAccompanyFav] = useState([]);
+
+
+    const [searchInfoWindow, setSearchInfoWindow] = useState(null);
+
+
+
 
 
     //즐겨찾기 가져오기기
@@ -371,7 +378,7 @@ function KakaoMap() {
                         //산책기록
                         myPets={myPets} walks={myWalks}
 
-
+                        searchInfoWindow={searchInfoWindow} setSearchInfoWindow={setSearchInfoWindow}
 
                         setMapData={setMapData}
                     />
@@ -424,6 +431,8 @@ function KakaoMap() {
                     selectedFavType={selectedFavType} myCategoryFav={myCategoryFav} myAccompanyFav={myAccompanyFav}
                     addAccompanyFavorite={addAccompanyFavorite} addCategoryFavorite={addCategoryFavorite} addCategoryFavorite1={addCategoryFavorite1}
                     deleteAccompanyFavorite={deleteAccompanyFavorite} deleteCategoryFavorite={deleteCategoryFavorite}
+
+                    searchInfoWindow={searchInfoWindow} setSearchInfoWindow={setSearchInfoWindow}
                 />
                 <MapWalkPolyline walks={myWalks} category={activeMenu} />
 

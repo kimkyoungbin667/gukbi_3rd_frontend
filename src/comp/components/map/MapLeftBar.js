@@ -3,6 +3,9 @@ import { useEffect, useState } from "react";
 export default function MapLeftBar(props) {
     const [hoveredIndex, setHoveredIndex] = useState(null);
 
+    const searchInfoWindow = props.searchInfoWindow;
+    const setSearchInfoWindow = props.setSearchInfoWindow;
+
     const [currentPage, setCurrentPage] = useState(1); // 현재 페이지
     const itemsPerPage = 14; // 페이지당 항목 수
     const [pageGroup, setPageGroup] = useState(1);
@@ -89,6 +92,7 @@ export default function MapLeftBar(props) {
                                             }}
                                             onClick={(e) => {
                                                 e.preventDefault();
+                                                setSearchInfoWindow(item);
                                                 props.setMapData(
                                                     {
                                                         level: 3,
@@ -210,6 +214,7 @@ export default function MapLeftBar(props) {
                                             }}
                                             onClick={(e) => {
                                                 e.preventDefault();
+                                                setSearchInfoWindow(item);
                                                 props.setMapData(
                                                     {
                                                         level: 6,
@@ -308,6 +313,7 @@ export default function MapLeftBar(props) {
                                             }}
                                             onClick={(e) => {
                                                 e.preventDefault();
+                                                setSearchInfoWindow(item);
                                                 props.setMapData(
                                                     {
                                                         level: 3,
@@ -358,6 +364,7 @@ export default function MapLeftBar(props) {
                                             }}
                                             onClick={(e) => {
                                                 e.preventDefault();
+                                                setSearchInfoWindow(item);
                                                 props.setMapData(
                                                     {
                                                         level: 6,

@@ -227,7 +227,7 @@ export default function UserProfile() {
               <div
                 key={index}
                 className="activity-item"
-                onClick={() => navigate(`/detail/${post.boardidx}`)}  // 게시글 클릭 시 상세 페이지로 이동
+                onClick={() => navigate('/boardDetail', { state: { boardIdx: post.boardIdx } })}  // 게시글 클릭 시 상세 페이지로 이동
               >
                 <h3>{post.title}</h3>
                 <p>{post.content}</p>

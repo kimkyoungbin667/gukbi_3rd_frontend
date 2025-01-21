@@ -3,7 +3,8 @@ import { CustomOverlayMap, MapMarker } from "react-kakao-maps-sdk";
 
 export default function MapSearchMarker(props) {
 
-    const [searchInfoWindow, setSearchInfoWindow] = useState(null);
+    const searchInfoWindow = props.searchInfoWindow;
+    const setSearchInfoWindow = props.setSearchInfoWindow;
 
     const result = props.result;
     const menu = props.menu;
