@@ -98,9 +98,34 @@ const EventCalendar = () => {
 
   const handleDateClick = (date) => {
     setSelectedDate(date);
-    setNewEvent((prev) => ({ ...prev, date })); // 선택한 날짜를 newEvent.date로 설정
-    setIsModalOpen(true); // 모달 열기
+    setSelectedEvent(null); // 기존 선택된 이벤트 초기화
+    setNewEvent((prev) => ({ ...prev, date })); // 선택한 날짜 설정
+    setIsEditPanelOpen(false); // 수정 패널 닫기
+    setIsModalOpen(true); // 추가 모달 열기
   };
+
+  const handleEventClick = (event) => {
+    setSelectedEvent(event); // 선택된 이벤트 설정
+    setIsModalOpen(false); // 추가 모달 닫기
+    setIsEditPanelOpen(true); // 수정 패널 열기
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setNewEvent({
+      petId: "",
+      title: "",
+      description: "",
+      date: selectedDate,
+      time: "12:00",
+    }); // 새 일정 초기화
+  };
+
+  const closeEditPanel = () => {
+    setIsEditPanelOpen(false);
+    setSelectedEvent(null); // 선택된 이벤트 초기화
+  };
+
 
 
   const openModal = () => {
@@ -114,9 +139,6 @@ const EventCalendar = () => {
     setIsModalOpen(true);
   };
 
-  const closeModal = () => {
-    setIsModalOpen(false);
-  };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -124,15 +146,9 @@ const EventCalendar = () => {
   };
 
   const filteredEvents = selectedPetId
-    ? events.filter((event) => event.petId === Number(selectedPetId)) // petId를 숫자로 변환
-    : events;
+    ? events.filter((event) => event.petId === Number(selectedPetId) && event.userId === userId) // 특정 펫 선택
+    : events.filter((event) => event.userId === userId); // 전체 보기
 
-  useEffect(() => {
-  console.log("로그인된 사용자 ID:", userId);
-  console.log("펫 데이터:", pets);
-  console.log("이벤트 데이터:", events);
-}, [userId, pets, events]);
-  
 
 
   const handleEventSubmit = async () => {
@@ -191,11 +207,6 @@ const EventCalendar = () => {
   };
 
 
-  const handleEventClick = (event) => {
-    setSelectedEvent(event);
-    setIsEditPanelOpen(true);
-  };
-
   const handleEventUpdate = async () => {
     if (!selectedEvent) return;
 
@@ -224,11 +235,6 @@ const EventCalendar = () => {
     }
   };
 
-  const closeEditPanel = () => {
-    setIsEditPanelOpen(false);
-    setSelectedEvent(null);
-  };
-
   return (
     <div className="event-calendar-container">
       <div className="event-calendar-panel">
@@ -241,7 +247,7 @@ const EventCalendar = () => {
               onChange={(e) => setSelectedPetId(e.target.value)} // selectedPetId 업데이트
               className="pet-select-dropdown"
             >
-              <option value="">모두 보기</option>
+              <option value="">전체 보기</option> {/* 전체 보기 옵션 추가 */}
               {pets.map((pet) => (
                 <option key={pet.pet_id} value={pet.pet_id}>
                   {pet.dog_name}
@@ -281,19 +287,33 @@ const EventCalendar = () => {
                       <div
                         key={event.eventId}
                         className="event-calendar-event"
-                        onClick={() => handleEventClick(event)}
+                        onClick={(e) => {
+                          e.stopPropagation(); // 부모 클릭 이벤트 중지
+                          handleEventClick(event); // 이벤트 클릭 처리
+                        }}
                         style={{
-                          padding: "4px 8px",
-                          backgroundColor: petColors[event.petId] || "#ccc", // 색상 적용
-                          border: "1px solid #ccc",
-                          borderRadius: "4px",
+                          padding: "10px 15px", // 패딩 증가로 더 넓게
+                          backgroundColor: petColors[event.petId] || "#ffdab9", // 부드러운 색상
+                          border: "2px solid #f0e68c", // 부드러운 테두리 색상
+                          borderRadius: "20px", // 완전히 둥근 모서리
                           cursor: "pointer",
                           textAlign: "center",
                           userSelect: "none",
+                          boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)", // 그림자 추가
+                          transition: "transform 0.2s ease, box-shadow 0.2s ease", // 클릭 시 애니메이션
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.transform = "scale(1.05)"; // 마우스 올렸을 때 확대
+                          e.currentTarget.style.boxShadow = "0 6px 12px rgba(0, 0, 0, 0.3)"; // 그림자 강화
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.transform = "scale(1)"; // 원래 크기로 복귀
+                          e.currentTarget.style.boxShadow = "0 4px 8px rgba(0, 0, 0, 0.2)"; // 원래 그림자 복귀
                         }}
                       >
                         {event.title}
                       </div>
+
                     ))}
                   </div>
                 )}
@@ -301,6 +321,7 @@ const EventCalendar = () => {
             );
           }}
         />
+
       </div>
       {isModalOpen && (
         <div className="event-calendar-modal-overlay">
@@ -351,16 +372,14 @@ const EventCalendar = () => {
                 onChange={handleInputChange}
               />
             </label>
-
-            <label className="pet-select-label">
+            <label className="pet-select-label2">
               펫 선택:
               <select
                 name="petId"
                 value={newEvent.petId}
                 onChange={handleInputChange}
-                className="pet-select-dropdown"
+                className="pet-select-dropdown2"
               >
-                <option value="">선택</option>
                 {pets.map((pet) => (
                   <option key={pet.pet_id} value={pet.pet_id}>
                     {pet.dog_name}
@@ -368,7 +387,6 @@ const EventCalendar = () => {
                 ))}
               </select>
             </label>
-
             <button onClick={handleEventSubmit}>저장</button>
             <button onClick={closeModal}>닫기</button>
           </div>
@@ -378,49 +396,76 @@ const EventCalendar = () => {
       {isEditPanelOpen && (
         <div className="event-calendar-edit-panel">
           <h3>일정 수정</h3>
-          <label>
-            제목:
-            <input
-              type="text"
-              value={selectedEvent?.title || ""}
-              onChange={(e) =>
-                setSelectedEvent((prev) => ({
-                  ...prev,
-                  title: e.target.value,
-                }))
-              }
-            />
-          </label>
-          <label>
-            설명:
-            <textarea
-              value={selectedEvent?.description || ""}
-              onChange={(e) =>
-                setSelectedEvent((prev) => ({
-                  ...prev,
-                  description: e.target.value,
-                }))
-              }
-            />
-          </label>
-          <label>
-            시간:
-            <input
-              type="time"
-              value={selectedEvent?.eventTime || ""}
-              onChange={(e) =>
-                setSelectedEvent((prev) => ({
-                  ...prev,
-                  eventTime: e.target.value,
-                }))
-              }
-            />
-          </label>
-          <button onClick={handleEventUpdate}>수정</button>
-          <button onClick={handleEventDelete}>삭제</button>
-          <button onClick={closeEditPanel}>닫기</button>
+          <div style={{ marginBottom: "15px" }}>
+            <label>
+              제목:
+              <input
+                type="text"
+                value={selectedEvent?.title || ""}
+                onChange={(e) =>
+                  setSelectedEvent((prev) => ({
+                    ...prev,
+                    title: e.target.value,
+                  }))
+                }
+              />
+            </label>
+            <label>
+              설명:
+              <textarea
+                value={selectedEvent?.description || ""}
+                onChange={(e) =>
+                  setSelectedEvent((prev) => ({
+                    ...prev,
+                    description: e.target.value,
+                  }))
+                }
+              />
+            </label>
+            <label>
+              시간:
+              <input
+                type="time"
+                value={selectedEvent?.eventTime || ""}
+                onChange={(e) =>
+                  setSelectedEvent((prev) => ({
+                    ...prev,
+                    eventTime: e.target.value,
+                  }))
+                }
+              />
+            </label>
+            <label className="pet-select-label3">
+              펫 선택:
+              <select
+                value={selectedEvent?.petId || ""}
+                onChange={(e) =>
+                  setSelectedEvent((prev) => ({
+                    ...prev,
+                    petId: e.target.value,
+                  }))
+                }
+                className="pet-select-dropdown3"
+              >
+                {pets.map((pet) => (
+                  <option key={pet.pet_id} value={pet.pet_id}>
+                    {pet.dog_name}
+                  </option>
+                ))}
+              </select>
+            </label>
+
+          </div>
+          <div className="button-container">
+            <button onClick={handleEventUpdate}>수정</button>
+            <button className="delete-button" onClick={handleEventDelete}>삭제</button>
+            <button onClick={closeEditPanel}>닫기</button>
+          </div>
+
         </div>
       )}
+
+
     </div>
   );
 };
