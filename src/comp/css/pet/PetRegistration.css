@@ -99,7 +99,7 @@
 
 /* 결과 항목 스타일 */
 .registration-results-container p {
-  font-size: 16px;
+  font-size: 30px;
   color: #555;
   margin: 8px 0;
   font-family: "studyGood", sans-serif; /* 폰트 적용 */
@@ -195,7 +195,7 @@
 
 /* 결과 항목 스타일 */
 .modal-content p {
-  font-size: 16px;
+  font-size: 27px;
   color: #444;
   margin: 12px 0;
   font-weight: 600;
@@ -204,6 +204,7 @@
 
 .modal-content p strong {
   color: #f57c00; /* 강조된 텍스트 색상 */
+  font-size: 30px;
 }
 
 /* 버튼 그룹 */

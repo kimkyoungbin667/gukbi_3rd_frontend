@@ -30,7 +30,7 @@
   border-radius: 12px;
   background-color: #ffe4b5;
   color: #333;
-  font-size: 18px;
+  font-size: 26px;
   font-weight: bold;
   font-family: "StudyGood", Arial, sans-serif;
   cursor: pointer;
@@ -48,7 +48,7 @@
 
 .daily-record-form-section label {
   display: block;
-  font-size: 18px;
+  font-size: 28px;
   margin-bottom: 8px;
   color: #f57c00;
 }
@@ -61,10 +61,17 @@
   border-color: #ff6f61;
 }
 
+input[type="number"] {
+  font-size: 32px;
+}
+.daily-label {
+  font-size: 32px;
+}
+
 .daily-record-submit-button {
   width: 100%;
   padding: 15px;
-  font-size: 18px;
+  font-size: 26px;
   font-family: "StudyGood", Arial, sans-serif;
   font-weight: bold;
   margin-top: 30px;

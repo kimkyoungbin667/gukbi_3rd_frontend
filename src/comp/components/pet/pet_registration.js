@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { getPetInfo, savePetInfo } from "../../api/pet";
 import { getUserProfile } from "../../api/user"; // 사용자 프로필 가져오기 API
+import { useNavigate } from "react-router-dom"; // useNavigate 훅 import
 import "../../css/pet/PetRegistration.css"; // CSS 파일 추가
 
 function PetRegistration() {
@@ -13,6 +14,11 @@ function PetRegistration() {
   const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태 추가
+
+  const navigate = useNavigate(); // useNavigate 훅을 사용하여 페이지 이동
+
+  // 기본 이미지 URL 설정
+  const defaultImageUrl = "https://i.pinimg.com/736x/df/e3/bf/dfe3bfb04d99e860dbdefaa1a5cb3c71.jpg"; // 기본 이미지 URL을 여기에 설정
 
   // 사용자 ID 가져오기
   useEffect(() => {
@@ -69,9 +75,11 @@ function PetRegistration() {
       const petData = {
         ...results.response.body.item,
         user_idx: userIdx, // 저장 시 사용자 ID 추가
+        imageUrl: results.response.body.item.imageUrl || defaultImageUrl, // 이미지 URL이 없으면 기본 이미지 사용
       };
       await savePetInfo(petData);
       alert("데이터가 성공적으로 저장되었습니다.");
+      navigate("/mypetspage"); // 저장 후 /mypetspage로 이동
     } catch (error) {
       console.error("저장 실패:", error.response || error.message);
       alert("데이터 저장 실패");
@@ -133,6 +141,7 @@ function PetRegistration() {
         <div className="modal-overlay">
           <div className="modal-content">
             <h2 className="results-title">조회 결과</h2>
+            
             <p><strong>이름:</strong> {results.response.body.item.dogNm}</p>
             <p><strong>성별:</strong> {results.response.body.item.sexNm}</p>
             <p><strong>품종:</strong> {results.response.body.item.kindNm}</p>

@@ -18,6 +18,9 @@ function MyPetsPage() {
   const [activeTab, setActiveTab] = useState({});
   const navigate = useNavigate();
 
+  // 기본 이미지 URL 설정
+  const defaultImageUrl = "https://i.pinimg.com/736x/df/e3/bf/dfe3bfb04d99e860dbdefaa1a5cb3c71.jpg"; 
+
   const fetchPets = async () => {
     setLoading(true);
     try {
@@ -123,6 +126,15 @@ function MyPetsPage() {
     navigate("/petregistration");
   };
 
+  const getPetImageUrl = (profileUrl) => {
+    // profileUrl이 없거나 "undefined"일 경우 기본 이미지를 사용
+    console.log("gd",profileUrl);  
+    if (!profileUrl) {
+      return defaultImageUrl;
+    }
+    return `http://58.74.46.219:33334/upload/${profileUrl}`; // 정상적인 경우 서버 URL 사용
+  };
+
   if (loading) return <p className="mypets-page-loading">로딩 중...</p>;
 
   return (
@@ -140,7 +152,7 @@ function MyPetsPage() {
                 src={
                   editingPetId === pet.pet_id && selectedImage?.previewUrl
                     ? selectedImage.previewUrl
-                    : `http://58.74.46.219:33334/upload/${pet.profile_url}`
+                    : getPetImageUrl(pet.profile_url) // 이미지 URL 유효성 체크 후 처리
                 }
                 alt={pet.dog_name}
                 className="mypets-page-image"
@@ -191,33 +203,25 @@ function MyPetsPage() {
               <div className="mypets-page-extra-details">
                 <div className="mypets-page-tabs">
                   <button
-                    className={`mypets-page-tab ${
-                      activeTab[pet.pet_id] === "details" ? "active" : ""
-                    }`}
+                    className={`mypets-page-tab ${activeTab[pet.pet_id] === "details" ? "active" : ""}`}
                     onClick={() => changeTab(pet.pet_id, "details")}
                   >
                     상세 정보
                   </button>
                   <button
-                    className={`mypets-page-tab ${
-                      activeTab[pet.pet_id] === "weeklyGraph" ? "active" : ""
-                    }`}
+                    className={`mypets-page-tab ${activeTab[pet.pet_id] === "weeklyGraph" ? "active" : ""}`}
                     onClick={() => changeTab(pet.pet_id, "weeklyGraph")}
                   >
                     주간 그래프
                   </button>
                   <button
-                    className={`mypets-page-tab ${
-                      activeTab[pet.pet_id] === "dailyRecord" ? "active" : ""
-                    }`}
+                    className={`mypets-page-tab ${activeTab[pet.pet_id] === "dailyRecord" ? "active" : ""}`}
                     onClick={() => changeTab(pet.pet_id, "dailyRecord")}
                   >
                     오늘의 기록
                   </button>
                   <button
-                    className={`mypets-page-tab ${
-                      activeTab[pet.pet_id] === "medicalHistory" ? "active" : ""
-                    }`}
+                    className={`mypets-page-tab ${activeTab[pet.pet_id] === "medicalHistory" ? "active" : ""}`}
                     onClick={() => changeTab(pet.pet_id, "medicalHistory")}
                   >
                     의료 기록

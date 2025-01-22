@@ -187,7 +187,7 @@ const PetGraph = ({ petId }) => {
 
   return (
     <div>
-      <div style={{ display: "flex", justifyContent: "center", gap: "20px", marginBottom: "20px" }}>
+      <div style={{ display: "flex", justifyContent: "center", gap: "20px", marginBottom: "20px", marginTop:"20px", fontFamily:"StudyGood"}}>
         <div>
           <label>시작 날짜:</label>
           <DatePicker
@@ -195,6 +195,7 @@ const PetGraph = ({ petId }) => {
             onChange={(date) => setStartDate(getPreviousMonday(date))} // 월요일로 강제 설정
             selectsStart
             maxDate={new Date()} // 오늘까지 선택 가능
+
           />
         </div>
       </div>

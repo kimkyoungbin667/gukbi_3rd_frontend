@@ -42,11 +42,11 @@
 .medical-form-field {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  margin-top: 10px;
 }
 
 .medical-form-field label {
-  font-size: 18px;
+  font-size: 24px;
   font-weight: 700;
   color: #444;
   font-family: "StudyGood", Arial, sans-serif;
@@ -59,7 +59,7 @@
   padding: 12px;
   border-radius: 12px;
   border: 2px solid #f4c542;
-  font-size: 16px;
+  font-size: 24px;
   background-color: #fff;
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
   font-family: "StudyGood", Arial, sans-serif;
@@ -131,7 +131,7 @@
 
 .medical-record-card p {
   margin: 8px 0;
-  font-size: 16px;
+  font-size: 24px;
   color: #444;
 }
 

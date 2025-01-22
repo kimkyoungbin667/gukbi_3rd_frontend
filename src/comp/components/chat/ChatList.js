@@ -259,7 +259,7 @@ export default function Chat() {
                 const canvas = document.createElement('canvas');
                 const ctx = canvas.getContext('2d');
 
-                const maxSize = 500; // 최대 크기 설정 (픽셀)
+                const maxSize = 700; // 최대 크기 설정 (픽셀)
                 let width = img.width;
                 let height = img.height;
 

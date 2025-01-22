@@ -295,7 +295,7 @@
 
 /* 활동 항목 스타일 */
 .activity-item {
-  font-size: 18px;
+  font-size: 14px;
   margin-bottom: 10px;
   color: #555;
   cursor: pointer;
@@ -317,13 +317,13 @@
 }
 
 .activity-item p {
-  font-size: 18px;
+  font-size: 26px;
   color: #555;
   margin-bottom: 10px;
 }
 
 .activity-item .activity-date {
-  font-size: 16px;
+  font-size: 26px;
   color: #888;
   text-align: right;
   margin-top: 10px;

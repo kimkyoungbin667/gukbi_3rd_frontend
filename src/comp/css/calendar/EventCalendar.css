@@ -308,7 +308,7 @@
   width: 100%;
   max-width: 360px;
   padding: 14px 16px;
-  font-size: 1.2rem;
+  font-size: 28px;
   font-family: 'StudyGood';
   background-color: #f9f9f9;
   border: 3px solid #4CAF50;
@@ -402,6 +402,7 @@
   box-shadow: inset 0px 2px 4px rgba(0, 0, 0, 0.1); /* 안쪽 그림자 */
   outline: none;
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  font-family: "StudyGood";
 }
 
 .event-calendar-modal-content input:focus,
@@ -418,7 +419,7 @@
 .event-calendar-modal-content label, .event-calendar-edit-panel label {
   display: block;
   margin-bottom: 8px;
-  font-size: 16px;
+  font-size: 22px;
   font-weight: bold;
   color: #ff7f50; /* 밝은 오렌지 */
 }

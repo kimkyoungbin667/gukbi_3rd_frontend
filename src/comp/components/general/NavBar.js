@@ -48,6 +48,7 @@ const Navbar = () => {
         map: "♧",
         aiChat: "♧",
         aiSolution: "♧",
+        mypet:"♧",
         mypage: "♧",
         calendar: "♧", // 캘린더 메뉴 추가
     });
@@ -60,6 +61,7 @@ const Navbar = () => {
             map: "†",
             aiChat: "†",
             aiSolution: "†",
+            mypet:"†",
             mypage: "†",
             calendar: "†", // 캘린더 호버 텍스트 추가
         };
@@ -73,6 +75,7 @@ const Navbar = () => {
             map: "♧",
             aiChat: "♧",
             aiSolution: "♧",
+            mypet:"♧",
             mypage: "♧",
             calendar: "♧", // 캘린더 기본 텍스트 추가
         };
@@ -127,25 +130,25 @@ const Navbar = () => {
                     </li>
 
                     <li className="navbar__item dropdown" onClick={() => moveTo("/mypetspage")}
-                        onMouseEnter={() => handleMouseEnter("mypetspage")}
-                        onMouseLeave={() => handleMouseLeave("mypetspage")}>
-                        <div className="navbar__link">{location.pathname === "/mypetspage" ? " † " : menuText.mypage}</div>
-                        <p className="navbar-text">내 애완동물</p>
+                        onMouseEnter={() => handleMouseEnter("mypet")}
+                        onMouseLeave={() => handleMouseLeave("mypet")}>
+                        <div className="navbar__link">{location.pathname === "/mypetspage" ? " † " : menuText.mypet}</div>
+                        <p className="navbar-text">내 반려동물</p>
                     </li>
 
                     {isLoggedIn && (
                         <li className="navbar__item dropdown" onClick={() => moveTo("/profile")}
-                            onMouseEnter={() => handleMouseEnter("profile")}
-                            onMouseLeave={() => handleMouseLeave("profile")}>
-                            <div className="navbar__link">{location.pathname === "/profilenavigation/profile" ? " † " : menuText.mypage}</div>
+                            onMouseEnter={() => handleMouseEnter("mypage")}
+                            onMouseLeave={() => handleMouseLeave("mypage")}>
+                            <div className="navbar__link">{location.pathname === "/profile" ? " † " : menuText.mypage}</div>
                             <p className="navbar-text">내 프로필</p>
                         </li>
                     )}
 
                     {/* 캘린더 메뉴 */}
                     <li className="navbar__item dropdown" onClick={() => moveTo("/eventcaledar")}
-                        onMouseEnter={() => handleMouseEnter("eventcaledar")}
-                        onMouseLeave={() => handleMouseLeave("eventcaledar")}>
+                        onMouseEnter={() => handleMouseEnter("calendar")}
+                        onMouseLeave={() => handleMouseLeave("calendar")}>
                         <div className="navbar__link">{location.pathname === "/eventcaledar" ? " † " : menuText.calendar}</div>
                         <p className="navbar-text">캘린더</p>
                     </li>

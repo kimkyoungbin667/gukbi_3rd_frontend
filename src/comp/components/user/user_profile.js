@@ -41,6 +41,7 @@ export default function UserProfile() {
     getUserPosts(user.userIdx)  // user.userId를 통해 사용자가 작성한 글을 불러옵니다
       .then((response) => {
         setPosts(response.data); // 게시판 글 상태에 저장
+        console.log(response.data);
       })
       .catch((error) => {
         console.error("게시판 글 가져오기 실패:", error.message);
@@ -70,7 +71,7 @@ export default function UserProfile() {
 
     try {
       const response = await uploadProfileImage(formData);
-      setSelectedImage(`http://58.74.46.219:33334${response.data.url}`);
+      setSelectedImage(`${response.data.url}`);
       setIsValidImage(true);
     } catch (error) {
       setIsValidImage(false);
@@ -133,7 +134,6 @@ export default function UserProfile() {
       <div className="user-profile-info-container">
         <div className="user-profile-left">
           <img src={`http://58.74.46.219:33334${user.userProfileUrl}`} alt="프로필" className="user-profile-image" />
-          
         </div>
         <div className="user-profile-right">
           <h1>{user.userName}님</h1>
@@ -165,7 +165,7 @@ export default function UserProfile() {
               <input type="file" accept="image/*" onChange={handleFileUpload} />
               {selectedImage && (
                 <img
-                  src={selectedImage}
+                  src={`http://58.74.46.219:33334${selectedImage}`}
                   alt="프로필 미리보기"
                   className="user-profile-preview"
                 />
@@ -228,7 +228,7 @@ export default function UserProfile() {
               <div
                 key={index}
                 className="activity-item"
-                onClick={() => navigate('/boardDetail', { state: { boardIdx: post.boardIdx } })}  // 게시글 클릭 시 상세 페이지로 이동
+                onClick={() => navigate('/boardDetail', { state: { boardIdx: post.board_idx } })}  // 게시글 클릭 시 상세 페이지로 이동
               >
                 <h3>{post.title}</h3>
                 <p>{post.content}</p>
