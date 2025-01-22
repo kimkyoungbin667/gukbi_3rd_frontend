@@ -28,6 +28,59 @@
   background-color: #fff;
 }
 
+.delete-reply-btn {
+  background-color: #e74c3c; /* 빨간색 배경 */
+  color: white; /* 글자 색은 흰색 */
+  font-size: 16px;
+  padding: 5px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.delete-reply-btn:hover {
+  background-color: #c0392b; /* 호버 시 배경 색상 어두운 빨강 */
+  transform: scale(1.1); /* 호버 시 버튼 커짐 */
+}
+
+.delete-reply-btn:active {
+  background-color: #b03a2e; /* 클릭 시 배경 색상 */
+  transform: scale(1); /* 클릭하면 크기 원상 복구 */
+}
+
+.delete-reply-btn:focus {
+  outline: none; /* 포커스 시 외곽선 제거 */
+}
+
+
+
+.delete-comment-btn {
+  background-color: #e74c3c; /* 빨간색 배경 */
+  color: white; /* 글자 색은 흰색 */
+  font-size: 16px;
+  padding: 5px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.delete-comment-btn:hover {
+  background-color: #c0392b; /* 호버 시 배경 색상 어두운 빨강 */
+  transform: scale(1.1); /* 호버 시 버튼 커짐 */
+}
+
+.delete-comment-btn:active {
+  background-color: #b03a2e; /* 클릭 시 배경 색상 */
+  transform: scale(1); /* 클릭하면 크기 원상 복구 */
+}
+
+.delete-comment-btn:focus {
+  outline: none; /* 포커스 시 외곽선 제거 */
+}
+
+
 .user-info {
   display: flex;
   align-items: center;

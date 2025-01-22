@@ -35,6 +35,10 @@
   gap: 20px; /* 항목 간 간격 확장 */
 }
 
+.textareaa {
+  font-size: 32px;
+}
+
 .form-group.wide {
   grid-column: span 2; /* 두 열을 차지하도록 확장 */
 }
@@ -53,7 +57,7 @@ textarea {
   padding: 18px; /* 패딩 확대 */
   border: 2px solid #ff6f61; /* 부드러운 테두리 */
   border-radius: 12px; /* 둥근 테두리 */
-  font-size: 17px; /* 더 큰 텍스트 */
+  font-size: 32px; /* 더 큰 텍스트 */
   background-color: #fff; /* 하얀 배경 */
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
@@ -66,6 +70,7 @@ textarea:focus {
   outline: none;
 }
 
+
 textarea {
   resize: none;
   height: 150px; /* 더 큰 텍스트 영역 */
@@ -77,7 +82,7 @@ textarea {
   background-color: #ff6f61; /* 메인 버튼 색상 */
   color: white;
   padding: 18px 30px; /* 버튼 크기 확대 */
-  font-size: 20px; /* 버튼 텍스트 크기 증가 */
+  font-size: 28px; /* 버튼 텍스트 크기 증가 */
   font-weight: bold;
   border: none;
   border-radius: 12px; /* 둥근 모서리 */
@@ -119,7 +124,7 @@ textarea {
   background-color: #ff6f61;
   color: white;
   padding: 18px 30px;
-  font-size: 20px;
+  font-size: 28px;
   font-weight: bold;
   font-family: "StudyGood", Arial, sans-serif;
   border: none;

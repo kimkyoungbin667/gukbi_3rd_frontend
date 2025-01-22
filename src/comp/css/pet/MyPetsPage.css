@@ -135,7 +135,7 @@
 .mypets-page-tab {
   padding: 12px 24px;
   cursor: pointer;
-  font-size: 16px;
+  font-size: 24px;
   font-weight: bold;
   border: 1px solid #ddd;
   border-radius: 20px;
@@ -183,6 +183,10 @@
 
 .mypets-page-custom-file-input {
   display: none; /* 기본 파일 입력 숨김 */
+}
+
+input {
+  font-family: 'studyGood';
 }
 
 .mypets-page-custom-file-label {

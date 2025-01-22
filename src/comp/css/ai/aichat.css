@@ -3,6 +3,16 @@
     font-size: 50px;
 }
 
+.ai-container {
+    display: flex;
+    flex-direction: column; /* 수직 방향으로 정렬 */
+    align-items: center;     /* 수평 중앙 정렬 */
+    justify-content: flex-start; /* 상단으로 배치 */
+    height: 100vh;           /* 화면 전체 높이를 사용 */
+    text-align: center;      /* 텍스트 중앙 정렬 */
+    padding-top: 50px;       /* 상단 여백 추가 (필요 시 조정) */
+}
+
 .ai-cat {
     position: fixed;  /* ✅ absolute 사용 */
     width: auto;

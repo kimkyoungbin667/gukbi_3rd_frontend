@@ -10,6 +10,7 @@
   font-family: "studyGood";
 }
 
+
 .board-edit-title {
   font-size: 35px;
   font-weight: bold;
@@ -18,6 +19,12 @@
   font-family: 'studyGood';
   margin-bottom: 20px;
 }
+
+input[type="text"] {
+  font-size: 30px !important;
+}
+
+
 
 .board-edit-input {
   margin-bottom: 20px;
@@ -155,9 +162,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  gap: 20px;
 }
-
-#location-share {}
 
 
 /* 파일 업로드 컨테이너 */
@@ -178,15 +184,47 @@
   display: inline-block;
   background-color: #CDC1FF;
   color: white;
-  font-size: 25px;
+  font-size: 30px; /* 글자 크기 키우기 */
   font-weight: initial;
-  padding: 5px 15px;
-  border-radius: 25px;
+  padding: 12px 30px; /* 버튼 크기 조정 */
+  border-radius: 20px;
   cursor: pointer;
   font-family: 'studyGood';
   transition: background-color 0.3s ease, transform 0.3s ease;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
 }
+
+/* 장소 공유 버튼 */
+#location-share {
+  background-color: #ff8c00;  /* 버튼 색상 변경 */
+  color: white;
+  padding: 10px 20px; /* 버튼 크기 조정 */
+  border-radius: 25px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  width: 200px; /* 가로 크기 지정 */
+}
+
+#location-share:hover {
+  background-color: #e67e22; /* 호버 시 색상 변경 */
+}
+
+/* 산책경로 공유 버튼 */
+#path-share-btn {
+  background-color: #f44336;  /* 버튼 색상 변경 */
+  color: white;
+  padding: 10px 20px; /* 버튼 크기 조정 */
+  border-radius: 25px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  width: 200px; /* 가로 크기 지정 */
+}
+
+#path-share-btn:hover {
+  background-color: #d32f2f; /* 호버 시 색상 변경 */
+}
+
 
 .file-upload label:hover {
   background-color: #A294F9;
@@ -275,4 +313,42 @@
 
 .select-button:hover {
   background-color: #1E8185;
+}
+
+.board-detail-actions {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center; /* 버튼을 수평 중앙 정렬 */
+  gap: 30px; /* 수정, 삭제 버튼 간 간격 */
+}
+
+.board-detail-actions button {
+  font-size: 18px;
+  padding: 10px 15px;
+  background-color: #f44336; /* 버튼 색상 */
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.board-detail-actions button:hover {
+  background-color: #d32f2f; /* 호버 시 색상 */
+}
+
+/* 채팅 시작하기 버튼 스타일 */
+.chat-button {
+  font-size: 18px;
+  padding: 10px 20px;
+  background-color: #4CAF50; /* 녹색 배경 */
+  color: white;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-weight: bold;
+}
+
+.chat-button:hover {
+  background-color: #45a049; /* 호버 시 색상 변경 */
 }

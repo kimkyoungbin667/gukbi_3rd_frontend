@@ -68,6 +68,7 @@ function PetDetails({ petId }) {
             name="birth_date"
             value={form.birth_date}
             onChange={handleChange}
+            style={{ fontFamily: "StudyGood" }}
             required
           />
         </div>
@@ -76,6 +77,7 @@ function PetDetails({ petId }) {
           <input
             type="text"
             name="health_status"
+            style={{ fontFamily: "StudyGood" }}
             value={form.health_status}
             onChange={handleChange}
           />
@@ -83,14 +85,17 @@ function PetDetails({ petId }) {
         <div className="pet-details-form-group">
           <label>식단 요구사항:</label>
           <textarea
+          className="textareaa"
             name="dietary_requirements"
             value={form.dietary_requirements}
             onChange={handleChange}
+           
           />
         </div>
         <div className="pet-details-form-group">
           <label>알레르기 정보:</label>
           <textarea
+          className="textareaa"
             name="allergies"
             value={form.allergies}
             onChange={handleChange}
@@ -99,6 +104,7 @@ function PetDetails({ petId }) {
         <div className="pet-details-form-group pet-details-wide">
           <label>특이 사항:</label>
           <textarea
+          className="textareaa"
             name="notes"
             value={form.notes}
             onChange={handleChange}

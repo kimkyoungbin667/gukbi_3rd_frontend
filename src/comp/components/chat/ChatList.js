@@ -259,7 +259,7 @@ export default function Chat() {
                 const canvas = document.createElement('canvas');
                 const ctx = canvas.getContext('2d');
 
-                const maxSize = 500; // 최대 크기 설정 (픽셀)
+                const maxSize = 700; // 최대 크기 설정 (픽셀)
                 let width = img.width;
                 let height = img.height;
 
@@ -551,7 +551,7 @@ export default function Chat() {
                             <button onClick={sendMessage}>전송</button>
 
                             <div className="file-upload-container">
-                                <label htmlFor="file-upload" className="custom-file-upload">
+                                <label htmlFor="file-upload" className="custom-file-upload" style={{backgroundColor:"#007bff"}}> 
                                     이미지 전송 🖼️
                                 </label>
 
@@ -577,12 +577,10 @@ export default function Chat() {
 
                             </div>
 
-
-
                         </div>
                     </>
                 ) : (
-                    <h2>채팅방을 선택하세요</h2>
+                    <p className="select-title">채팅방을 선택하세요</p>
                 )}
             </div>
         </div>
